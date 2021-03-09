@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DataAccess.Repository.Data;
 using Microsoft.EntityFrameworkCore;
 using TraderBlotter.Api.Models;
 

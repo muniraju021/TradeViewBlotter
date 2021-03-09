@@ -4,6 +4,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using AutoMapper;
+using DataAccess.Repository.Repositories;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using TraderBlotter.Api.Data;
@@ -22,22 +23,33 @@ namespace TraderBlotter.Api.Controllers
     {
         private readonly IMapper _mapper;
         private readonly ITradeViewRepository _tradeViewRepository;
+        private readonly ITradeViewGenericRepository _tradeViewGenericRepository;
 
-        public TradeViewController(IMapper mapper, ITradeViewRepository tradeViewRepository)
+        public TradeViewController(IMapper mapper, ITradeViewRepository tradeViewRepository,ITradeViewGenericRepository tradeViewGenericRepository)
         {
             _mapper = mapper;
             _tradeViewRepository = tradeViewRepository;
+            _tradeViewGenericRepository = tradeViewGenericRepository;
         }
 
         [HttpGet]
         [Route("getAllTrades")]
-        public IActionResult GetAllTrades()
+        public async Task<IActionResult> GetAllTrades()
         {
             var resultSet = new List<TradeViewDto>();
-            var tradeDetails = _tradeViewRepository.GetTradeViews();
+
+            //var tradeDetails = _tradeViewRepository.GetTradeViews();
+            //if (tradeDetails == null)
+            //    return NotFound();
+
+            //foreach (var item in tradeDetails)
+            //{
+            //    resultSet.Add(_mapper.Map<TradeViewDto>(item));
+            //}
+
+            var tradeDetails = await _tradeViewGenericRepository.GetAllTradeViewsByPageIndex(1, 2);
             if (tradeDetails == null)
                 return NotFound();
-
             foreach (var item in tradeDetails)
             {
                 resultSet.Add(_mapper.Map<TradeViewDto>(item));

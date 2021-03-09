@@ -4,6 +4,10 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using DataAccess.Repository;
+using DataAccess.Repository.Data;
+using DataAccess.Repository.Infrastructure;
+using DataAccess.Repository.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -15,6 +19,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Org.BouncyCastle.Asn1.X509.Qualified;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using TraderBlotter.Api.Data;
 using TraderBlotter.Api.Models.Mapper;
@@ -40,6 +45,10 @@ namespace TraderBlotter.Api
                         mySqlOptions => mySqlOptions.CharSetBehavior(CharSetBehavior.NeverAppend)));
             services.AddControllers();
             services.AddScoped<ITradeViewRepository, TradeViewRepository>();
+            services.AddScoped<IConnectionFactory, ConnectionFactory>();
+            //services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<object>));
+            services.AddScoped<IGenericRepository<TradeView>, GenericRepository<TradeView>>();
+            services.AddScoped<ITradeViewGenericRepository, TradeViewGenericRepository>();
             services.AddAutoMapper(typeof(TraderBlotterMappings));
 
             services.AddApiVersioning(x =>
