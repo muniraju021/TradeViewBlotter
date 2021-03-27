@@ -7,6 +7,6 @@ namespace DataAccess.Repository.Infrastructure
 {
     public interface IConnectionFactory
     {
-        public IDbConnection GetConnection{ get; }
+        IDbConnection GetConnection(string connectionName = null);
     }
 }

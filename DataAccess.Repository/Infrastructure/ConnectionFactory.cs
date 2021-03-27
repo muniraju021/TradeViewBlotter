@@ -13,20 +13,37 @@ namespace DataAccess.Repository.Infrastructure
     {
         private readonly IConfiguration _configuration;
         private readonly string _connectionString;
+
+
         public ConnectionFactory(IConfiguration configuration)
         {
             _configuration = configuration;
             _connectionString = _configuration.GetConnectionString("DefaultConnectionString");
         }
          
-        public IDbConnection GetConnection 
+        //public IDbConnection GetConnection 
+        //{
+        //    get
+        //    {
+        //        var conn = new MySqlConnection(_connectionString);
+        //        conn.Open();
+        //        return conn;
+        //    }
+        //}
+
+        public IDbConnection GetConnection(string connectionName = null)
         {
-            get
+            if(!string.IsNullOrWhiteSpace(connectionName))
             {
-                var conn = new MySqlConnection(_connectionString);
-                conn.Open();
-                return conn;
+                var connString = _configuration.GetConnectionString(connectionName);
+                var con = new MySqlConnection(connString);
+                con.Open();
+                return con;
             }
+            var conn = new MySqlConnection(_connectionString);
+            conn.Open();
+            return conn;
+
         }
     }
 }

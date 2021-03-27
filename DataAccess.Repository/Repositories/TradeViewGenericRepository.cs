@@ -21,7 +21,6 @@ namespace DataAccess.Repository.Repositories
             var query = $"SELECT * FROM tradeview order by TradeDate desc LIMIT {pageIndex}, {pageSize}";
             var res = await _tradeViewRepo.GetAllEntityAsync(query);
             return res;
-
         }
     } 
 }

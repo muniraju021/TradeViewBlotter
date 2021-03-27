@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using AutoMapper;
 using DataAccess.Repository.Repositories;
-using Microsoft.AspNetCore.Http;
+using DataAccess.Repository.RepositoryEF.IRepositoryEF;
 using Microsoft.AspNetCore.Mvc;
-using TraderBlotter.Api.Data;
-using TraderBlotter.Api.Models;
 using TraderBlotter.Api.Models.Dto;
-using TraderBlotter.Api.Repository.IRepository;
 using HttpGetAttribute = Microsoft.AspNetCore.Mvc.HttpGetAttribute;
 using RouteAttribute = Microsoft.AspNetCore.Mvc.RouteAttribute;
 

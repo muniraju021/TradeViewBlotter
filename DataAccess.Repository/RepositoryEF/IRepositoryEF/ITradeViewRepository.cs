@@ -3,9 +3,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using TraderBlotter.Api.Models;
 
-namespace TraderBlotter.Api.Repository.IRepository
+namespace DataAccess.Repository.RepositoryEF.IRepositoryEF
 {
     public interface ITradeViewRepository
     {

@@ -1,10 +1,6 @@
 ﻿using AutoMapper;
 using DataAccess.Repository.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using TraderBlotter.Api.Data;
+using DataAccess.Repository.Models;
 using TraderBlotter.Api.Models.Dto;
 
 namespace TraderBlotter.Api.Models.Mapper
@@ -14,6 +10,7 @@ namespace TraderBlotter.Api.Models.Mapper
         public TraderBlotterMappings()
         {
             CreateMap<TradeView, TradeViewDto>().ReverseMap();
+            CreateMap<TradeViewBseCm, TradeView>();
         }
     }
 }

@@ -3,6 +3,7 @@ using DataAccess.Repository.Infrastructure;
 using Microsoft.VisualBasic;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Data;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -20,6 +21,12 @@ namespace DataAccess.Repository
             _connectionFactory = connectionFactory;
         }
 
+        private IDbConnection GetDbConnection(string connectionName)
+        {
+            var con = string.IsNullOrWhiteSpace(connectionName) ? _connectionFactory.GetConnection() : _connectionFactory.GetConnection(connectionName);
+            return con;
+        }
+
         public void Add(TEntity entity)
         {
             throw new NotImplementedException();
@@ -35,13 +42,20 @@ namespace DataAccess.Repository
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllEntityAsync(string spName,object parameters=null,CommandType cmdType=CommandType.Text)
-        {
-            using(var conn = _connectionFactory.GetConnection)
+        public async Task<IEnumerable<TEntity>> GetAllEntityAsync(string spName, object parameters = null, CommandType cmdType = CommandType.Text, string connectionName = null)
+        {            
+            using (var con = GetDbConnection(connectionName))
             {
-                var res = await conn.QueryAsync<TEntity>(spName, param: parameters, commandType: cmdType);
+                var res = await con.QueryAsync<TEntity>(spName, param: parameters, commandType: cmdType);
                 return res;
             }
+        }
+
+        public async Task<IDataReader> GetDataReaderAsync(string spName, object parameters = null, CommandType cmdType = CommandType.Text, string connectionName = null)
+        {
+            var con = GetDbConnection(connectionName);
+            var reader = await con.ExecuteReaderAsync(spName, commandType: cmdType);
+            return reader;
         }
 
         public void Update(TEntity entity)
