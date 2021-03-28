@@ -18,7 +18,8 @@ namespace DataAccess.Repository.Repositories
 
         public async Task<IEnumerable<TradeView>> GetAllTradeViewsByPageIndex(int pageIndex, int pageSize)
         {
-            var query = $"SELECT * FROM tradeview order by TradeDate desc LIMIT {pageIndex}, {pageSize}";
+            //var query = $"SELECT * FROM tradeview order by TradeDate desc LIMIT {pageIndex}, {pageSize}";
+            var query = $"SELECT * FROM tradeview order by TradeDate desc";
             var res = await _tradeViewRepo.GetAllEntityAsync(query);
             return res;
         }
