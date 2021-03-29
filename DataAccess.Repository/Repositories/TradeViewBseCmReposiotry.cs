@@ -69,7 +69,13 @@ namespace DataAccess.Repository.Repositories
                 }
             ).ToList();
 
-            await _tradeViewRepositoryEf.AddTradeView(output.ToCollection<TradeView>());
+            //var temp = output.Where(i => i.TradeId == "7433200").ToList();
+            //temp[0].UserId = "OTRD10";
+            //temp[0].TradeId = "7433201";
+
+
+            //await _tradeViewRepositoryEf.AddTradeView(output.ToCollection<TradeView>());
+            await _tradeViewRepositoryEf.MergeTradeView(output.ToCollection<TradeView>());
 
             return;
         }

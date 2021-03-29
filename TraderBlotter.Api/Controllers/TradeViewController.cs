@@ -41,7 +41,7 @@ namespace TraderBlotter.Api.Controllers
             //    resultSet.Add(_mapper.Map<TradeViewDto>(item));
             //}
 
-            var tradeDetails = await _tradeViewGenericRepository.GetAllTradeViewsByPageIndex(1, 2);
+            var tradeDetails = await _tradeViewGenericRepository.GetAllTradeViewsByPageIndex(1, 10000);
             if (tradeDetails == null)
                 return NotFound();
             foreach (var item in tradeDetails)

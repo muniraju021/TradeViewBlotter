@@ -21,6 +21,11 @@ namespace DataAccess.Repository.RepositoryEF.IRepositoryEF
             _db.SaveChanges();
         }
 
+        public async Task MergeTradeView(ICollection<TradeView> lstTradeViews)
+        {
+            _db.BulkMerge(lstTradeViews, options => options.ColumnPrimaryKeyExpression = c => c.TradeId);
+        }
+
         public ICollection<TradeView> GetTradeViews()
         {
             return _db.TradeViews.OrderByDescending(i => i.TradeTime).ToList();

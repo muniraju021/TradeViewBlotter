@@ -11,5 +11,7 @@ namespace DataAccess.Repository.RepositoryEF.IRepositoryEF
         ICollection<TradeView> GetTradeViews();
 
         Task AddTradeView(ICollection<TradeView> lstTradeViews);
+
+        Task MergeTradeView(ICollection<TradeView> lstTradeViews);
     }
 }
