@@ -8,6 +8,10 @@ namespace DataAccess.Repository.Repositories
 {
     public interface ITradeViewGenericRepository
     {
-        Task<IEnumerable<TradeView>> GetAllTradeViewsByPageIndex(int pageIndex, int pageSize);       
+        Task<IEnumerable<TradeView>> GetAllTradeViewsByPageIndex();
+        Task<List<string>> GetClientCodesByGroupName(string groupName);
+        Task<List<string>> GetClientCodesByDealerCode(string groupName);
+
+        Task<IEnumerable<TradeView>> GetAllTradeViewsByClientCodes(List<string> clientCodes);
     }
 }

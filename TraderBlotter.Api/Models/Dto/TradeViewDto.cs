@@ -35,7 +35,6 @@ namespace TraderBlotter.Api.Models.Dto
         public double Currency1 { get; set; }
         public double Currency2 { get; set; }
         public double Currency3 { get; set; }
-        public string MarketType { get; set; }
         public string ClientCode { get; set; }
         public string Source { get; set; }
         public string TradeModifyFlag { get; set; }

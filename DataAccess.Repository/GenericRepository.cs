@@ -62,5 +62,14 @@ namespace DataAccess.Repository
         {
             throw new NotImplementedException();
         }
+
+        public async Task<IEnumerable<T>> GetAllEntityAsync<T>(string spName, object parameters = null, CommandType cmdType = CommandType.Text, string connectionName = null)
+        {
+            using (var con = GetDbConnection(connectionName))
+            {
+                var res = await con.QueryAsync<T>(spName, param: parameters, commandType: cmdType);
+                return res;
+            }
+        }
     }
 }

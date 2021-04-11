@@ -35,8 +35,7 @@ namespace DataAccess.Repository.Data
         public string ExchangeOrderId { get; set; }
         public string LotSize { get; set; }
         public string ExchangeName { get; set; }
-        public string ParticipantId { get; set; }        
-        public string MarketType { get; set; }
+        public string ParticipantId { get; set; }    
         public string ClientCode { get; set; }
         public string Source { get; set; }
         public string TradeModifyFlag { get; set; }

@@ -5,6 +5,7 @@ using DataAccess.Repository;
 using DataAccess.Repository.Data;
 using DataAccess.Repository.Infrastructure;
 using DataAccess.Repository.Repositories;
+using DataAccess.Repository.RepositoryEF;
 using DataAccess.Repository.RepositoryEF.IRepositoryEF;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -14,6 +15,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using TraderBlotter.Api.Models.Mapper;
@@ -37,6 +39,8 @@ namespace TraderBlotter.Api
                         mySqlOptions => mySqlOptions.CharSetBehavior(CharSetBehavior.NeverAppend)));
             services.AddControllers();
             services.AddScoped<ITradeViewRepository, TradeViewRepository>();
+            services.AddScoped<IUserViewRepository, UserViewRepository>();
+            services.AddScoped<IRoleViewRepository, RolesViewRepository>();
             services.AddScoped<IConnectionFactory, ConnectionFactory>();
             //services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<object>));
             services.AddScoped<IGenericRepository<TradeView>, GenericRepository<TradeView>>();
@@ -79,8 +83,10 @@ namespace TraderBlotter.Api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
         {
+            loggerFactory.AddLog4Net();
+
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -107,6 +113,7 @@ namespace TraderBlotter.Api
             {
                 endpoints.MapControllers();
             });
+
         }
     }
 }

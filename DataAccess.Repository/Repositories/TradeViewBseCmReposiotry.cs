@@ -37,7 +37,7 @@ namespace DataAccess.Repository.Repositories
         public async Task LoadTradeviewFromSource()
         {
             var query = $"SELECT FillId,UserId,ExchUser,BranchId,mnmLocationId,Symbol,SymbolName,PriceType,TransactionType,FillPrice,FillSize,FillTime,FillDate,ExchangeTime,ExchOrdId,ExecutingBroker," +
-                $"ExchAccountId,Source,ReportType FROM bse_cm order by FillTime desc";
+                $"ExchAccountId,Source,ReportType FROM BSE_CM order by FillTime desc";
 
             List<TradeViewBseCm> resultSet = new List<TradeViewBseCm>();
             using(var reader = await _tradeViewBseCmRepo.GetDataReaderAsync(query,connectionName: _connectionName))

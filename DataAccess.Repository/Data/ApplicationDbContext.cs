@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using DataAccess.Repository.Data;
+using DataAccess.Repository.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataAccess.Repository.Data
@@ -15,5 +16,10 @@ namespace DataAccess.Repository.Data
         }
 
         public DbSet<TradeView> TradeViews { get; set; }
+
+        public DbSet<UserView> UserViews { get; set; }
+
+        public DbSet<RoleView> RoleViews { get; set; }
+
     }
 }
