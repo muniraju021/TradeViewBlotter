@@ -9,7 +9,7 @@ export class BlotterService {
     constructor(private http: HttpClient) { }
 
     getAllTrades(): Observable<any> {
-        return this.http.get<any>(`${environment.apiUrl}/v1/TradeView/getAllTrades`)
+        return this.http.get<any>(`${environment.apiUrl}/v1/TradeView/getAllTrades?userName=dealeruser`)
             .pipe(map((response: Response) => {
                 return response;
             }));

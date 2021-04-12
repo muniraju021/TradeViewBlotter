@@ -5,7 +5,8 @@ import { delay, mergeMap, materialize, dematerialize, finalize } from 'rxjs/oper
 
 import { User } from '../models/user';
 
-const users: User[] = [{ id: 1, username: 'test', password: 'test', firstName: 'test', lastName: 'user' }];
+const users: User[] = [{ id: 1, username: 'dealeruser', password: 'test', firstName: 'dealeruser', lastName: '' }];
+
 
 @Injectable()
 export class FakeBackendInterceptor implements HttpInterceptor {
@@ -35,7 +36,7 @@ export class FakeBackendInterceptor implements HttpInterceptor {
 
         function authenticate() {
             const { username, password } = body;
-            const user = users.find(x => x.username === username && x.password === password);
+            const user = users.find(x => x.username.toUpperCase() === username.toUpperCase() && x.password === password);
             if (!user) return error('Username or password is incorrect');
             return ok({
                 id: user.id,
@@ -65,7 +66,10 @@ export class FakeBackendInterceptor implements HttpInterceptor {
         }
 
         function isLoggedIn() {
-            return headers.get('Authorization') === `Basic ${window.btoa('test:test')}`;
+            // const { username, password } = body;
+            // let s : string = `${username}:'test'`;
+            // return headers.get('Authorization') === `Basic ${window.btoa(s)}`;
+            return headers.get('Authorization') === `Basic ${window.btoa('dealeruser:test')}`;
         }
     }
 }
