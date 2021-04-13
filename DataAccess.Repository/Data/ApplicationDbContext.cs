@@ -21,5 +21,11 @@ namespace DataAccess.Repository.Data
 
         public DbSet<RoleView> RoleViews { get; set; }
 
+        public DbSet<GroupView> GroupViews { get; set; }
+
+        public DbSet<DealerView> DealerViews { get; set; }
+
+        public DbSet<ClientView> ClientViews { get; set; }
+
     }
 }

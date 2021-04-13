@@ -31,7 +31,7 @@ namespace DataAccess.Repository.Data
         public string TradeQty { get; set; }
         public string TradeTime { get; set; }
         public string TradeDate { get; set; }
-        public DateTime ExchangeTime { get; set; }
+        public string ExchangeTime { get; set; }
         public string ExchangeOrderId { get; set; }
         public string LotSize { get; set; }
         public string ExchangeName { get; set; }

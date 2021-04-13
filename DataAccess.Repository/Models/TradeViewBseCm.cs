@@ -48,7 +48,7 @@ namespace DataAccess.Repository.Models
         public string FillDate { get; set; }
 
         [MapTo(nameof(TradeView.ExchangeTime))]
-        public DateTime ExchangeTime { get; set; }
+        public string ExchangeTime { get; set; }
 
         [MapTo(nameof(TradeView.ExchangeOrderId))]
         public string ExchOrdId { get; set; }

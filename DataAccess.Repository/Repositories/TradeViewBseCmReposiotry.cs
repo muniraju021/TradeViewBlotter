@@ -65,6 +65,14 @@ namespace DataAccess.Repository.Repositories
                     i.StockName = i.SymbolName;
                     i.ProClient = i.ClientCode == ClientCode ? "PRO" : "CLI";
                     i.ExchangeName = ExchangeName;
+                    if (i.OrderType == "L")
+                        i.OrderType = "LMT";
+                    else if (i.OrderType == "M")
+                        i.OrderType = "MKT";
+                    else if (i.OrderType == "SL")
+                        i.OrderType = "SL";
+                    else if (i.OrderType == "SL-M")
+                        i.OrderType = "SL-MKT";
                     return i; 
                 }
             ).ToList();

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using DataAccess.Repository.Data;
 using DataAccess.Repository.Models;
+using MySqlX.XDevAPI.CRUD;
 using TraderBlotter.Api.Models.Dto;
 
 namespace TraderBlotter.Api.Models.Mapper
@@ -11,6 +12,7 @@ namespace TraderBlotter.Api.Models.Mapper
         {
             CreateMap<TradeView, TradeViewDto>().ReverseMap();
             CreateMap<TradeViewBseCm, TradeView>();
+            CreateMap<UserView, UserDto>().ReverseMap();
         }
     }
 }
