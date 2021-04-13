@@ -93,8 +93,14 @@ namespace TraderBlotter.Api.Controllers
 
                     if (!_roleViewRepository.GetRoles().Select(i => i.RoleId).Contains(userView.RoleId))
                         return StatusCode(400, new ErrorModel { Message = "Invalid Role", HttpStatusCode = 400 });
+                    if(!string.IsNullOrWhiteSpace(userView.ClientCode) && !_userViewRepository.GetClientViews().Select(i => i.ClientCode).Contains(userView.ClientCode))
+                        return StatusCode(400, new ErrorModel { Message = "Invalid ClientCode", HttpStatusCode = 400 });
+                    if (!string.IsNullOrWhiteSpace(userView.GroupName) && !_userViewRepository.GetGroups().Select(i => i.GroupName).Contains(userView.GroupName))
+                        return StatusCode(400, new ErrorModel { Message = "Invalid GroupCode", HttpStatusCode = 400 });
+                    if (!string.IsNullOrWhiteSpace(userView.DealerCode) && !_userViewRepository.GetDealers().Select(i => i.DealerCode).Contains(userView.DealerCode))
+                        return StatusCode(400, new ErrorModel { Message = "Invalid DealerCode", HttpStatusCode = 400 });
 
-                    await _userViewRepository.AddUserAsync(userView)
+                    await _userViewRepository.AddUserAsync(userView);
                     return Ok();
                 }
                 else
@@ -118,6 +124,15 @@ namespace TraderBlotter.Api.Controllers
                     userView.ClientCode = string.IsNullOrWhiteSpace(userView.ClientCode) ? null : userView.ClientCode;
                     userView.GroupName = string.IsNullOrWhiteSpace(userView.GroupName) ? null : userView.GroupName;
                     userView.DealerCode = string.IsNullOrWhiteSpace(userView.DealerCode) ? null : userView.DealerCode;
+
+                    if (!_roleViewRepository.GetRoles().Select(i => i.RoleId).Contains(userView.RoleId))
+                        return StatusCode(400, new ErrorModel { Message = "Invalid Role", HttpStatusCode = 400 });
+                    if (!string.IsNullOrWhiteSpace(userView.ClientCode) && !_userViewRepository.GetClientViews().Select(i => i.ClientCode).Contains(userView.ClientCode))
+                        return StatusCode(400, new ErrorModel { Message = "Invalid ClientCode", HttpStatusCode = 400 });
+                    if (!string.IsNullOrWhiteSpace(userView.GroupName) && !_userViewRepository.GetGroups().Select(i => i.GroupName).Contains(userView.GroupName))
+                        return StatusCode(400, new ErrorModel { Message = "Invalid GroupCode", HttpStatusCode = 400 });
+                    if (!string.IsNullOrWhiteSpace(userView.DealerCode) && !_userViewRepository.GetDealers().Select(i => i.DealerCode).Contains(userView.DealerCode))
+                        return StatusCode(400, new ErrorModel { Message = "Invalid DealerCode", HttpStatusCode = 400 });
 
                     _userViewRepository.UpdateUserAsync(userView);
                     return Ok();
