@@ -1,29 +1,57 @@
+<div class="parentDiv">
 
-<div *ngIf="loading" class="spinner-border spinner-border-sm" ></div>
-<input type="text" style="margin-top: 10px" id="filter-text-box" placeholder="Search..." (change)="onFilterTextBoxChanged()">
-<div style="margin-top:15px; float: right">
-<ul *ngIf="users" >
-   <h6> 
-       <li *ngFor="let user of users">{{user.firstName}} {{user.lastName}}</li>
-    </h6>
-</ul>    
+    <div class="form-row" style="margin-top: 10px">
+        <div class="form-group col-md-3">
+            <div *ngIf="loading" class="spinner-border spinner-border-sm"></div>
+            <input type="text" style="margin-top: 5px" id="filter-text-box" placeholder="Search..." (change)="onFilterTextBoxChanged()">
+        </div>
+        <div class="form-group col-md-1">
+            <label class="label" for="buyValue"> Buy Value(BV) </label>
+            <input type="text" readonly class="form-control-plaintext label-text" [(ngModel)]='buyValue' id="buyValue">
+        </div>
+        <div class="form-group col-md-1">
+            <label class="label" for="sellValue"> Sell Value(SV) </label>
+            <input type="text" readonly class="form-control-plaintext label-text" id="sellValue" [(ngModel)]='sellValue'>
+        </div>
+        <div class="form-group col-md-1">
+            <label class="label" for="buyQty"> Buy Qty(BQ) </label>
+            <input type="text" readonly class="form-control-plaintext label-text" id="buyQty" [(ngModel)]='buyQty'>
+        </div>
+        <div class="form-group col-md-1">
+            <label class="label" for="sellQty"> Sell Qty(SQ) </label>
+            <input type="text" readonly class="form-control-plaintext label-text" id="sellQty" [(ngModel)]='sellQty'>
+        </div>
+        <div class="form-group col-md-1">
+            <label class="label" for="avgPriceBuy"> Buy Average Price(BA) </label>
+            <input type="text" readonly class="form-control-plaintext label-text" id="avgPriceBuy" [(ngModel)]='avgPriceBuy'>
+        </div>
+        <div class="form-group col-md-1" >
+            <label class="label" for="avgPriceSell"> Sell Average Price(SA) </label>
+            <input type="text" readonly class="form-control-plaintext label-text" id="avgPriceSell" [(ngModel)]='avgPriceSell'>
+        </div>
+        <div class="form-group col-md-1" >
+            <label class="label" for="totalNetQty"> Total Net Qty </label>
+            <input type="text" readonly class="form-control-plaintext label-text" id="totalNetQty"  [(ngModel)]='totalNetQty'>
+        </div>
+        
+        <div class="form-group col-md-2">
+            <div style="float: right">
+                <ul *ngIf="users">
+                    <h6>
+                        <li *ngFor="let user of users">{{user.firstName}} {{user.lastName}}</li>
+                    </h6>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="card mt-4" style="box-sizing: border-box;margin: -5px !important">
+        <ag-grid-angular [gridOptions]="gridOptions" style="height: 80vh" cellStyle="textAlign: right" class="ag-theme-alpine" [rowData]="rowData "
+            [columnDefs]="columnDefs" [defaultColDef]="defaultColDef" [rowHeight]="rowHeight" [pagination]=true [paginationPageSize]=100
+            (gridReady)="onGridReady($event)" (firstDataRendered)="onFirstDataRendered($event)" (filterChanged)="onFilterChanged($event)">
+        </ag-grid-angular>
+    </div>
+    <br/>
 </div>
-<br/>
-
-<div class="card mt-4">
-    <ag-grid-angular
-    [gridOptions]="gridOptions"
-    style="width: 100%; height: 800px;"
-    class="ag-theme-alpine "
-    [rowData]="rowData "
-    [columnDefs]="columnDefs"
-    [defaultColDef]="defaultColDef"
-    [rowHeight]="rowHeight"   
-    [pagination]=true
-    [paginationPageSize]= 35    
-    (gridReady)="onGridReady($event)"                   
-    (firstDataRendered)="onFirstDataRendered($event)"
-    >
-</ag-grid-angular>
-</div>
-

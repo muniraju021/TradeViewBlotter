@@ -10,6 +10,12 @@
 
 
 .ag-theme-alpine .ag-row {
-    font-size:10px;
-    font-weight: 500;
+    font-size: 10px !important;
+    font-family: 'Open Sans';
 }
+
+.ag-row .ag-cell {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
