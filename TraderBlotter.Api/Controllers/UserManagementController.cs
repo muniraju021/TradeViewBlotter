@@ -108,7 +108,7 @@ namespace TraderBlotter.Api.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new ErrorModel { Message = ex.Message, HttpStatusCode = 500 }); ;
+                return StatusCode(500, new ErrorModel { Message = ex.Message, HttpStatusCode = 500 });
             }
             
         }
@@ -125,7 +125,7 @@ namespace TraderBlotter.Api.Controllers
                     userView.GroupName = string.IsNullOrWhiteSpace(userView.GroupName) ? null : userView.GroupName;
                     userView.DealerCode = string.IsNullOrWhiteSpace(userView.DealerCode) ? null : userView.DealerCode;
 
-                    if (!_roleViewRepository.GetRoles().Select(i => i.RoleId).Contains(userView.RoleId))
+                    if (!string.IsNullOrWhiteSpace(userView.ClientCode) && !_roleViewRepository.GetRoles().Select(i => i.RoleId).Contains(userView.RoleId))
                         return StatusCode(400, new ErrorModel { Message = "Invalid Role", HttpStatusCode = 400 });
                     if (!string.IsNullOrWhiteSpace(userView.ClientCode) && !_userViewRepository.GetClientViews().Select(i => i.ClientCode).Contains(userView.ClientCode))
                         return StatusCode(400, new ErrorModel { Message = "Invalid ClientCode", HttpStatusCode = 400 });
@@ -142,9 +142,30 @@ namespace TraderBlotter.Api.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new ErrorModel { Message = ex.Message, HttpStatusCode = 500, ExceptionObj = ex }); ;
+                return StatusCode(500, new ErrorModel { Message = ex.Message, HttpStatusCode = 500}); ;
             }
 
+        }
+
+        [HttpPost]
+        [Route("deleteUser")]
+        public IActionResult DeleteUserAsync([FromBody]UserView userview)
+        {
+            try
+            {
+                if (userview != null)
+                {
+                    
+                    _userViewRepository.DeleteUser(userview);
+                    return Ok();
+                }
+                else
+                    return StatusCode(400, new ErrorModel { Message = "Bad Parameter Passed", HttpStatusCode = 400 });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new ErrorModel { Message = ex.Message, HttpStatusCode = 500 }); ;
+            }
         }
     }
 }

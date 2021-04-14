@@ -17,5 +17,6 @@ namespace DataAccess.Repository.RepositoryEF.IRepositoryEF
         ICollection<ClientView> GetClientViews();
         Task AddUserAsync(UserView userView);
         void UpdateUserAsync(UserView userView);
+        void DeleteUser(UserView userView);
     }
 }

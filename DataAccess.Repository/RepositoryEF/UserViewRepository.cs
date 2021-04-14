@@ -1,9 +1,11 @@
 ﻿using DataAccess.Repository.Data;
 using DataAccess.Repository.Models;
 using DataAccess.Repository.RepositoryEF.IRepositoryEF;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -43,7 +45,7 @@ namespace DataAccess.Repository.RepositoryEF
             return _db.ClientViews.ToList();
         }
 
-        public UserView ValidateLogin(string loginName,string password)
+        public UserView ValidateLogin(string loginName, string password)
         {
             return _db.UserViews.Where(i => i.LoginName == loginName && i.Password == password && i.IsActive).FirstOrDefault();
         }
@@ -55,9 +57,20 @@ namespace DataAccess.Repository.RepositoryEF
         }
 
         public void UpdateUserAsync(UserView userView)
-        {
-             _db.UserViews.Update(userView);
+        {           
+            _db.UserViews.Update(userView);
             _db.SaveChanges();
+        }
+
+        public void DeleteUser(UserView userView)
+        {
+            var current = _db.UserViews.Find(userView.LoginName);
+            if(current != null)
+            {
+                current.IsActive = userView.IsActive;
+                _db.UserViews.Update(current);
+            }
+            int res = _db.SaveChanges();
         }
     }
 }
