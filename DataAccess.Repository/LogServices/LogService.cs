@@ -7,13 +7,13 @@ using System.Reflection;
 using System.Threading.Tasks;
 using System.Xml;
 
-namespace TraderBlotter.Api.Utilities
+namespace DataAccess.Repository.LogServices
 {
-    public class Logger 
+    public class LogService
     {
         private static readonly string LOG_CONFIG_FILE = @"log4net.config";
 
-        private static readonly log4net.ILog _log = GetLogger(typeof(Logger));
+        private static readonly log4net.ILog _log = GetLogger(typeof(LogService));
 
         public static ILog GetLogger(Type type)
         {

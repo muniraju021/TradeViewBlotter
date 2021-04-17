@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DataAccess.Repository.LogServices;
 using DataAccess.Repository.Repositories;
 using log4net;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +9,6 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using TraderBlotter.Api.Models.Dto;
-using TraderBlotter.Api.Utilities;
 
 namespace TraderBlotter.Api.Controllers
 {
@@ -19,7 +19,7 @@ namespace TraderBlotter.Api.Controllers
     {
         private readonly IMapper _mapper;
         private readonly ITradeViewBseCmRepository _tradeViewBseCmRepository;
-        private static ILog _log = Logger.GetLogger(typeof(TradeViewController));
+        private static ILog _log = LogService.GetLogger(typeof(TradeViewController));
 
         public LoadTradeViewController(IMapper mapper, ITradeViewBseCmRepository tradeViewBseCmRepository)
         {

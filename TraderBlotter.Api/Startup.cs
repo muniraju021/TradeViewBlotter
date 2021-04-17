@@ -1,6 +1,7 @@
 using System;
 using System.IO;
 using System.Reflection;
+using BatchManager.Services;
 using DataAccess.Repository;
 using DataAccess.Repository.Data;
 using DataAccess.Repository.Infrastructure;
@@ -47,6 +48,7 @@ namespace TraderBlotter.Api
             services.AddScoped<IGenericRepository<object>, GenericRepository<object>>();
             services.AddScoped<ITradeViewGenericRepository, TradeViewGenericRepository>();
             services.AddScoped<ITradeViewBseCmRepository, TradeViewBseCmReposiotry>();
+            services.AddScoped<ILoadTradeviewData, LoadTradeViewDataBseCm>();
             services.AddAutoMapper(typeof(TraderBlotterMappings));
 
             services.AddApiVersioning(x =>

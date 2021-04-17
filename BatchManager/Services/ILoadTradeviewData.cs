@@ -7,6 +7,6 @@ namespace BatchManager.Services
 {
     public interface ILoadTradeviewData
     {
-        Task LoadNseCmDataFromSourceDb();
+        Task LoadBseCmDataFromSourceDb();
     }
 }

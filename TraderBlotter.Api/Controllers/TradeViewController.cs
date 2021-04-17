@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using DataAccess.Repository.Data;
+using DataAccess.Repository.LogServices;
 using DataAccess.Repository.Repositories;
 using DataAccess.Repository.RepositoryEF.IRepositoryEF;
 using log4net;
@@ -26,7 +27,7 @@ namespace TraderBlotter.Api.Controllers
         private readonly ITradeViewGenericRepository _tradeViewGenericRepository;
         private readonly IUserViewRepository _userViewRepository;
         private readonly IRoleViewRepository _roleViewRepository;
-        private static ILog _log = Logger.GetLogger(typeof(TradeViewController));
+        private static ILog _log = LogService.GetLogger(typeof(TradeViewController));
 
         public TradeViewController(IMapper mapper, ITradeViewRepository tradeViewRepository, ITradeViewGenericRepository tradeViewGenericRepository
             , IUserViewRepository userViewRepository, IRoleViewRepository roleViewRepository)

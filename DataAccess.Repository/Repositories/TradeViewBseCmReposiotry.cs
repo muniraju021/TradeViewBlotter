@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
 using DataAccess.Repository.Data;
+using DataAccess.Repository.LogServices;
 using DataAccess.Repository.Models;
 using DataAccess.Repository.RepositoryEF.IRepositoryEF;
+using log4net;
 using Microsoft.Extensions.Configuration;
 using MySqlX.XDevAPI.Common;
 using Newtonsoft.Json;
@@ -25,8 +27,10 @@ namespace DataAccess.Repository.Repositories
         private readonly string BrokerId = "3107";
         private readonly string ClientCode = "12562";
         private readonly string ExchangeName = "BSE_CM";
+        private static ILog _log = LogService.GetLogger(typeof(TradeViewBseCmReposiotry));
 
-        public TradeViewBseCmReposiotry(IGenericRepository<object> tradeViewBseCmRepo, ITradeViewGenericRepository tradeViewRepo, ITradeViewRepository tradeViewRepositoryEf, IMapper mapper)
+        public TradeViewBseCmReposiotry(IGenericRepository<object> tradeViewBseCmRepo, ITradeViewGenericRepository tradeViewRepo,
+            ITradeViewRepository tradeViewRepositoryEf, IMapper mapper)
         {
             _tradeViewBseCmRepo = tradeViewBseCmRepo;
             _tradeViewRepo = tradeViewRepo;
@@ -34,15 +38,31 @@ namespace DataAccess.Repository.Repositories
             _mapper = mapper;
         }
 
-        public async Task LoadTradeviewFromSource()
+        public async Task LoadTradeviewFromSource(bool isDeltaLoadRequested = false)
         {
-            var query = $"SELECT FillId,UserId,ExchUser,BranchId,mnmLocationId,Symbol,SymbolName,PriceType,TransactionType,FillPrice,FillSize,FillTime,FillDate,ExchangeTime,ExchOrdId,ExecutingBroker," +
-                $"ExchAccountId,Source,ReportType FROM BSE_CM order by FillTime desc";
+            var whereCond = $" where TradeDateTime >= '{0}' and TradeDateTime <= '{1}' ";
+            string query = string.Empty;
+
+            if (isDeltaLoadRequested)
+            {               
+                var dtInputFrom = DateTime.Now.AddMinutes(-2).ToString("dd MMM yyyy HH:mm:00");
+                var dtInputTill = DateTime.Now.ToString("dd MMM yyyy HH:mm:00");
+                whereCond = string.Format(whereCond, dtInputFrom, dtInputTill);
+                query = string.Format($"SELECT FillId,UserId,ExchUser,BranchId,mnmLocationId,Symbol,SymbolName,PriceType,TransactionType,FillPrice,FillSize,FillTime,FillDate,ExchangeTime,ExchOrdId,ExecutingBroker," +
+                                        $"ExchAccountId,Source,ReportType FROM BSE_CM {0} order by FillTime desc", whereCond);
+
+                _log.Info($"BseCM Data requested from '{dtInputFrom}' till '{dtInputTill}'");
+            }
+            else
+            {
+                query = string.Format($"SELECT FillId,UserId,ExchUser,BranchId,mnmLocationId,Symbol,SymbolName,PriceType,TransactionType,FillPrice,FillSize,FillTime,FillDate,ExchangeTime,ExchOrdId,ExecutingBroker," +
+                                        $"ExchAccountId,Source,ReportType FROM BSE_CM {0} order by FillTime desc", string.Empty);
+            }
 
             List<TradeViewBseCm> resultSet = new List<TradeViewBseCm>();
-            using(var reader = await _tradeViewBseCmRepo.GetDataReaderAsync(query,connectionName: _connectionName))
+            using (var reader = await _tradeViewBseCmRepo.GetDataReaderAsync(query, connectionName: _connectionName))
             {
-                var colNames = reader.GetColumnNames();                
+                var colNames = reader.GetColumnNames();
                 while (reader.Read())
                 {
                     var dt = new Dictionary<string, string>();
@@ -51,15 +71,15 @@ namespace DataAccess.Repository.Repositories
                         dt.Add(item, reader[item].ToString());
                     }
                     resultSet.Add(JsonConvert.DeserializeObject<TradeViewBseCm>(JsonConvert.SerializeObject(dt)));
-                }                
+                }
             }
-            
+
             var output = new List<TradeView>();
             foreach (var item in resultSet)
                 output.Add(_mapper.Map<TradeView>(item));
 
-            output = output.Select(i => 
-                { 
+            output = output.Select(i =>
+                {
                     i.LotSize = LotSize;
                     i.BrokerId = BrokerId;
                     i.StockName = i.SymbolName;
@@ -73,7 +93,7 @@ namespace DataAccess.Repository.Repositories
                         i.OrderType = "SL";
                     else if (i.OrderType == "SL-M")
                         i.OrderType = "SL-MKT";
-                    return i; 
+                    return i;
                 }
             ).ToList();
 
@@ -86,6 +106,11 @@ namespace DataAccess.Repository.Repositories
             await _tradeViewRepositoryEf.MergeTradeView(output.ToCollection<TradeView>());
 
             return;
+        }
+
+        public static void SyncTradeViewDataFromSource()
+        {
+
         }
 
     }

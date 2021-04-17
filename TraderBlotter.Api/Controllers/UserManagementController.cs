@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using DataAccess.Repository.LogServices;
 using DataAccess.Repository.Models;
 using DataAccess.Repository.RepositoryEF.IRepositoryEF;
 using log4net;
@@ -20,7 +21,7 @@ namespace TraderBlotter.Api.Controllers
         private readonly IUserViewRepository _userViewRepository;
         private readonly IRoleViewRepository _roleViewRepository;
         private readonly IMapper _mapper;
-        private static ILog _log = Logger.GetLogger(typeof(UserManagementController));
+        private static ILog _log = LogService.GetLogger(typeof(UserManagementController));
 
         public UserManagementController(IUserViewRepository userViewRepository, IRoleViewRepository roleViewRepository, IMapper mapper)
         {
@@ -41,9 +42,9 @@ namespace TraderBlotter.Api.Controllers
             catch (Exception ex)
             {
                 _log.Error($"Error in GetRoles - ", ex);
-                return StatusCode(500, new ErrorModel { HttpStatusCode = 500,Message = "Internal Server Error" });
+                return StatusCode(500, new ErrorModel { HttpStatusCode = 500, Message = "Internal Server Error" });
             }
-            
+
         }
 
         [HttpPost]
@@ -57,6 +58,8 @@ namespace TraderBlotter.Api.Controllers
             var userDto = _mapper.Map<UserDto>(user);
             return Ok(userDto);
         }
+
+
 
         [HttpGet]
         [Route("getDealers")]
@@ -81,19 +84,35 @@ namespace TraderBlotter.Api.Controllers
 
         [HttpPost]
         [Route("addUser")]
-        public async Task<IActionResult> AddUserAsync([FromBody]UserView userView)
+        public async Task<IActionResult> AddUserAsync([FromBody]UserRequestDto userRequest)
         {
             try
             {
-                if (userView != null)
+                if (userRequest != null)
                 {
-                    userView.ClientCode = string.IsNullOrWhiteSpace(userView.ClientCode) ? null : userView.ClientCode;
-                    userView.GroupName = string.IsNullOrWhiteSpace(userView.GroupName) ? null : userView.GroupName;
-                    userView.DealerCode = string.IsNullOrWhiteSpace(userView.DealerCode) ? null : userView.DealerCode;
+                    var userView = new UserView
+                    {
+                        LoginName = userRequest.LoginName,
+                        Password = userRequest.Password,
+                        EmailId = userRequest.EmailId
+                    };
 
-                    if (!_roleViewRepository.GetRoles().Select(i => i.RoleId).Contains(userView.RoleId))
+                    var roleId = _roleViewRepository.GetRoles().Where(i => i.RoleName == userRequest.RoleName)?.Select(j => j.RoleId).FirstOrDefault();
+                    if (roleId == null || roleId == 0)
                         return StatusCode(400, new ErrorModel { Message = "Invalid Role", HttpStatusCode = 400 });
-                    if(!string.IsNullOrWhiteSpace(userView.ClientCode) && !_userViewRepository.GetClientViews().Select(i => i.ClientCode).Contains(userView.ClientCode))
+                    userView.RoleId = roleId.Value;
+
+                    if (!string.IsNullOrWhiteSpace(userRequest.UserCode))
+                    {
+                        if (userRequest.RoleName == Roles.GroupUser.ToString())
+                            userView.GroupName = userRequest.UserCode;
+                        else if (userRequest.RoleName == Roles.Dealer.ToString())
+                            userView.DealerCode = userRequest.UserCode;
+                        else if (userRequest.RoleName == Roles.Client.ToString())
+                            userView.ClientCode = userRequest.UserCode;
+                    }
+                                        
+                    if (!string.IsNullOrWhiteSpace(userView.ClientCode) && !_userViewRepository.GetClientViews().Select(i => i.ClientCode).Contains(userView.ClientCode))
                         return StatusCode(400, new ErrorModel { Message = "Invalid ClientCode", HttpStatusCode = 400 });
                     if (!string.IsNullOrWhiteSpace(userView.GroupName) && !_userViewRepository.GetGroups().Select(i => i.GroupName).Contains(userView.GroupName))
                         return StatusCode(400, new ErrorModel { Message = "Invalid GroupCode", HttpStatusCode = 400 });
@@ -110,7 +129,6 @@ namespace TraderBlotter.Api.Controllers
             {
                 return StatusCode(500, new ErrorModel { Message = ex.Message, HttpStatusCode = 500 });
             }
-            
         }
 
         [HttpPost]
@@ -142,7 +160,7 @@ namespace TraderBlotter.Api.Controllers
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new ErrorModel { Message = ex.Message, HttpStatusCode = 500}); ;
+                return StatusCode(500, new ErrorModel { Message = ex.Message, HttpStatusCode = 500 }); ;
             }
 
         }
@@ -155,7 +173,7 @@ namespace TraderBlotter.Api.Controllers
             {
                 if (userview != null)
                 {
-                    
+
                     _userViewRepository.DeleteUser(userview);
                     return Ok();
                 }

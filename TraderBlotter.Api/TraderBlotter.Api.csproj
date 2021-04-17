@@ -38,6 +38,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BatchManager\BatchManager.csproj" />
     <ProjectReference Include="..\DataAccess.Repository\DataAccess.Repository.csproj" />
   </ItemGroup>
 

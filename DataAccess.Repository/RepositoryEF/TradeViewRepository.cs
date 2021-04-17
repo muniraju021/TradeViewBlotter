@@ -23,7 +23,7 @@ namespace DataAccess.Repository.RepositoryEF.IRepositoryEF
 
         public async Task MergeTradeView(ICollection<TradeView> lstTradeViews)
         {
-            _db.BulkMerge(lstTradeViews, options => options.ColumnPrimaryKeyExpression = c => c.TradeId);
+            _db.BulkMerge(lstTradeViews, options => options.ColumnPrimaryKeyExpression = c => new { c.TradeId,c.BuySell});
         }
 
         public ICollection<TradeView> GetTradeViews()

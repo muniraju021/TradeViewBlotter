@@ -8,6 +8,6 @@ namespace DataAccess.Repository.Repositories
 {
     public interface ITradeViewBseCmRepository
     {
-        Task LoadTradeviewFromSource();
+        Task LoadTradeviewFromSource(bool isDeltaLoadRequested = false);
     }
 }
