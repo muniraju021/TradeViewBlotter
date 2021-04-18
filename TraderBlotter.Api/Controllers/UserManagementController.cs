@@ -49,7 +49,7 @@ namespace TraderBlotter.Api.Controllers
 
         [HttpPost]
         [Route("validateLogin")]
-        public IActionResult ValidateLogin([FromBody]LoginRequestDto loginRequest)
+        public IActionResult ValidateLogin([FromBody] LoginRequestDto loginRequest)
         {
             var user = _userViewRepository.ValidateLogin(loginRequest.LoginName, loginRequest.Password);
             if (user == null)
@@ -82,9 +82,32 @@ namespace TraderBlotter.Api.Controllers
             return Ok(_userViewRepository.GetGroups());
         }
 
+        [HttpGet]
+        [Route("getUserCodes")]
+        public IActionResult GetUserCodes(string role)
+        {
+            var roleId = _roleViewRepository.GetRoles().Where(i => i.RoleName.ToUpper() == role.ToUpper())?.Select(j => j.RoleId).FirstOrDefault();
+            if (roleId == null || roleId == 0)
+                return StatusCode(400, new ErrorModel { Message = "Invalid Role", HttpStatusCode = 400 });
+
+            switch (roleId)
+            {
+                case (int)Roles.GroupUser:
+                    return Ok(_userViewRepository.GetGroups());
+                case (int)Roles.Dealer:
+                    return Ok(_userViewRepository.GetDealers());
+                case (int)Roles.Client:
+                    return Ok(_userViewRepository.GetClientViews());
+                default:
+                    return StatusCode(400, new ErrorModel { Message = "Invalid Role", HttpStatusCode = 400 });
+            }
+
+        }
+
+
         [HttpPost]
         [Route("addUser")]
-        public async Task<IActionResult> AddUserAsync([FromBody]UserRequestDto userRequest)
+        public async Task<IActionResult> AddUserAsync([FromBody] UserRequestDto userRequest)
         {
             try
             {
@@ -111,7 +134,7 @@ namespace TraderBlotter.Api.Controllers
                         else if (userRequest.RoleName == Roles.Client.ToString())
                             userView.ClientCode = userRequest.UserCode;
                     }
-                                        
+
                     if (!string.IsNullOrWhiteSpace(userView.ClientCode) && !_userViewRepository.GetClientViews().Select(i => i.ClientCode).Contains(userView.ClientCode))
                         return StatusCode(400, new ErrorModel { Message = "Invalid ClientCode", HttpStatusCode = 400 });
                     if (!string.IsNullOrWhiteSpace(userView.GroupName) && !_userViewRepository.GetGroups().Select(i => i.GroupName).Contains(userView.GroupName))
@@ -133,7 +156,7 @@ namespace TraderBlotter.Api.Controllers
 
         [HttpPost]
         [Route("updateUser")]
-        public IActionResult UpdateUserAsync([FromBody]UserView userView)
+        public IActionResult UpdateUserAsync([FromBody] UserView userView)
         {
             try
             {
@@ -167,7 +190,7 @@ namespace TraderBlotter.Api.Controllers
 
         [HttpPost]
         [Route("deleteUser")]
-        public IActionResult DeleteUserAsync([FromBody]UserView userview)
+        public IActionResult DeleteUserAsync([FromBody] UserView userview)
         {
             try
             {

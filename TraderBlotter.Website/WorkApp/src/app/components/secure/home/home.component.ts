@@ -10,6 +10,7 @@ import { Observable } from 'rxjs/internal/Observable';
 import { GridOptions, RowNode } from 'ag-grid-community';
 import { DOCUMENT } from '@angular/common';
 import { element } from 'protractor';
+import { single } from 'rxjs/internal/operators/single';
 
 @Component({ templateUrl: 'home.component.html', styleUrls: ['./home.component.scss'] })
 export class HomeComponent {
@@ -20,11 +21,15 @@ export class HomeComponent {
     avgPriceBuy: string = '';
     avgPriceSell: string = '';
     totalNetQty: string = '';
+    rowSelection: string = '';
+    rowHeight: number;
+    headerHeight: number;
     private gridApi;
     private gridColumnApi;
     public gridOptions: GridOptions;
     loading = false;
     users: User[];
+    user:string = '';
     rowData: any[];
     columnDefs = [
         { field: 'tradeViewId', headerName: 'Blotter ID' },
@@ -43,7 +48,7 @@ export class HomeComponent {
         { field: 'orderType' },
         { field: 'tokenNo' },
         { field: 'exchangeName', headerName: 'Exch Name' },
-        { field: 'brokerId' },       
+        { field: 'brokerId' },
         { field: 'userId' },//dealer id
         { field: 'exchangeUser', headerName: 'CTCL ID' },
         { field: 'branchId' },
@@ -51,23 +56,32 @@ export class HomeComponent {
         { field: 'nNFCode' },
         { field: 'lotSize' },
         { field: 'participantId' },
-        { field: 'clientCode' },        
-        { field: 'source', headerName:'Data Source' },
+        { field: 'clientCode' },
+        { field: 'source', headerName: 'Data Source' },
         { field: 'tradeModifyFlag', headerName: 'Trade Modified' }
     ];
 
     defaultColDef = {
         resizable: true,
         sortable: true,
-        filter: true,
-        //maxWidth : 95,
+        filter: true
     };
 
-    rowHeight = 28;
-
     constructor(private userService: UserService, private http: HttpClient, private blotterService: BlotterService) {
+        // this.rowSelection = 'multiple';
+        this.rowHeight = 28;
+       
     }
 
+    getRowStyle(params) {
+        if (params.data.buySell === 'B') {
+            return { 'background-color': '#c0c0c0' }
+        }
+        if (params.data.buySell === 'S') {
+            return { 'background-color': '	#d3d3d3' }
+        }
+        return null;
+    }
 
     onFirstDataRendered(params) {
         this.gridApi = params.api;
@@ -97,11 +111,13 @@ export class HomeComponent {
 
     ngOnInit() {
 
-        this.loading = true;
-        this.userService.getAll().pipe(first()).subscribe(users => {
-            this.loading = false;
-            this.users = users;
-        });
+        // this.loading = true;
+        // this.userService.getAll().pipe(first()).subscribe(users => {
+        //     this.loading = false;
+        //     this.users = users;
+        // });
+
+        this.user = JSON.parse(localStorage.getItem('currentUser'))["emailId"];
 
         this.blotterService.getAllTrades().subscribe(
             (data) => {
@@ -172,11 +188,11 @@ export class HomeComponent {
         let averageBuy: number = 0;
         let averageSell: number = 0;
 
-        if(this.buyValue && this.buyQty)
-        averageBuy = Number(this.buyValue) / Number(this.buyQty);
+        if (this.buyValue && this.buyQty)
+            averageBuy = Number(this.buyValue) / Number(this.buyQty);
 
-        if(this.sellValue && this.sellQty)
-        averageSell = Number(this.sellValue) / Number(this.sellQty);
+        if (this.sellValue && this.sellQty)
+            averageSell = Number(this.sellValue) / Number(this.sellQty);
 
         if (averageBuy)
             this.avgPriceBuy = `${averageBuy.toFixed(2)}`;

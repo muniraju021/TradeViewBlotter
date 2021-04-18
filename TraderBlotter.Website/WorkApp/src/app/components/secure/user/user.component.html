@@ -1,0 +1,76 @@
+<div class="parentDiv offset-md-1 mt-3">
+    <div class="card  cardDiv">
+        <div class="card-header">
+            Create User
+        </div>
+        <div class="card-body">
+            <form [formGroup]="userForm" (ngSubmit)="CreateUser()">
+                <div class="form-group col-md-10">
+                    <label for="loginname">
+                        Login Name
+                    </label>
+                    <input type="text" class="form-control" formControlName="loginname" [ngClass]="{ 'is-invalid': submitted && f.loginname.errors }"
+                        placeholder="Username">
+                    <div *ngIf="submitted && f.loginname.errors" class="invalid-feedback">
+                        <div *ngIf="f.loginname.errors.required">Username is required</div>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-10">
+                    <label for="password">
+                        Password
+                    </label>
+                    <input type="password" class="form-control" formControlName="password" [ngClass]="{ 'is-invalid': submitted && f.password.errors }"
+                        placeholder="Password">
+                    <span *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                        <span *ngIf="f.password.errors.required">Password is required</span>
+                    </span>
+                </div>
+
+                <div class="form-group col-md-10">
+                    <label for="inputEmail">
+                        Email address
+                    </label>
+                    <input type="email" class="form-control" formControlName="inputEmail" [ngClass]="{ 'is-invalid': submitted && f.inputEmail.errors }"
+                        aria-describedby="emailHelp" placeholder="Enter email">
+                    <div *ngIf="submitted && f.inputEmail.errors" class="invalid-feedback">
+                        <div *ngIf="f.inputEmail.errors.required && f.inputEmail.errors.email"> Email not valid.</div>
+                    </div>
+                </div>
+
+
+                <div class="form-group col-md-10">
+                    <label for="ddRole">User Role</label>
+                    <select #ddRole formcontrolname="ddRole" (change)='onRoleSelected(ddRole.value)' class="form-control">
+                        <option *ngFor="let role of userRoles" [value]="role">{{role}}</option>
+                    </select>
+                </div>
+
+                <div class="form-group col-md-10">
+                    <div *ngIf="userRole!='SuperAdmin'">
+                        <label for="ddCode">User Codes</label>
+                        <select #ddCode formcontrolname="ddCode" (change)='onCodeSelected(ddCode.value)' required class="form-control">
+                            <option *ngFor="let code of userCodes" [ngValue]="code">{{code}}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-6 offset-md-3 mt-4">
+                    <button type="submit" [disabled]="loading" style="width:175px" class="btn btn-primary">Create User</button>
+                </div>
+                <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
+                <div *ngIf="success" class="alert alert-danger mt-3 mb-0">{{success}}</div>
+            </form>
+        </div>
+    </div>
+    <br/>
+    <br/>
+    <div class="gridDiv">
+        <ag-grid-angular [gridOptions]="gridOptions" class="ag-theme-alpine grid" [rowData]="rowData" [columnDefs]="columnDefs" [defaultColDef]="defaultColDef"
+            [rowHeight]="rowHeight" [pagination]=true [paginationPageSize]=15 (gridReady)="onGridReady($event)" (firstDataRendered)="onFirstDataRendered($event)"
+            (filterChanged)="onFilterChanged($event)" (rowEditingStopped)="onRowEditingStopped($event)" (rowEditingStarted)="onRowEditingStarted($event)"
+            (cellClicked)="onCellClicked($event)" editType="fullRow" [suppressClickEdit]="true">
+        </ag-grid-angular>
+    </div>
+    <br/>
+</div>

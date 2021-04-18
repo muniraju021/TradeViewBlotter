@@ -1,8 +1,14 @@
 export class User {
-    id: number;
-    username: string;
-    password: string;
-    firstName: string;
-    lastName: string;
+    LoginName: string;
+    Password: string;
+    EmailId: string;
+    RoleName: string;
+    UserCode: string;
+    IsActive: boolean;
     authdata?: string;
+}
+
+export class UserRole {
+    RoleId: string;
+    RoleName: string;
 }

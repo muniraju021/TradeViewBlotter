@@ -10,14 +10,15 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BasicAuthInterceptor } from '../app/shared/common/basic-auth.interceptor';
 import { ErrorInterceptor } from '../app/shared/common/error.interceptor';
 // used to create fake backend
-import { fakeBackendProvider } from '../app/shared/common/fake-backend';
 import { AgGridModule } from 'ag-grid-angular';
+import { UserComponent } from './components/secure/user/user.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
-    HomeComponent
+    HomeComponent,
+    UserComponent
   ],
   imports: [
     HttpClientModule,
@@ -32,7 +33,7 @@ import { AgGridModule } from 'ag-grid-angular';
     { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
 
     // provider used to create fake backend
-    fakeBackendProvider
+   // fakeBackendProvider
 ],
   bootstrap: [AppComponent]
 })
