@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Net.Http;
 using System.Reflection;
 using BatchManager.Services;
 using DataAccess.Repository;
@@ -10,6 +11,7 @@ using DataAccess.Repository.RepositoryEF;
 using DataAccess.Repository.RepositoryEF.IRepositoryEF;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting.Server.Features;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
@@ -28,6 +30,7 @@ namespace TraderBlotter.Api
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
+
         }
 
         public IConfiguration Configuration { get; }
@@ -35,7 +38,8 @@ namespace TraderBlotter.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddDbContext<ApplicationDbContext>(options => options.UseMySql(Configuration.GetConnectionString("DefaultConnectionString"), 
+
+            services.AddDbContext<ApplicationDbContext>(options => options.UseMySql(Configuration.GetConnectionString("DefaultConnectionString"),
                 new MySqlServerVersion(new Version(8, 0, 21)), // use MariaDbServerVersion for MariaDB
                         mySqlOptions => mySqlOptions.CharSetBehavior(CharSetBehavior.NeverAppend)));
             services.AddControllers();
@@ -70,7 +74,7 @@ namespace TraderBlotter.Api
                     {
                         Email = "muniraju021@gmail.com",
                         Name = "Muniraju JAYARAMA",
-                        Url = new Uri("http://localhost/44324")
+                        Url = new Uri("http://localhost/8090")
                     },
                     License = new OpenApiLicense
                     {
@@ -82,6 +86,9 @@ namespace TraderBlotter.Api
                 var cmlCommentsFullFilePath = Path.Combine(AppContext.BaseDirectory, xmlCommentFile);
                 options.IncludeXmlComments(cmlCommentsFullFilePath);
             });
+
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -115,6 +122,13 @@ namespace TraderBlotter.Api
             {
                 endpoints.MapControllers();
             });
+
+
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri(Configuration.GetSection("BaseUrl").Value);
+                var resp = client.GetAsync("api/v1/healthcheck");
+            }
 
         }
     }

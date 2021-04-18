@@ -7,6 +7,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using System.Transactions;
 
 namespace BatchManager.Services
 {
@@ -14,6 +15,7 @@ namespace BatchManager.Services
     {
         private readonly ITradeViewBseCmRepository _tradeViewBseCmRepository;
         private readonly ILog _logger = LogService.GetLogger(typeof(LoadTradeViewDataBseCm));
+        public static bool isSyncDataStarted = false;
 
         public LoadTradeViewDataBseCm(ITradeViewBseCmRepository tradeViewBseCmRepository)
         {
@@ -25,23 +27,30 @@ namespace BatchManager.Services
         {
             try
             {
+                _logger.Info($"Inside LoadBseCmDataFromSourceDb");
                 var cts = new CancellationTokenSource();
-                Task t = Task.Factory.StartNew(
-                async () => {
-                    while (true)
+                if (!LoadTradeViewDataBseCm.isSyncDataStarted)
+                {
+                    _logger.Info($"Intializing AutoSync");
+                    LoadTradeViewDataBseCm.isSyncDataStarted = true;
+                    Task t = Task.Factory.StartNew(
+                    async () =>
                     {
-                        cts.Token.ThrowIfCancellationRequested();
-                        try
+                        while (true)
                         {
-                            await _tradeViewBseCmRepository.LoadTradeviewFromSource(true);
-                            await Task.Delay(1000, cts.Token);
+                            cts.Token.ThrowIfCancellationRequested();
+                            try
+                            {
+                                await _tradeViewBseCmRepository.LoadTradeviewFromSource(true);
+                                await Task.Delay(60000, cts.Token);
+                            }
+                            catch (TaskCanceledException ex)
+                            {
+                                _logger.Error($"Exception in LoadNseCmDataFromSourceDb ", ex);
+                            }
                         }
-                        catch (TaskCanceledException ex) 
-                        {
-                            _logger.Error($"Exception in LoadNseCmDataFromSourceDb ", ex);
-                        }
-                    }
-                }, cts.Token, TaskCreationOptions.LongRunning, TaskScheduler.Default).Unwrap();
+                    }, cts.Token, TaskCreationOptions.LongRunning, TaskScheduler.Default).Unwrap();
+                }
             }
             catch (Exception ex)
             {

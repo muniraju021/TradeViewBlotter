@@ -40,23 +40,23 @@ namespace DataAccess.Repository.Repositories
 
         public async Task LoadTradeviewFromSource(bool isDeltaLoadRequested = false)
         {
-            var whereCond = $" where TradeDateTime >= '{0}' and TradeDateTime <= '{1}' ";
+            
             string query = string.Empty;
 
             if (isDeltaLoadRequested)
             {               
                 var dtInputFrom = DateTime.Now.AddMinutes(-2).ToString("dd MMM yyyy HH:mm:00");
                 var dtInputTill = DateTime.Now.ToString("dd MMM yyyy HH:mm:00");
-                whereCond = string.Format(whereCond, dtInputFrom, dtInputTill);
+                var whereCond = $" where TradeDateTime >= '{dtInputFrom}' and TradeDateTime <= '{dtInputTill}' ";
                 query = string.Format($"SELECT FillId,UserId,ExchUser,BranchId,mnmLocationId,Symbol,SymbolName,PriceType,TransactionType,FillPrice,FillSize,FillTime,FillDate,ExchangeTime,ExchOrdId,ExecutingBroker," +
-                                        $"ExchAccountId,Source,ReportType FROM BSE_CM {0} order by FillTime desc", whereCond);
+                                        $"ExchAccountId,Source,ReportType FROM BSE_CM {whereCond} order by FillTime desc");
 
                 _log.Info($"BseCM Data requested from '{dtInputFrom}' till '{dtInputTill}'");
             }
             else
             {
                 query = string.Format($"SELECT FillId,UserId,ExchUser,BranchId,mnmLocationId,Symbol,SymbolName,PriceType,TransactionType,FillPrice,FillSize,FillTime,FillDate,ExchangeTime,ExchOrdId,ExecutingBroker," +
-                                        $"ExchAccountId,Source,ReportType FROM BSE_CM {0} order by FillTime desc", string.Empty);
+                                        $"ExchAccountId,Source,ReportType FROM BSE_CM order by FillTime desc");
             }
 
             List<TradeViewBseCm> resultSet = new List<TradeViewBseCm>();

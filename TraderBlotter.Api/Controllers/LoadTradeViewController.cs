@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using BatchManager.Services;
 using DataAccess.Repository.LogServices;
 using DataAccess.Repository.Repositories;
 using log4net;
@@ -24,7 +25,7 @@ namespace TraderBlotter.Api.Controllers
         public LoadTradeViewController(IMapper mapper, ITradeViewBseCmRepository tradeViewBseCmRepository)
         {
             _mapper = mapper;
-            _tradeViewBseCmRepository = tradeViewBseCmRepository;
+            _tradeViewBseCmRepository = tradeViewBseCmRepository;                       
         }
 
         [HttpGet]
@@ -42,9 +43,7 @@ namespace TraderBlotter.Api.Controllers
             {
                 _log.Error("Error in SyncBseCmTrades ", ex);
                 return StatusCode(500);
-            }
-            
+            }            
         }
-
     }
 }

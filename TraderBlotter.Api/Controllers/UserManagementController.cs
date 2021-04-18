@@ -6,6 +6,7 @@ using log4net;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Threading.Tasks;
 using TraderBlotter.Api.Models.Dto;
@@ -103,6 +104,28 @@ namespace TraderBlotter.Api.Controllers
             }
 
         }
+
+        [HttpGet]
+        [Route("getUsers")]
+        public async Task<IActionResult> GetUsersAsync()
+        {
+            try
+            {
+                var users = _userViewRepository.GetUserViews();
+                var usersDto = new List<UserDto>();
+                foreach (var item in users)
+                {
+                    usersDto.Add(_mapper.Map<UserDto>(item));
+                }
+                return Ok(usersDto);
+            }
+            catch (Exception ex)
+            {
+                _log.Error($"Error in GetUserAsync ", ex);
+                return StatusCode(500, new ErrorModel { Message = ex.Message, HttpStatusCode = 500 });
+            }
+        }
+            
 
 
         [HttpPost]
