@@ -52,5 +52,11 @@ namespace DataAccess.Repository.Repositories
             var lst = await _tradeViewRepo.GetAllEntityAsync<string>("getClientCodeByDealer", inputParams, CommandType.StoredProcedure);
             return lst.ToList();
         }
+
+        public async Task<int> ArchiveAndPurgeTradeView()
+        {
+            var res = await _tradeViewRepo.ExcecuteNonQueryAsync("archiveTradeViewData", cmdType: CommandType.StoredProcedure);
+            return res;
+        }
     } 
 }

@@ -2,6 +2,7 @@
 using BatchManager.Services;
 using DataAccess.Repository.LogServices;
 using DataAccess.Repository.Repositories;
+using DataAccess.Repository.RepositoryEF.IRepositoryEF;
 using log4net;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -20,12 +21,17 @@ namespace TraderBlotter.Api.Controllers
     {
         private readonly IMapper _mapper;
         private readonly ITradeViewBseCmRepository _tradeViewBseCmRepository;
+        private readonly ITradeViewRepository _tradeViewRepository;
+        private readonly ITradeViewGenericRepository _tradeViewGenericRepository;
         private static ILog _log = LogService.GetLogger(typeof(TradeViewController));
 
-        public LoadTradeViewController(IMapper mapper, ITradeViewBseCmRepository tradeViewBseCmRepository)
+        public LoadTradeViewController(IMapper mapper, ITradeViewBseCmRepository tradeViewBseCmRepository, ITradeViewRepository tradeViewRepository,
+            ITradeViewGenericRepository tradeViewGenericRepository)
         {
             _mapper = mapper;
-            _tradeViewBseCmRepository = tradeViewBseCmRepository;                       
+            _tradeViewBseCmRepository = tradeViewBseCmRepository;
+            _tradeViewRepository = tradeViewRepository;
+            _tradeViewGenericRepository = tradeViewGenericRepository;
         }
 
         [HttpGet]
@@ -35,6 +41,9 @@ namespace TraderBlotter.Api.Controllers
             try
             {
                 _log.Info($"SyncBseCmTrades started");
+                var res = await _tradeViewGenericRepository.ArchiveAndPurgeTradeView();
+                _log.Info($"Archiving of TradeView is Complete");
+
                 await _tradeViewBseCmRepository.LoadTradeviewFromSource();
                 _log.Info($"SyncBseCmTrades Finished");
                 return Ok(HttpStatusCode.OK);

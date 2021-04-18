@@ -152,7 +152,8 @@ namespace TraderBlotter.Api.Controllers
                     {
                         LoginName = userRequest.LoginName,
                         Password = userRequest.Password,
-                        EmailId = userRequest.EmailId
+                        EmailId = userRequest.EmailId,
+                        IsActive = userRequest.IsActive
                     };
 
                     var roleId = _roleViewRepository.GetRoles().Where(i => i.RoleName == userRequest.RoleName)?.Select(j => j.RoleId).FirstOrDefault();
@@ -201,7 +202,8 @@ namespace TraderBlotter.Api.Controllers
                     {
                         LoginName = userRequest.LoginName,
                         Password = userRequest.Password,
-                        EmailId = userRequest.EmailId
+                        EmailId = userRequest.EmailId,
+                        IsActive = userRequest.IsActive
                     };
 
                     var roleId = _roleViewRepository.GetRoles().Where(i => i.RoleName == userRequest.RoleName)?.Select(j => j.RoleId).FirstOrDefault();

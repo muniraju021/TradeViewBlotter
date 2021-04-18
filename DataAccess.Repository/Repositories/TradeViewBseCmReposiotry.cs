@@ -29,7 +29,7 @@ namespace DataAccess.Repository.Repositories
         private readonly string ExchangeName = "BSE_CM";
         private static ILog _log = LogService.GetLogger(typeof(TradeViewBseCmReposiotry));
 
-        public TradeViewBseCmReposiotry(IGenericRepository<object> tradeViewBseCmRepo,ITradeViewRepository tradeViewRepositoryEf, IMapper mapper)
+        public TradeViewBseCmReposiotry(IGenericRepository<object> tradeViewBseCmRepo, ITradeViewRepository tradeViewRepositoryEf, IMapper mapper)
         {
             _tradeViewBseCmRepo = tradeViewBseCmRepo;
             _tradeViewRepositoryEf = tradeViewRepositoryEf;
@@ -38,11 +38,11 @@ namespace DataAccess.Repository.Repositories
 
         public async Task LoadTradeviewFromSource(bool isDeltaLoadRequested = false)
         {
-            
+
             string query = string.Empty;
 
             if (isDeltaLoadRequested)
-            {               
+            {
                 var dtInputFrom = DateTime.Now.AddMinutes(-2).ToString("dd MMM yyyy HH:mm:00");
                 var dtInputTill = DateTime.Now.ToString("dd MMM yyyy HH:mm:00");
                 var whereCond = $" where TradeDateTime >= '{dtInputFrom}' and TradeDateTime <= '{dtInputTill}' ";
@@ -72,36 +72,41 @@ namespace DataAccess.Repository.Repositories
                 }
             }
 
-            var output = new List<TradeView>();
-            foreach (var item in resultSet)
-                output.Add(_mapper.Map<TradeView>(item));
+            if (resultSet?.Count > 0)
+            {
 
-            output = output.Select(i =>
-                {
-                    i.LotSize = LotSize;
-                    i.BrokerId = BrokerId;
-                    i.StockName = i.SymbolName;
-                    i.ProClient = i.ClientCode == ClientCode ? "PRO" : "CLI";
-                    i.ExchangeName = ExchangeName;
-                    if (i.OrderType == "L")
-                        i.OrderType = "LMT";
-                    else if (i.OrderType == "M")
-                        i.OrderType = "MKT";
-                    else if (i.OrderType == "SL")
-                        i.OrderType = "SL";
-                    else if (i.OrderType == "SL-M")
-                        i.OrderType = "SL-MKT";
-                    return i;
-                }
-            ).ToList();
+                var output = new List<TradeView>();
+                foreach (var item in resultSet)
+                    output.Add(_mapper.Map<TradeView>(item));
 
-            //var temp = output.Where(i => i.TradeId == "7433200").ToList();
-            //temp[0].UserId = "OTRD10";
-            //temp[0].TradeId = "7433201";
+                output = output.Select(i =>
+                    {
+                        i.LotSize = LotSize;
+                        i.BrokerId = BrokerId;
+                        i.StockName = i.SymbolName;
+                        i.ProClient = i.ClientCode == ClientCode ? "PRO" : "CLI";
+                        i.ExchangeName = ExchangeName;
+                        if (i.OrderType == "L")
+                            i.OrderType = "LMT";
+                        else if (i.OrderType == "M")
+                            i.OrderType = "MKT";
+                        else if (i.OrderType == "SL")
+                            i.OrderType = "SL";
+                        else if (i.OrderType == "SL-M")
+                            i.OrderType = "SL-MKT";
+                        return i;
+                    }
+                ).ToList();
+
+                //var temp = output.Where(i => i.TradeId == "7433200").ToList();
+                //temp[0].UserId = "OTRD10";
+                //temp[0].TradeId = "7433201";
 
 
-            //await _tradeViewRepositoryEf.AddTradeView(output.ToCollection<TradeView>());
-            await _tradeViewRepositoryEf.MergeTradeView(output.ToCollection<TradeView>());
+                //await _tradeViewRepositoryEf.AddTradeView(output.ToCollection<TradeView>());
+                await _tradeViewRepositoryEf.MergeTradeView(output.ToCollection<TradeView>());
+                _log.Info($"Bse CM Processed Records - {output.Count}");
+            }
 
             return;
         }

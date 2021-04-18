@@ -71,5 +71,14 @@ namespace DataAccess.Repository
                 return res;
             }
         }
+
+        public async Task<int> ExcecuteNonQueryAsync(string spName, object parameters = null, CommandType cmdType = CommandType.Text, string connectionName = null)
+        {
+            using (var con = GetDbConnection(connectionName))
+            {
+                var res = await con.ExecuteAsync(spName, param: parameters, commandType: cmdType);
+                return res;
+            }
+        }
     }
 }
