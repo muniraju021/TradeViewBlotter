@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Net.Http;
 using System.Reflection;
+using System.Threading.Tasks;
 using BatchManager.Services;
 using DataAccess.Repository;
 using DataAccess.Repository.Data;
@@ -51,8 +52,14 @@ namespace TraderBlotter.Api
             services.AddScoped<IGenericRepository<TradeView>, GenericRepository<TradeView>>();
             services.AddScoped<IGenericRepository<object>, GenericRepository<object>>();
             services.AddScoped<ITradeViewGenericRepository, TradeViewGenericRepository>();
+
+            //services.AddSingleton<ITradeViewGenericRepository, TradeViewGenericRepository>();
+            //services.AddSingleton<IConnectionFactory, ConnectionFactory>();
+            //services.AddSingleton<ITradeViewRepository, TradeViewRepository>();
+            //services.AddSingleton<IGenericRepository<TradeView>, GenericRepository<TradeView>>();
             services.AddScoped<ITradeViewBseCmRepository, TradeViewBseCmReposiotry>();
             services.AddScoped<ILoadTradeviewData, LoadTradeViewDataBseCm>();
+
             services.AddAutoMapper(typeof(TraderBlotterMappings));
 
             services.AddApiVersioning(x =>
@@ -124,11 +131,14 @@ namespace TraderBlotter.Api
             });
 
 
-            using (var client = new HttpClient())
+            Task.Run(async () =>
             {
-                client.BaseAddress = new Uri(Configuration.GetSection("BaseUrl").Value);
-                var resp = client.GetAsync("api/v1/healthcheck");
-            }
+                using (var client = new HttpClient())
+                {
+                    client.BaseAddress = new Uri(Configuration.GetSection("BaseUrl").Value);
+                    var resp = await client.GetAsync("api/v1/healthcheck");
+                }
+            });            
 
         }
     }

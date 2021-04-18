@@ -20,7 +20,6 @@ namespace BatchManager.Services
         public LoadTradeViewDataBseCm(ITradeViewBseCmRepository tradeViewBseCmRepository)
         {
             _tradeViewBseCmRepository = tradeViewBseCmRepository;
-            LoadBseCmDataFromSourceDb();
         }
 
         public Task LoadBseCmDataFromSourceDb()
@@ -50,6 +49,7 @@ namespace BatchManager.Services
                             }
                         }
                     }, cts.Token, TaskCreationOptions.LongRunning, TaskScheduler.Default).Unwrap();
+                    return t;
                 }
             }
             catch (Exception ex)

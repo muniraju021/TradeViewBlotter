@@ -16,20 +16,20 @@ namespace TraderBlotter.Api.Controllers
     [ApiVersion("1.0")]
     public class HealthCheckController : ControllerBase
     {
-        private readonly ILoadTradeviewData _loadTradeviewData;
+        private static ILoadTradeviewData _loadTradeviewData;
         private readonly ILog _logger = LogService.GetLogger(typeof(HealthCheckController));
         public HealthCheckController(ILoadTradeviewData loadTradeviewData)
         {
             _loadTradeviewData = loadTradeviewData;
-            _loadTradeviewData.LoadBseCmDataFromSourceDb();
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public async Task<IActionResult> Get()
         {
             try
             {
-                _loadTradeviewData.LoadBseCmDataFromSourceDb();
+                await _loadTradeviewData.LoadBseCmDataFromSourceDb();
+                _logger.Info($"HealthCheckController - Returning");
                 return Ok();
             }
             catch (Exception ex)

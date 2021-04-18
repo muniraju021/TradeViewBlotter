@@ -29,11 +29,9 @@ namespace DataAccess.Repository.Repositories
         private readonly string ExchangeName = "BSE_CM";
         private static ILog _log = LogService.GetLogger(typeof(TradeViewBseCmReposiotry));
 
-        public TradeViewBseCmReposiotry(IGenericRepository<object> tradeViewBseCmRepo, ITradeViewGenericRepository tradeViewRepo,
-            ITradeViewRepository tradeViewRepositoryEf, IMapper mapper)
+        public TradeViewBseCmReposiotry(IGenericRepository<object> tradeViewBseCmRepo,ITradeViewRepository tradeViewRepositoryEf, IMapper mapper)
         {
             _tradeViewBseCmRepo = tradeViewBseCmRepo;
-            _tradeViewRepo = tradeViewRepo;
             _tradeViewRepositoryEf = tradeViewRepositoryEf;
             _mapper = mapper;
         }
@@ -49,14 +47,14 @@ namespace DataAccess.Repository.Repositories
                 var dtInputTill = DateTime.Now.ToString("dd MMM yyyy HH:mm:00");
                 var whereCond = $" where TradeDateTime >= '{dtInputFrom}' and TradeDateTime <= '{dtInputTill}' ";
                 query = string.Format($"SELECT FillId,UserId,ExchUser,BranchId,mnmLocationId,Symbol,SymbolName,PriceType,TransactionType,FillPrice,FillSize,FillTime,FillDate,ExchangeTime,ExchOrdId,ExecutingBroker," +
-                                        $"ExchAccountId,Source,ReportType FROM BSE_CM {whereCond} order by FillTime desc");
+                                        $"ExchAccountId,Source,ReportType,TradeDateTime FROM BSE_CM {whereCond} order by FillTime desc");
 
                 _log.Info($"BseCM Data requested from '{dtInputFrom}' till '{dtInputTill}'");
             }
             else
             {
                 query = string.Format($"SELECT FillId,UserId,ExchUser,BranchId,mnmLocationId,Symbol,SymbolName,PriceType,TransactionType,FillPrice,FillSize,FillTime,FillDate,ExchangeTime,ExchOrdId,ExecutingBroker," +
-                                        $"ExchAccountId,Source,ReportType FROM BSE_CM order by FillTime desc");
+                                        $"ExchAccountId,Source,ReportType,TradeDateTime FROM BSE_CM order by FillTime desc");
             }
 
             List<TradeViewBseCm> resultSet = new List<TradeViewBseCm>();

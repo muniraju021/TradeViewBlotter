@@ -12,6 +12,8 @@ namespace TraderBlotter.Api.Models.Dto
         public string LoginName { get; set; }
         public string EmailId { get; set; }
         public int RoleId { get; set; }
+        public string RoleName { get; set; }
+        public string RoleCode { get; set; }
 
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string GroupName { get; set; }

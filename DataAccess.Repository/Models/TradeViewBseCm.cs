@@ -65,5 +65,8 @@ namespace DataAccess.Repository.Models
         [MapTo(nameof(TradeView.TradeModifyFlag))]
         public string ReportType { get; set; }
 
+        [MapTo(nameof(TradeView.TradeDateTime))]
+        public string TradeDateTime { get; set; }
+
     }
 }

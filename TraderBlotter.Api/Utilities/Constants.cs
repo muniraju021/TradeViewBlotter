@@ -11,9 +11,9 @@ namespace TraderBlotter.Api.Utilities
 
     public enum Roles
     {
-        SuperAdmin,
-        GroupUser,
-        Dealer,
-        Client
+        SuperAdmin = 1,
+        GroupUser = 2,
+        Dealer = 3,
+        Client = 4
     }
 }
