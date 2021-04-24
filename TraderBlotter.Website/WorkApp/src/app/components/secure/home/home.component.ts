@@ -29,8 +29,9 @@ export class HomeComponent {
     public gridOptions: GridOptions;
     loading = false;
     users: User[];
-    user:string = '';
+    user: string = '';
     rowData: any[];
+    userLoginName: string = ''
     columnDefs = [
         { field: 'tradeViewId', headerName: 'Blotter ID' },
         { field: 'tradeId', headerName: 'Exch Trade ID' },
@@ -64,21 +65,26 @@ export class HomeComponent {
     defaultColDef = {
         resizable: true,
         sortable: true,
-        filter: true
+        filter: true,
+        minWidth: 100
     };
 
     constructor(private userService: UserService, private http: HttpClient, private blotterService: BlotterService) {
         // this.rowSelection = 'multiple';
         this.rowHeight = 28;
-       
+        this.gridOptions = {
+            columnDefs: this.columnDefs,
+            rowData: this.rowData
+        }
+
     }
 
     getRowStyle(params) {
         if (params.data.buySell === 'B') {
-            return { 'background-color': '#c0c0c0' }
+            return { 'background-color': '#F0FFFF' }
         }
         if (params.data.buySell === 'S') {
-            return { 'background-color': '	#d3d3d3' }
+            return { 'background-color': '#E6E6FA' }
         }
         return null;
     }
@@ -111,15 +117,10 @@ export class HomeComponent {
 
     ngOnInit() {
 
-        // this.loading = true;
-        // this.userService.getAll().pipe(first()).subscribe(users => {
-        //     this.loading = false;
-        //     this.users = users;
-        // });
-
         this.user = JSON.parse(localStorage.getItem('currentUser'))["emailId"];
+        this.userLoginName = JSON.parse(localStorage.getItem('currentUser'))["loginName"];
 
-        this.blotterService.getAllTrades().subscribe(
+        this.blotterService.getAllTrades(this.userLoginName).subscribe(
             (data) => {
                 this.rowData = data;
             }
@@ -198,5 +199,20 @@ export class HomeComponent {
             this.avgPriceBuy = `${averageBuy.toFixed(2)}`;
         if (averageSell)
             this.avgPriceSell = `${averageSell.toFixed(2)}`;
+    }
+
+    onBtnExport() {
+        var params = this.getParams();
+        if (params.suppressQuotes || params.columnSeparator) {
+            
+        }
+        this.gridOptions.api.exportDataAsCsv(params);
+    }
+
+    getParams() {
+        return {
+            suppressQuotes: true,
+            columnSeparator: ','
+        };
     }
 }

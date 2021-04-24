@@ -20,9 +20,45 @@
     align-items: center;
   }
 
- .ag-row-selected {
-    background-color: #66bfff !important;
-    .ag-cell {
-        background-color: #66bfff !important;
-    }
+  .ag-theme-alpine .ag-header {
+    // or write CSS selectors to make customisations beyond what the parameters support
+    text-align: center
 }
+
+.ag-theme-alpine .ag-header-cell-label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.action-button {
+    border: none;
+    color: white;
+    padding: 3px 12px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    opacity: 0.7;
+  }
+  
+  .action-button:hover {
+    opacity: 1;
+  }
+  
+  .action-button.edit {
+    background-color: #008cba; /* Blue */
+  }
+  .action-button.update {
+    background-color: #4caf50; /* Green */
+  }
+  
+  .action-button.delete {
+    background-color: #f44336; /* Red */
+  }
+  
+  .action-button.cancel {
+    background-color: #e7e7e7; /* Gray */
+    color: black;
+  }

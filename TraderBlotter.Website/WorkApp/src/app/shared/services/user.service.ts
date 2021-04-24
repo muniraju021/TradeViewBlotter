@@ -31,9 +31,32 @@ export class UserService {
 
     addUser(user: User) {
         return this.http.post<any>(`${environment.apiUrl}/v1/UserManagement/addUser`, {LoginName: user.LoginName, 
-            Password:user.Password, EmailId: user.EmailId, RoleName : user.RoleName, UserCode :user.UserCode })
+            Password:user.Password, EmailId: user.EmailId, RoleName : user.RoleName, UserCode :user.UserCode, IsActive: user.IsActive })
             .pipe(map(response => {
                 return response;
             }));
     }
+
+    getUsers(): Observable<any> {
+        return this.http.get<any>(`${environment.apiUrl}/v1/UserManagement/getUsers`)
+            .pipe(map((response: Response) => {
+                return response;
+            }));
+    }
+
+updateUser(user: User): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}/v1/UserManagement/updateUser`, {LoginName: user.LoginName, 
+         EmailId: user.EmailId, RoleName : user.RoleName, UserCode :user.UserCode, IsActive: user.IsActive })
+        .pipe(map(response => {
+            return response;
+        }));
+}
+
+deleteUser(user: User): Observable<any> {
+    return this.http.post<any>(`${environment.apiUrl}/v1/UserManagement/deleteUser`, {LoginName: user.LoginName})
+       .pipe(map(response => {
+           return response;
+       }));
+}
+
 }
