@@ -27,5 +27,10 @@ namespace DataAccess.Repository.Data
 
         public DbSet<ClientView> ClientViews { get; set; }
 
+        public DbSet<DealerClientMappingView> DealerClientMappingViews { get; set; }
+        public DbSet<GroupDealerMappingView> GroupDealerMappingViews { get; set; }
+
+
+
     }
 }

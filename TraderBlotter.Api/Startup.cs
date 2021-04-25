@@ -52,13 +52,13 @@ namespace TraderBlotter.Api
             services.AddScoped<IGenericRepository<TradeView>, GenericRepository<TradeView>>();
             services.AddScoped<IGenericRepository<object>, GenericRepository<object>>();
             services.AddScoped<ITradeViewGenericRepository, TradeViewGenericRepository>();
-
-            //services.AddSingleton<ITradeViewGenericRepository, TradeViewGenericRepository>();
-            //services.AddSingleton<IConnectionFactory, ConnectionFactory>();
-            //services.AddSingleton<ITradeViewRepository, TradeViewRepository>();
-            //services.AddSingleton<IGenericRepository<TradeView>, GenericRepository<TradeView>>();
+                       
             services.AddScoped<ITradeViewBseCmRepository, TradeViewBseCmReposiotry>();
             services.AddScoped<ILoadTradeviewData, LoadTradeViewDataBseCm>();
+
+            services.AddScoped<IDealerClientMappingRepository, DealerClientMappingRepository>();
+            services.AddScoped<IGroupDealerMappingRepository, GroupDealerMappingRepository>();
+
 
             services.AddAutoMapper(typeof(TraderBlotterMappings));
 

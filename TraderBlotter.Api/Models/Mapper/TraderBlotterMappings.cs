@@ -13,6 +13,9 @@ namespace TraderBlotter.Api.Models.Mapper
             CreateMap<TradeView, TradeViewDto>().ReverseMap();
             CreateMap<TradeViewBseCm, TradeView>();
             CreateMap<UserView, UserDto>().ReverseMap();
+            CreateMap<DealerClientMappingView, DealerClientMappingDto>().ReverseMap();
+            CreateMap<GroupDealerMappingView, GroupDealerMappingDto>().ReverseMap();
+
         }
     }
 }
