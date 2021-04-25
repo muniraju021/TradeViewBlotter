@@ -57,15 +57,24 @@ namespace DataAccess.Repository.RepositoryEF
         }
 
         public void UpdateUserAsync(UserView userView)
-        {           
-            _db.UserViews.Update(userView);
+        {
+            _db.UserViews.Attach(userView);
+            _db.Entry(userView).Property(i => i.Password).IsModified = false;
+            _db.Entry(userView).Property(i => i.EmailId).IsModified = true;
+            _db.Entry(userView).Property(i => i.RoleId).IsModified = true;
+            _db.Entry(userView).Property(i => i.IsActive).IsModified = true;
+            _db.Entry(userView).Property(i => i.DealerCode).IsModified = true;
+            _db.Entry(userView).Property(i => i.ClientCode).IsModified = true;
+            _db.Entry(userView).Property(i => i.GroupName).IsModified = true;
+
+            //_db.UserViews.Update(userView);
             _db.SaveChanges();
         }
 
         public void DeleteUser(UserView userView)
         {
             var current = _db.UserViews.Find(userView.LoginName);
-            if(current != null)
+            if (current != null)
             {
                 current.IsActive = userView.IsActive;
                 _db.UserViews.Update(current);
