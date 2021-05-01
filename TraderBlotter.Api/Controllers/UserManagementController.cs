@@ -60,6 +60,17 @@ namespace TraderBlotter.Api.Controllers
             return Ok(userDto);
         }
 
+        [HttpGet]
+        [Route("getUserByLoginName")]
+        public IActionResult GetUserInfo(string loginName)
+        {
+            var obj = _userViewRepository.GetUserById(loginName);
+            if(obj == null)
+                return StatusCode(401, new ErrorModel { HttpStatusCode = 401, Message = "User Not Found" });
+            var userDto = _mapper.Map<UserDto>(obj);
+            return Ok(userDto);
+        }
+
 
 
         [HttpGet]
