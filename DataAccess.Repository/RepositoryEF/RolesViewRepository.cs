@@ -15,6 +15,12 @@ namespace DataAccess.Repository.RepositoryEF
         {
             _db = db;
         }
+
+        public RoleView GetRoleById(int roleId)
+        {
+            return _db.RoleViews.Where(i => i.RoleId == roleId).FirstOrDefault();
+        }
+
         public ICollection<RoleView> GetRoles()
         {
             return _db.RoleViews.ToList();

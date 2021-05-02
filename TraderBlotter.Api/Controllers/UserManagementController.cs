@@ -68,6 +68,16 @@ namespace TraderBlotter.Api.Controllers
             if(obj == null)
                 return StatusCode(401, new ErrorModel { HttpStatusCode = 401, Message = "User Not Found" });
             var userDto = _mapper.Map<UserDto>(obj);
+
+            if (!string.IsNullOrWhiteSpace(userDto.GroupName))
+                userDto.RoleCode = userDto.GroupName;
+            else if (!string.IsNullOrWhiteSpace(userDto.DealerCode))
+                userDto.RoleCode = userDto.DealerCode;
+            else if (!string.IsNullOrWhiteSpace(userDto.ClientCode))
+                userDto.RoleCode = userDto.ClientCode;
+
+            userDto.RoleName = _roleViewRepository.GetRoleById(userDto.RoleId)?.RoleName; 
+
             return Ok(userDto);
         }
 

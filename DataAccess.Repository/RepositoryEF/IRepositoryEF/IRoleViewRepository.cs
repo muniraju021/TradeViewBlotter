@@ -8,5 +8,6 @@ namespace DataAccess.Repository.RepositoryEF.IRepositoryEF
     public interface IRoleViewRepository
     {
         ICollection<RoleView> GetRoles();
+        RoleView GetRoleById(int roleId);
     }
 }
