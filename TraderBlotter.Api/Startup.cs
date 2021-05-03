@@ -2,6 +2,7 @@ using System;
 using System.IO;
 using System.Net.Http;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using BatchManager.Services;
 using DataAccess.Repository;
@@ -41,8 +42,8 @@ namespace TraderBlotter.Api
         {
 
             services.AddDbContext<ApplicationDbContext>(options => options.UseMySql(Configuration.GetConnectionString("DefaultConnectionString"),
-                new MySqlServerVersion(new Version(8, 0, 21)), // use MariaDbServerVersion for MariaDB
-                        mySqlOptions => mySqlOptions.CharSetBehavior(CharSetBehavior.NeverAppend)));
+                new MySqlServerVersion(new Version(8, 0, 21)))); // use MariaDbServerVersion for MariaDB
+                        //mySqlOptions => mySqlOptions.cha(CharSet.NeverAppend)));
             services.AddControllers();
             services.AddScoped<ITradeViewRepository, TradeViewRepository>();
             services.AddScoped<IUserViewRepository, UserViewRepository>();
@@ -54,6 +55,8 @@ namespace TraderBlotter.Api
             services.AddScoped<ITradeViewGenericRepository, TradeViewGenericRepository>();
                        
             services.AddScoped<ITradeViewBseCmRepository, TradeViewBseCmReposiotry>();
+            services.AddScoped<ITradeViewNseFoRepository, TradeViewNseFoRepository>();
+
             services.AddScoped<ILoadTradeviewData, LoadTradeViewDataBseCm>();
 
             services.AddScoped<IDealerClientMappingRepository, DealerClientMappingRepository>();
