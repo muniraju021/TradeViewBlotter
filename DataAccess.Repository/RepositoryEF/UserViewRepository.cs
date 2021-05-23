@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace DataAccess.Repository.RepositoryEF
@@ -80,6 +81,16 @@ namespace DataAccess.Repository.RepositoryEF
                 _db.UserViews.Update(current);
             }
             int res = _db.SaveChanges();
+        }
+
+        public ICollection<DealerView> GetDealersByGroupName(string groupName)
+        {
+            return _db.GroupDealerMappingViews.Where(i => i.GroupName == groupName).ToList().Select(j => new DealerView { DealerCode = j.DealerCode }).ToList();
+        }
+
+        public ICollection<ClientView> GetClientCodesByDealerCode(string dealerCode)
+        {
+            return _db.DealerClientMappingViews.Where(i => i.DealerCode == dealerCode).Select(j => new ClientView { ClientCode = j.ClientCode }).ToList();
         }
     }
 }

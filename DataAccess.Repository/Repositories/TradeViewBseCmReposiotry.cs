@@ -104,7 +104,7 @@ namespace DataAccess.Repository.Repositories
 
 
                 //await _tradeViewRepositoryEf.AddTradeView(output.ToCollection<TradeView>());
-                await _tradeViewRepositoryEf.MergeTradeView(output.ToCollection<TradeView>());
+                _tradeViewRepositoryEf.MergeTradeView(output.ToCollection<TradeView>());
                 _log.Info($"Bse CM Processed Records - {output.Count}");
             }
 

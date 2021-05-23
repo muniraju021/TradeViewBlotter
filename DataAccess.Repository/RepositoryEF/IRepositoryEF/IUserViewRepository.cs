@@ -1,4 +1,5 @@
 ﻿using DataAccess.Repository.Models;
+using MySql.Data.MySqlClient.Memcached;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,12 +12,14 @@ namespace DataAccess.Repository.RepositoryEF.IRepositoryEF
         ICollection<UserView> GetUserViews();
         UserView GetUserById(string loginName);
         UserView ValidateLogin(string loginName, string password);
-
         ICollection<GroupView> GetGroups();
         ICollection<DealerView> GetDealers();
         ICollection<ClientView> GetClientViews();
         Task AddUserAsync(UserView userView);
         void UpdateUserAsync(UserView userView);
         void DeleteUser(UserView userView);
+        ICollection<DealerView> GetDealersByGroupName(string groupName);
+        ICollection<ClientView> GetClientCodesByDealerCode(string dealerCode);
+
     }
 }

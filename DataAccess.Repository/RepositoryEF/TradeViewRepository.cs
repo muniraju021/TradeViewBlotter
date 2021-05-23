@@ -21,7 +21,7 @@ namespace DataAccess.Repository.RepositoryEF.IRepositoryEF
             _db.SaveChanges();
         }
 
-        public async Task MergeTradeView(ICollection<TradeView> lstTradeViews)
+        public void MergeTradeView(ICollection<TradeView> lstTradeViews)
         {
             _db.BulkMerge(lstTradeViews, options => options.ColumnPrimaryKeyExpression = c => new { c.TradeId,c.BuySell});
         }
@@ -29,6 +29,11 @@ namespace DataAccess.Repository.RepositoryEF.IRepositoryEF
         public ICollection<TradeView> GetTradeViews()
         {
             return _db.TradeViews.OrderByDescending(i => i.TradeTime).ToList();
+        }
+
+        public void BulkInsert(ICollection<TradeView> lstTradeViews)
+        {
+            
         }
 
     }
