@@ -56,8 +56,12 @@ namespace TraderBlotter.Api
                        
             services.AddScoped<ITradeViewBseCmRepository, TradeViewBseCmReposiotry>();
             services.AddScoped<ITradeViewNseFoRepository, TradeViewNseFoRepository>();
+            services.AddScoped<ITradeViewRefRepository, TradeViewRefRepository>();
 
             services.AddScoped<ILoadTradeviewData, LoadTradeViewDataBseCm>();
+            services.AddScoped<ILoadTradeviewDataNseFo, LoadTradeviewDataNseFo>();
+            services.AddScoped<IAutoSyncService, AutoSyncService>();
+
 
             services.AddScoped<IDealerClientMappingRepository, DealerClientMappingRepository>();
             services.AddScoped<IGroupDealerMappingRepository, GroupDealerMappingRepository>();
@@ -102,7 +106,7 @@ namespace TraderBlotter.Api
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory, Microsoft.Extensions.Hosting.IHostApplicationLifetime applicationLifetime)
         {
             loggerFactory.AddLog4Net();
 
@@ -141,8 +145,15 @@ namespace TraderBlotter.Api
                     client.BaseAddress = new Uri(Configuration.GetSection("BaseUrl").Value);
                     var resp = await client.GetAsync("api/v1/healthcheck");
                 }
-            });            
+            });
 
+            applicationLifetime.ApplicationStopping.Register(OnShutDown);
+
+        }
+
+        private void OnShutDown()
+        {
+            LoadTradeViewDataBseCm.isSyncDataStarted = false;
         }
     }
 }

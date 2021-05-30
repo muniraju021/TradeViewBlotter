@@ -12,6 +12,7 @@ namespace DataAccess.Repository.Repositories
         Task<List<string>> GetClientCodesByGroupName(string groupName);
         Task<List<string>> GetClientCodesByDealerCode(string groupName);
         Task<IEnumerable<TradeView>> GetAllTradeViewsByClientCodes(List<string> clientCodes);
-        Task<int> ArchiveAndPurgeTradeView();
+        Task<int> ArchiveAndPurgeTradeView(string exchangeName);
+        Task<int> SyncWithTradeViewRefTable(string guid);
     }
 }

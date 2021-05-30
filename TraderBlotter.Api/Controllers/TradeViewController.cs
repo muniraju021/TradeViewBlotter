@@ -45,6 +45,8 @@ namespace TraderBlotter.Api.Controllers
         {
             try
             {
+                _log.Info($"TradeViewController - In GetAllTrades userName-{userName}");
+
                 var resultSet = new List<TradeViewDto>();
 
                 //var tradeDetails = _tradeViewRepository.GetTradeViews();
@@ -95,7 +97,7 @@ namespace TraderBlotter.Api.Controllers
                     resultSet.Add(_mapper.Map<TradeViewDto>(item));
                 }
 
-                _log.Info($"In GetAllTrades Finished Count-{resultSet.Count}");
+                _log.Info($"TradeViewController - In GetAllTrades Finished Count-{resultSet.Count}");
 
                 return Ok(resultSet);
             }
