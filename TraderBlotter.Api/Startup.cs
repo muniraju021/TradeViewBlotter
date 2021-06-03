@@ -53,10 +53,10 @@ namespace TraderBlotter.Api
             services.AddScoped<IGenericRepository<TradeView>, GenericRepository<TradeView>>();
             services.AddScoped<IGenericRepository<object>, GenericRepository<object>>();
             services.AddScoped<ITradeViewGenericRepository, TradeViewGenericRepository>();
-                       
-            services.AddScoped<ITradeViewBseCmRepository, TradeViewBseCmReposiotry>();
-            services.AddScoped<ITradeViewNseFoRepository, TradeViewNseFoRepository>();
             services.AddScoped<ITradeViewRefRepository, TradeViewRefRepository>();
+
+            services.AddScoped<ITradeViewBseCmRepository, TradeViewBseCmReposiotry>();
+            services.AddScoped<ITradeViewNseFoRepository, TradeViewNseFoRepository>();            
 
             services.AddScoped<ILoadTradeviewData, LoadTradeViewDataBseCm>();
             services.AddScoped<ILoadTradeviewDataNseFo, LoadTradeviewDataNseFo>();

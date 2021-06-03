@@ -76,7 +76,8 @@ namespace DataAccess.Repository.Repositories
                 }
                 _log.Info($"TradeViewBseCmRepository: LoadTradeviewFromSource: BseCM Data Request- Data Count:{resultSet?.Count} From: '{dtInputFrom}' Till: '{dtInputTill}'");
 
-                await LoadTradeviewRefTable(resultSet);
+                if(resultSet.Count > 0)
+                    await LoadTradeviewRefTable(resultSet);
 
                 _log.Info($"TradeViewBseCmRepository: LoadTradeviewFromSource: BseCM Data Request Complete- From: '{dtInputFrom}' Till: '{dtInputTill}'");
 
@@ -161,13 +162,13 @@ namespace DataAccess.Repository.Repositories
 
                 //Insert into Ref Table
                 _log.Info($"TradeViewBseCmRepository: LoadTradeviewRefTable Ref table Insertion Starting - {output.Count}");
-                await _tradeViewRefRepository.BulkInsert(output.ToCollection<TradeViewRef>());
+                await _tradeViewRefRepository.AddTradeView(output.ToCollection<TradeViewRef>());
                 _log.Info($"TradeViewBseCmRepository: LoadTradeviewRefTable Ref table Finished Starting - {output.Count}");
 
                 //Sync with main table
                 await _tradeViewRepo.SyncWithTradeViewRefTable(guid);
 
-                _log.Info($"TradeViewBseCmRepository: LoadTradeviewRefTable - Bse CM Processed Records - {output.Count}");
+                _log.Info($"TradeViewBseCmRepository: LoadTradeviewRefTable - Bse CM Syncing Completed - {output.Count}");
             }
         }
 

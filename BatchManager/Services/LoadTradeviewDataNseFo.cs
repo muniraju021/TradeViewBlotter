@@ -20,42 +20,55 @@ namespace BatchManager.Services
             _tradeViewNseFoRepository = tradeViewNseFoRepository;
         }
 
-        public Task LoadNseFoDataFromSourceDb()
+        //public Task LoadNseFoDataFromSourceDb()
+        //{
+        //    try
+        //    {
+        //        _logger.Info($"Inside LoadNseFoDataFromSourceDb");
+        //        var cts = new CancellationTokenSource();
+        //        if (!LoadTradeviewDataNseFo.isSyncDataStarted)
+        //        {
+        //            _logger.Info($"Intializing AutoSync");
+        //            LoadTradeviewDataNseFo.isSyncDataStarted = true;
+        //            Task t = Task.Factory.StartNew(
+        //            async () =>
+        //            {
+        //                while (LoadTradeviewDataNseFo.isSyncDataStarted)
+        //                {
+        //                    cts.Token.ThrowIfCancellationRequested();
+        //                    try
+        //                    {
+        //                        await _tradeViewNseFoRepository.LoadTradeviewFromSource(isDeltaLoadRequested: true);
+        //                        await Task.Delay(60000, cts.Token);
+        //                    }
+        //                    catch (TaskCanceledException ex)
+        //                    {
+        //                        _logger.Error($"Exception in LoadNseCmDataFromSourceDb ", ex);
+        //                    }
+        //                }
+        //                _logger.Info($"LoadNseFoDataFromSourceDb: Auto Sync BSE_CM data Stopped");
+        //            }, cts.Token, TaskCreationOptions.LongRunning, TaskScheduler.Default).Unwrap();
+        //            return t;
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        _logger.Error($"Exception in LoadNseCmDataFromSourceDb", ex);
+        //    }
+        //    return default(Task);
+        //}
+
+        public async Task LoadNseFoDataFromSourceDb()
         {
             try
             {
                 _logger.Info($"Inside LoadNseFoDataFromSourceDb");
-                var cts = new CancellationTokenSource();
-                if (!LoadTradeviewDataNseFo.isSyncDataStarted)
-                {
-                    _logger.Info($"Intializing AutoSync");
-                    LoadTradeviewDataNseFo.isSyncDataStarted = true;
-                    Task t = Task.Factory.StartNew(
-                    async () =>
-                    {
-                        while (LoadTradeviewDataNseFo.isSyncDataStarted)
-                        {
-                            cts.Token.ThrowIfCancellationRequested();
-                            try
-                            {
-                                await _tradeViewNseFoRepository.LoadTradeviewFromSource(isDeltaLoadRequested: true);
-                                await Task.Delay(60000, cts.Token);
-                            }
-                            catch (TaskCanceledException ex)
-                            {
-                                _logger.Error($"Exception in LoadNseCmDataFromSourceDb ", ex);
-                            }
-                        }
-                        _logger.Info($"LoadNseFoDataFromSourceDb: Auto Sync BSE_CM data Stopped");
-                    }, cts.Token, TaskCreationOptions.LongRunning, TaskScheduler.Default).Unwrap();
-                    return t;
-                }
+                await _tradeViewNseFoRepository.LoadTradeviewFromSource(isDeltaLoadRequested: true);
             }
             catch (Exception ex)
             {
                 _logger.Error($"Exception in LoadNseCmDataFromSourceDb", ex);
             }
-            return default(Task);
         }
     }
 }

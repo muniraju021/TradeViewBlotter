@@ -79,7 +79,8 @@ namespace DataAccess.Repository.Repositories
                     }
                     _log.Info($"TradeViewNseFoRepository: LoadTradeviewFromSource: NseFo Data Request- Data Count:{resultSet?.Count} From: '{dtInputFrom}' Till: '{dtInputTill}'");
 
-                    await LoadTradeViewRefTable(resultSet);
+                    if(resultSet.Count > 0)
+                        await LoadTradeViewRefTable(resultSet);
 
                     _log.Info($"TradeViewNseFoRepository: LoadTradeviewFromSource: NseFo Data Request Complete- From: '{dtInputFrom}' Till: '{dtInputTill}'");
                 }
@@ -161,12 +162,12 @@ namespace DataAccess.Repository.Repositories
 
                 //Insert into Ref Table
                 _log.Info($"TradeViewNseFoRepository: LoadTradeViewFromSource Ref table Insertion Starting - {output.Count}");
-                await _tradeViewRefRepository.BulkInsert(output.ToCollection<TradeViewRef>());
+                await _tradeViewRefRepository.AddTradeView(output.ToCollection<TradeViewRef>());
                 _log.Info($"TradeViewNseFoRepository: LoadTradeViewFromSource Ref table Finished Starting - {output.Count}");
 
                 //Sync with main table
                 await _tradeViewRepo.SyncWithTradeViewRefTable(guid);
-                _log.Info($"TradeViewNseFoRepository: LoadTradeviewRefTable - NSE FO Processed Records - {output.Count}");
+                _log.Info($"TradeViewNseFoRepository: LoadTradeviewRefTable - NSE FO Synching Completed - {output.Count}");
             }
         }
     }
