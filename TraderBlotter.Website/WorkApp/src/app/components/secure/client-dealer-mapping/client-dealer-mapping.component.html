@@ -1,0 +1,41 @@
+<div class="parentDiv offset-md-0 mt-3">
+  <div class="card cardDiv">
+    <div class="card-header">
+      Client Dealer Mapping
+    </div>
+    <div class="card-body">
+
+      <div class="form-group col-md-8">
+        <label for="dropDownDealer"> <h5>Dealers</h5></label>
+        <select class="form-control col-md-8" id="dropDownDealer" [(ngModel)]="dealer"
+          [ngModelOptions]="{standalone: true}" #dropDownDealer (change)='onDealerSelected(dropDownDealer.value)'>
+          <option value="" selected disabled hidden>Select Dealer</option>
+          <option *ngFor="let dealer of dealers" [value]="dealer">{{dealer}}</option>
+        </select>
+      </div>
+
+      <br />
+      <br />
+
+      <div cdkDropListGroup style=margin-left:16px>
+        <div class="example-container">
+          <h5>Current Mapping</h5>
+
+          <div cdkDropList [cdkDropListData]="todo" class="example-list" (cdkDropListDropped)="drop($event)">
+            <div class="example-box" *ngFor="let item of todo" cdkDrag>{{item}}</div>
+          </div>
+        </div>
+
+        <div class="example-container">
+          <h5>New Mapping</h5>
+
+          <div cdkDropList [cdkDropListData]="done" class="example-list" (cdkDropListDropped)="drop($event)">
+            <div class="example-box" *ngFor="let item of done" cdkDrag>{{item}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <br/>
+  <br/>
+</div>

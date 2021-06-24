@@ -10,15 +10,21 @@ import { User } from '../models/user';
 export class AuthenticationService {
     private currentUserSubject: BehaviorSubject<User>;
     public currentUser: Observable<User>;
+    roleId: string = ''
+    userLogin: string = ''
 
     constructor(private http: HttpClient) {
         this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
         this.currentUser = this.currentUserSubject.asObservable();
-    }
+        if (this.currentUserSubject && this.currentUserSubject.value)
+        {
+            this.roleId = this.currentUserSubject.value["roleId"];
+            this.userLogin = this.currentUserSubject.value["loginName"];
+    }}
 
     public get currentUserValue(): User {
         return this.currentUserSubject.value;
-    }
+    }z  
 
     login(username: string, password: string) {
 
@@ -28,6 +34,8 @@ export class AuthenticationService {
                 user.authdata = window.btoa(username + ':' + password);
                 localStorage.setItem('currentUser', JSON.stringify(user));
                 this.currentUserSubject.next(user);
+                this.roleId = JSON.parse(localStorage.getItem('currentUser'))["roleId"];
+                this.userLogin = JSON.parse(localStorage.getItem('currentUser'))["loginName"];
                 return user;
             }));
     }

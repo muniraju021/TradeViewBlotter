@@ -1,7 +1,8 @@
-
 <div class="parentDiv offset-md-1 mt-3">
-        
-        <br/>
+    <br />
+    <div *ngIf="error" class="col-md-6 alert alert-danger ">{{error}}</div>
+    <div *ngIf="success" class="col-md-6 alert alert-success ">{{success}}</div>
+    <br />
     <div class="card  cardDiv">
         <div class="card-header">
             Create User
@@ -12,8 +13,8 @@
                     <label for="loginname">
                         Login Name
                     </label>
-                    <input type="text" class="form-control" formControlName="loginname" [ngClass]="{ 'is-invalid': submitted && f.loginname.errors }"
-                        placeholder="Username">
+                    <input type="text" class="form-control" formControlName="loginname"
+                        [ngClass]="{ 'is-invalid': submitted && f.loginname.errors }" placeholder="Username">
                     <div *ngIf="submitted && f.loginname.errors" class="invalid-feedback">
                         <div *ngIf="f.loginname.errors.required">Username is required</div>
                     </div>
@@ -23,8 +24,8 @@
                     <label for="password">
                         Password
                     </label>
-                    <input type="password" class="form-control" formControlName="password" [ngClass]="{ 'is-invalid': submitted && f.password.errors }"
-                        placeholder="Password">
+                    <input type="password" class="form-control" formControlName="password"
+                        [ngClass]="{ 'is-invalid': submitted && f.password.errors }" placeholder="Password">
                     <span *ngIf="submitted && f.password.errors" class="invalid-feedback">
                         <span *ngIf="f.password.errors.required">Password is required</span>
                     </span>
@@ -34,8 +35,9 @@
                     <label for="inputEmail">
                         Email address
                     </label>
-                    <input type="email" class="form-control" formControlName="inputEmail" [ngClass]="{'is-invalid': submitted && f.inputEmail.errors }"
-                        aria-describedby="emailHelp" placeholder="Enter email">
+                    <input type="email" class="form-control" formControlName="inputEmail"
+                        [ngClass]="{'is-invalid': submitted && f.inputEmail.errors }" aria-describedby="emailHelp"
+                        placeholder="Enter email">
                     <div *ngIf="submitted && f.inputEmail.errors" class="invalid-feedback">
                         <div *ngIf="f.inputEmail.errors.required || f.inputEmail.errors.email"> Email not valid.</div>
                     </div>
@@ -44,8 +46,9 @@
 
                 <div class="form-group col-md-10">
                     <label for="ddRole">User Role</label>
-                    <select #ddRole formcontrolname="ddRole" (change)='onRoleSelected(ddRole.value)' class="form-control" >
-                        <option value=""  selected disabled hidden>Select Role</option>
+                    <select #ddRole formcontrolname="ddRole" (change)='onRoleSelected(ddRole.value)'
+                        class="form-control">
+                        <option value="" selected disabled hidden>Select Role</option>
                         <option *ngFor="let role of userRoles" [value]="role">{{role}}</option>
                     </select>
                 </div>
@@ -53,8 +56,9 @@
                 <div class="form-group col-md-10">
                     <div *ngIf="!(userRole==='SuperAdmin' || userRole==='')">
                         <label for="ddCode">User Codes</label>
-                        <select #ddCode id='ddCode' formcontrolname="ddCode" (change)='onCodeSelected(ddCode.value)' required class="form-control">
-                                <option value=""  selected disabled hidden>Select Code</option>
+                        <select #ddCode id='ddCode' formcontrolname="ddCode" (change)='onCodeSelected(ddCode.value)'
+                            required class="form-control">
+                            <option value="" selected disabled hidden>Select Code</option>
                             <option *ngFor="let code of userCodes" [ngValue]="code">{{code}}</option>
                         </select>
                     </div>
@@ -66,19 +70,21 @@
             </form>
         </div>
     </div>
+    <br />
+    <br />
+    <br />
+    <h5 style="color: black">User details:</h5>
+    <br />
 
-    <br/>
-    <div *ngIf="error" class="col-md-6 alert alert-danger ">{{error}}</div>
-        <div *ngIf="success" class="col-md-6 alert alert-success ">{{success}}</div>
-    <br/>
-    <h4 style="color: black">Update user:</h4>
-    <br/>
     <div class="gridDiv">
-        <ag-grid-angular [gridOptions]="gridOptions" class="ag-theme-alpine grid" [rowData]="rowData" [columnDefs]="columnDefs" [defaultColDef]="defaultColDef"
-            [pagination]=true [paginationPageSize]=8 (gridReady)="onGridReady($event)" (firstDataRendered)="onFirstDataRendered($event)"
-            (rowEditingStopped)="onRowEditingStopped($event)" (rowEditingStarted)="onRowEditingStarted($event)"
-            (cellClicked)="onCellClicked($event)" editType="fullRow" [suppressClickEdit]="true" domLayout='autoHeight'>
+        <ag-grid-angular [gridOptions]="gridOptions" class="ag-theme-alpine grid" [rowData]="rowData"
+            [columnDefs]="columnDefs" [defaultColDef]="defaultColDef" [pagination]=false
+            (gridReady)="onGridReady($event)" (firstDataRendered)="onFirstDataRendered($event)"
+            [suppressClickEdit]="true">
         </ag-grid-angular>
     </div>
-    <br/>
+    <br />
+    <br />
+    <br />
+    <br />
 </div>

@@ -1,0 +1,66 @@
+<div class="parentDiv offset-md-1 mt-3">
+    <br />
+    <div *ngIf="error" class="col-md-6 alert alert-danger ">{{error}}</div>
+    <div *ngIf="success" class="col-md-6 alert alert-success ">{{success}}</div>
+    <br />
+    <div class="card cardDiv">
+        <div class="card-header">
+            Update User
+        </div>
+        <div class="card-body" >
+            <form [formGroup]="userForm"  (ngSubmit)="UpdateUser()">
+                <div class="form-group col-md-10">
+                    <label for="loginname">
+                        Login Name
+                    </label>
+                    <select #ddUser formcontrolname="ddUser" (change)='onUserSelected(ddUser.value)'
+                        class="form-control">
+                        <option value="" selected disabled hidden>Select User</option>
+                        <option *ngFor="let user of users" [value]="user">{{user}}</option>
+                    </select>
+                </div>
+
+                <div class="form-group col-md-10">
+                    <label for="inputEmail">
+                        Email address
+                    </label>
+                    <input type="email" class="form-control" formControlName="inputEmail"
+                        [ngClass]="{'is-invalid': submitted && f.inputEmail.errors }" aria-describedby="emailHelp"
+                        placeholder="Enter email">
+                    <div *ngIf="submitted && f.inputEmail.errors" class="invalid-feedback">
+                        <div *ngIf="f.inputEmail.errors.required || f.inputEmail.errors.email"> Email not valid.</div>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-10">
+                    <label for="ddRole">User Role </label>
+                    <select id="ddRole" [(ngModel)]="userRole" [ngModelOptions]="{standalone: true}" #ddRole formcontrolname="ddRole" (change)='onRoleSelected(ddRole.value)'
+                        class="form-control">
+                        <option value="" selected disabled hidden>Select Role</option>
+                        <option *ngFor="let role of userRoles" [value]="role">{{role}}</option>
+                    </select>
+                </div>
+
+                <div class="form-group col-md-10">
+                    <div *ngIf="!(userRole==='SuperAdmin' || userRole==='')">
+                        <label for="ddCode">User Codes</label>
+                        <select id="ddCode" [(ngModel)]="userCode" [ngModelOptions]="{standalone: true}" #ddCode formcontrolname="ddCode" (change)='onCodeSelected(ddCode.value)'
+                             class="form-control">
+                            <option value="" selected disabled hidden>Select Code</option>
+                            <option *ngFor="let code of userCodes" [value]="code">{{code}}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group col-md-10" style="margin-left: 20px; margin-top: 20px;">                    
+                    <input type="checkbox" id="isActive" class="form-check-input" formControlName="isActive">
+                    <label  for="isActive" style="margin-left: 10px;"> User Active </label>
+                </div>
+
+                <div class="form-group col-md-6 offset-md-3 mt-4">
+                    <button type="submit" style="width:175px" class="btn btn-primary">Update User</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

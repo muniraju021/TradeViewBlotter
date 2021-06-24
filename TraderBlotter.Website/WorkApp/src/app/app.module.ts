@@ -9,16 +9,20 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BasicAuthInterceptor } from '../app/shared/common/basic-auth.interceptor';
 import { ErrorInterceptor } from '../app/shared/common/error.interceptor';
-// used to create fake backend
 import { AgGridModule } from 'ag-grid-angular';
 import { UserComponent } from './components/secure/user/user.component';
+import { ClientDealerMappingComponent } from './components/secure/client-dealer-mapping/client-dealer-mapping.component';
+import {DragDropModule} from '@angular/cdk/drag-drop';
+import { ManageUserComponent } from './components/secure/manage-user/manage-user.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     HomeComponent,
-    UserComponent
+    UserComponent,
+    ClientDealerMappingComponent,
+    ManageUserComponent
   ],
   imports: [
     HttpClientModule,
@@ -26,14 +30,12 @@ import { UserComponent } from './components/secure/user/user.component';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    AgGridModule.withComponents([])
+    AgGridModule.withComponents([]),
+    DragDropModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
-
-    // provider used to create fake backend
-   // fakeBackendProvider
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
 ],
   bootstrap: [AppComponent]
 })

@@ -59,4 +59,12 @@ deleteUser(user: User): Observable<any> {
        }));
 }
 
+getUserByLoginName(userName: string): Observable<any> {
+    return this.http.get<any>(`${environment.apiUrl}/v1/UserManagement/getUserByLoginName?loginName=` + userName)
+        .pipe(map((response: Response) => {
+            return response;
+        }));
+}
+
+
 }

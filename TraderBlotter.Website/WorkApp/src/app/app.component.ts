@@ -6,18 +6,15 @@ import { User } from '../app/shared/models/user';
 
 @Component({ selector: 'app-root', templateUrl: 'app.component.html' })
 export class AppComponent {
-    currentUser: User;
-    userLoginName: string = ''
+    currentUser: User;    
 
     constructor(
         private router: Router,
-        private authenticationService: AuthenticationService
+        public authenticationService: AuthenticationService
     ) {
         this.authenticationService.currentUser.subscribe(x => this.currentUser = x);
-        // if (JSON.parse(localStorage.getItem('currentUser'))) {
-        //     this.userLoginName = JSON.parse(localStorage.getItem('currentUser'))["loginName"];
-        // }
     }
+
 
     logout() {
         this.authenticationService.logout();

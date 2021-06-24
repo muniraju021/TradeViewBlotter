@@ -50,7 +50,7 @@ export class HomeComponent {
         { field: 'tokenNo' },
         { field: 'exchangeName', headerName: 'Exch Name' },
         { field: 'brokerId' },
-        { field: 'userId' },//dealer id
+        { field: 'userId' },
         { field: 'exchangeUser', headerName: 'CTCL ID' },
         { field: 'branchId' },
         { field: 'proClient', headerName: 'Pro / Client' },
@@ -70,7 +70,6 @@ export class HomeComponent {
     };
 
     constructor(private userService: UserService, private http: HttpClient, private blotterService: BlotterService) {
-        // this.rowSelection = 'multiple';
         this.rowHeight = 28;
         this.gridOptions = {
             columnDefs: this.columnDefs,

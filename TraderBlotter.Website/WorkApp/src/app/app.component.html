@@ -5,17 +5,20 @@
             <li class="nav-item active">
                 <a class="nav-item nav-link" routerLink="/">Home</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-item nav-link" routerLink="/user">User Creation</a>
+            <li class="nav-item" *ngIf="authenticationService.roleId && authenticationService.roleId=='1'">
+                <a class="nav-item nav-link" routerLink="/user">CreateUser</a>
+            </li>
+            <li class="nav-item" *ngIf="authenticationService.roleId && authenticationService.roleId=='1'">
+                <a class="nav-item nav-link" routerLink="/manage-user">ManageUser</a>
             </li>
             <li class="nav-item">
-                <a class="nav-item nav-link" routerLink="/NetPositionView">NetPositionView</a>
+                <a class="nav-item nav-link" routerLink="/client-dealer-mapping">Client-Dealer-Mappping</a>
             </li>
         </ul>
         <ul class="navbar-nav">
-                <!-- <li class="nav-item">
-                        <a class="nav-item nav-link ml-auto" href="#">{{userLoginName}}</a>
-                    </li> -->
+                <li class="nav-item">
+                        <a class="nav-item nav-link ml-auto" href="#">{{authenticationService.userLogin}}</a>
+                    </li>
             <li class="nav-item">
                 <a class="nav-item nav-link ml-auto" href="#" (click)="logout()">Logout</a>
             </li>

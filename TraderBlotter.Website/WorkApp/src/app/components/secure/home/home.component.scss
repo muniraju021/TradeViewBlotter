@@ -9,6 +9,8 @@
 {
     font-size: 10px;
     text-align: center;
+    color: black;
+    font-weight: bold;
 }
 
 .label-text
@@ -17,5 +19,13 @@
     height: 18px;
     margin-left: -5;
     padding: -5;
-    border: 1px;
+    outline: none;
+}
+
+.csvExport
+{
+    float: right; 
+    outline:none;
+    border-width: 0px; 
+    background-color:white
 }
