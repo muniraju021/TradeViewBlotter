@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BatchManager.Services;
+using DataAccess.Repository;
 using DataAccess.Repository.LogServices;
 using DataAccess.Repository.Repositories;
 using DataAccess.Repository.RepositoryEF.IRepositoryEF;
@@ -38,18 +39,22 @@ namespace TraderBlotter.Api.Controllers
 
         [HttpGet]
         [Route("syncBseCmTrades")]
-        public async Task<IActionResult> SyncBseCmTrades(bool archiveEnabled = false)
+        public async Task<IActionResult> SyncBseCmTrades(bool archiveEnabled = false, DateTime dateVal = default(DateTime))
         {
             try
             {
                 _log.Info($"SyncBseCmTrades started");
                 if (archiveEnabled)
                 {
-                    var res = await _tradeViewGenericRepository.ArchiveAndPurgeTradeView();
+                    var res = await _tradeViewGenericRepository.ArchiveAndPurgeTradeView(Constants.BseCmExchangeName);
                     _log.Info($"Archiving of TradeView is Complete");
                 }
 
-                await _tradeViewBseCmRepository.LoadTradeviewFromSource();
+                if (dateVal.Equals(default(DateTime)))
+                    dateVal = DateTime.Now;
+
+                await _tradeViewBseCmRepository.LoadTradeviewFromSource(dateVal);
+
                 _log.Info($"SyncBseCmTrades Finished");
                 return Ok(HttpStatusCode.OK);
             }
@@ -62,18 +67,21 @@ namespace TraderBlotter.Api.Controllers
 
         [HttpGet]
         [Route("syncNseFoTrades")]
-        public async Task<IActionResult> SyncNseFoTrades(bool archiveEnabled = false)
+        public async Task<IActionResult> SyncNseFoTrades(bool archiveEnabled = false, DateTime dateVal = default(DateTime))
         {
             try
             {
                 _log.Info($"SyncNseFoTrades started");
                 if (archiveEnabled)
                 {
-                    var res = await _tradeViewGenericRepository.ArchiveAndPurgeTradeView();
+                    var res = await _tradeViewGenericRepository.ArchiveAndPurgeTradeView(Constants.NseFoExchangeName);
                     _log.Info($"Archiving of TradeView is Complete");
                 }
 
-                await _tradeViewNseFoRepository.LoadTradeviewFromSource();
+                if (dateVal.Equals(default(DateTime)))
+                    dateVal = DateTime.Now;
+
+                await _tradeViewNseFoRepository.LoadTradeviewFromSource(dateTimeVal:dateVal);
                 _log.Info($"SyncNseFoTrades Finished");
                 return Ok(HttpStatusCode.OK);
             }

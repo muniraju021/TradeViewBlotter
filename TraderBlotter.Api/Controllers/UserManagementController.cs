@@ -52,33 +52,55 @@ namespace TraderBlotter.Api.Controllers
         [Route("validateLogin")]
         public IActionResult ValidateLogin([FromBody] LoginRequestDto loginRequest)
         {
-            var user = _userViewRepository.ValidateLogin(loginRequest.LoginName, loginRequest.Password);
-            if (user == null)
-                return StatusCode(401, new ErrorModel { HttpStatusCode = 401, Message = "Invalid UserName and Password" });
+            try
+            {
+                _log.Info($"ValidateLogin Callling: {loginRequest?.LoginName}");
 
-            var userDto = _mapper.Map<UserDto>(user);
-            return Ok(userDto);
+                var user = _userViewRepository.ValidateLogin(loginRequest.LoginName, loginRequest.Password);
+                if (user == null)
+                    return StatusCode(401, new ErrorModel { HttpStatusCode = 401, Message = "Invalid UserName and Password" });
+
+                var userDto = _mapper.Map<UserDto>(user);
+                return Ok(userDto);
+            }
+            catch (Exception ex)
+            {
+                _log.Error($"Error in ValidateLogin - ", ex);
+                return StatusCode(500, new ErrorModel { HttpStatusCode = 500, Message = "Internal Server Error" });
+            }
+            
         }
 
         [HttpGet]
         [Route("getUserByLoginName")]
         public IActionResult GetUserInfo(string loginName)
         {
-            var obj = _userViewRepository.GetUserById(loginName);
-            if(obj == null)
-                return StatusCode(401, new ErrorModel { HttpStatusCode = 401, Message = "User Not Found" });
-            var userDto = _mapper.Map<UserDto>(obj);
+            try
+            {
+                _log.Info($"GetUserInfo Callling: {loginName}");
 
-            if (!string.IsNullOrWhiteSpace(userDto.GroupName))
-                userDto.RoleCode = userDto.GroupName;
-            else if (!string.IsNullOrWhiteSpace(userDto.DealerCode))
-                userDto.RoleCode = userDto.DealerCode;
-            else if (!string.IsNullOrWhiteSpace(userDto.ClientCode))
-                userDto.RoleCode = userDto.ClientCode;
+                var obj = _userViewRepository.GetUserById(loginName);
+                if (obj == null)
+                    return StatusCode(401, new ErrorModel { HttpStatusCode = 401, Message = "User Not Found" });
+                var userDto = _mapper.Map<UserDto>(obj);
 
-            userDto.RoleName = _roleViewRepository.GetRoleById(userDto.RoleId)?.RoleName; 
+                if (!string.IsNullOrWhiteSpace(userDto.GroupName))
+                    userDto.RoleCode = userDto.GroupName;
+                else if (!string.IsNullOrWhiteSpace(userDto.DealerCode))
+                    userDto.RoleCode = userDto.DealerCode;
+                else if (!string.IsNullOrWhiteSpace(userDto.ClientCode))
+                    userDto.RoleCode = userDto.ClientCode;
 
-            return Ok(userDto);
+                userDto.RoleName = _roleViewRepository.GetRoleById(userDto.RoleId)?.RoleName;
+
+                return Ok(userDto);
+            }
+            catch (Exception ex)
+            {
+                _log.Error($"Error in GetUserInfo - ", ex);
+                return StatusCode(500, new ErrorModel { HttpStatusCode = 500, Message = "Internal Server Error" });
+            }
+            
         }
 
 
@@ -94,6 +116,7 @@ namespace TraderBlotter.Api.Controllers
         [Route("getClientCodes")]
         public IActionResult GetClientCodes()
         {
+            _log.Info($"GetClientCodes Calling");
             return Ok(_userViewRepository.GetClientViews());
         }
 
@@ -101,7 +124,44 @@ namespace TraderBlotter.Api.Controllers
         [Route("getGroups")]
         public IActionResult GetGroups()
         {
+            _log.Info($"GetGroups Calling");
             return Ok(_userViewRepository.GetGroups());
+        }
+
+        [HttpGet]
+        [Route("getDealersByGroupName")]
+        public IActionResult GetDealersByGroupName(string groupName)
+        {
+            try
+            {
+                _log.Info($"GetDealersByGroupName Calling - {groupName} ");
+                var lst = _userViewRepository.GetDealersByGroupName(groupName);
+                return Ok(lst);
+            }
+            catch (Exception ex)
+            {
+                _log.Error($"Error in GetDealersByGroupName - ", ex);
+                return StatusCode(500, new ErrorModel { HttpStatusCode = 500, Message = "Internal Server Error" });
+            }
+            
+        }
+
+        [HttpGet]
+        [Route("getClientCodeByDealerCode")]
+        public IActionResult GetClientCodeByDealerCode(string dealerCode)
+        {
+            try
+            {
+                _log.Info($"GetClientCodeByDealerCode Calling - {dealerCode} ");
+                var lst = _userViewRepository.GetClientCodesByDealerCode(dealerCode);
+                return Ok(lst);
+            }
+            catch (Exception ex)
+            {
+                _log.Error($"Error in GetClientCodeByDealerCode - ", ex);
+                return StatusCode(500, new ErrorModel { HttpStatusCode = 500, Message = "Internal Server Error" });
+            }
+
         }
 
         [HttpGet]

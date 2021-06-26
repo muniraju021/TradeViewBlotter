@@ -3,52 +3,50 @@ using DataAccess.Repository.Repositories;
 using log4net;
 using System;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Transactions;
 
 namespace BatchManager.Services
 {
-    public class LoadTradeViewDataBseCm : ILoadTradeviewData
+    public class LoadTradeviewDataNseFo : ILoadTradeviewDataNseFo
     {
-        private readonly ITradeViewBseCmRepository _tradeViewBseCmRepository;
-        private readonly ILog _logger = LogService.GetLogger(typeof(LoadTradeViewDataBseCm));
+        private readonly ITradeViewNseFoRepository _tradeViewNseFoRepository;
+        private readonly ILog _logger = LogService.GetLogger(typeof(LoadTradeviewDataNseFo));
         public static bool isSyncDataStarted = false;
 
-        public LoadTradeViewDataBseCm(ITradeViewBseCmRepository tradeViewBseCmRepository)
+        public LoadTradeviewDataNseFo(ITradeViewNseFoRepository tradeViewNseFoRepository)
         {
-            _tradeViewBseCmRepository = tradeViewBseCmRepository;
+            _tradeViewNseFoRepository = tradeViewNseFoRepository;
         }
 
-        //public Task LoadBseCmDataFromSourceDb()
+        //public Task LoadNseFoDataFromSourceDb()
         //{
         //    try
         //    {
-        //        _logger.Info($"Inside LoadBseCmDataFromSourceDb");
+        //        _logger.Info($"Inside LoadNseFoDataFromSourceDb");
         //        var cts = new CancellationTokenSource();
-        //        if (!LoadTradeViewDataBseCm.isSyncDataStarted)
+        //        if (!LoadTradeviewDataNseFo.isSyncDataStarted)
         //        {
         //            _logger.Info($"Intializing AutoSync");
-        //            LoadTradeViewDataBseCm.isSyncDataStarted = true;
+        //            LoadTradeviewDataNseFo.isSyncDataStarted = true;
         //            Task t = Task.Factory.StartNew(
         //            async () =>
         //            {
-        //                while (LoadTradeViewDataBseCm.isSyncDataStarted)
+        //                while (LoadTradeviewDataNseFo.isSyncDataStarted)
         //                {
         //                    cts.Token.ThrowIfCancellationRequested();
         //                    try
         //                    {
-        //                        await _tradeViewBseCmRepository.LoadTradeviewFromSource(isDeltaLoadRequested:true);
+        //                        await _tradeViewNseFoRepository.LoadTradeviewFromSource(isDeltaLoadRequested: true);
         //                        await Task.Delay(60000, cts.Token);
         //                    }
-        //                    catch (Exception ex)
+        //                    catch (TaskCanceledException ex)
         //                    {
         //                        _logger.Error($"Exception in LoadNseCmDataFromSourceDb ", ex);
         //                    }
         //                }
-        //                _logger.Info($"LoadBseCmDataFromSourceDb: Auto Sync BSE_CM data Stopped");
+        //                _logger.Info($"LoadNseFoDataFromSourceDb: Auto Sync BSE_CM data Stopped");
         //            }, cts.Token, TaskCreationOptions.LongRunning, TaskScheduler.Default).Unwrap();
         //            return t;
         //        }
@@ -60,12 +58,12 @@ namespace BatchManager.Services
         //    return default(Task);
         //}
 
-        public async Task LoadBseCmDataFromSourceDb()
+        public async Task LoadNseFoDataFromSourceDb()
         {
             try
             {
-                _logger.Info($"LoadBseCmDataFromSourceDb Started");
-                await _tradeViewBseCmRepository.LoadTradeviewFromSource(isDeltaLoadRequested: true);
+                _logger.Info($"Inside LoadNseFoDataFromSourceDb");
+                await _tradeViewNseFoRepository.LoadTradeviewFromSource(isDeltaLoadRequested: true);
             }
             catch (Exception ex)
             {

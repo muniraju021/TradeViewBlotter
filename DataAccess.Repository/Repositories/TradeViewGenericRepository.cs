@@ -23,7 +23,7 @@ namespace DataAccess.Repository.Repositories
         public async Task<IEnumerable<TradeView>> GetAllTradeViewsByPageIndex()
         {
             //var query = $"SELECT * FROM tradeview order by TradeDate desc LIMIT {pageIndex}, {pageSize}";
-            var query = $"SELECT * FROM tradeview order by TradeDate desc";
+            var query = $"SELECT * FROM tradeview order by TradeDateTime desc";
             var res = await _tradeViewRepo.GetAllEntityAsync(query);
             return res;
         }
@@ -53,10 +53,20 @@ namespace DataAccess.Repository.Repositories
             return lst.ToList();
         }
 
-        public async Task<int> ArchiveAndPurgeTradeView()
+        public async Task<int> ArchiveAndPurgeTradeView(string exchangeName)
         {
-            var res = await _tradeViewRepo.ExcecuteNonQueryAsync("archiveTradeViewData", cmdType: CommandType.StoredProcedure);
+            var inputParams = new DynamicParameters();
+            inputParams.Add("exchangeName", exchangeName);
+            var res = await _tradeViewRepo.ExcecuteNonQueryAsync("archiveTradeViewData", parameters: inputParams, cmdType: CommandType.StoredProcedure);
             return res;
         }
-    } 
+
+        public async Task<int> SyncWithTradeViewRefTable(string guid)
+        {
+            var inputParams = new DynamicParameters();
+            inputParams.Add("guidKey", guid);
+            var res = await _tradeViewRepo.ExcecuteNonQueryAsync("SyncTradeViewWithRefTable", parameters: inputParams, cmdType: CommandType.StoredProcedure);
+            return res;
+        }
+    }
 }

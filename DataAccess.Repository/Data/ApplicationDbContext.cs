@@ -17,6 +17,8 @@ namespace DataAccess.Repository.Data
 
         public DbSet<TradeView> TradeViews { get; set; }
 
+        public DbSet<TradeViewRef> TradeViewRefs { get; set; }
+
         public DbSet<UserView> UserViews { get; set; }
 
         public DbSet<RoleView> RoleViews { get; set; }
