@@ -5,10 +5,8 @@ using System.Threading.Tasks;
 
 namespace BatchManager.Services
 {
-    public interface ILoadTradeviewData
+    public interface ILoadTradeviewDataNseCm
     {
-        Task LoadBseCmDataFromSourceDb();
-
-        Task LoadTradeviewFulDataFromSource();
+        Task LoadNseCmDataFromSourceDb();
     }
 }

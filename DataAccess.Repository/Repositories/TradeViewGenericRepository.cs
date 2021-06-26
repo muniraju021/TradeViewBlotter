@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using DataAccess.Repository.Data;
 using DataAccess.Repository.Infrastructure;
+using Microsoft.Extensions.Configuration;
 using MySql.Data.MySqlClient.Memcached;
 using System;
 using System.Collections.Generic;
@@ -14,10 +15,14 @@ namespace DataAccess.Repository.Repositories
     public class TradeViewGenericRepository : ITradeViewGenericRepository
     {
         private readonly IGenericRepository<TradeView> _tradeViewRepo;
+        private readonly IConfiguration _configuration;
+        private readonly bool _blnArchiveDataEnabled;
 
-        public TradeViewGenericRepository(IGenericRepository<TradeView> tradeViewRepo)
+        public TradeViewGenericRepository(IGenericRepository<TradeView> tradeViewRepo,IConfiguration configuration)
         {
             _tradeViewRepo = tradeViewRepo;
+            _configuration = configuration;
+            _blnArchiveDataEnabled = _configuration.GetSection("ArchiveEnabled")?.Value != null ? Convert.ToBoolean(_configuration.GetSection("ArchiveEnabled")?.Value) : false;
         }
 
         public async Task<IEnumerable<TradeView>> GetAllTradeViewsByPageIndex()
@@ -55,10 +60,14 @@ namespace DataAccess.Repository.Repositories
 
         public async Task<int> ArchiveAndPurgeTradeView(string exchangeName)
         {
-            var inputParams = new DynamicParameters();
-            inputParams.Add("exchangeName", exchangeName);
-            var res = await _tradeViewRepo.ExcecuteNonQueryAsync("archiveTradeViewData", parameters: inputParams, cmdType: CommandType.StoredProcedure);
-            return res;
+            if (_blnArchiveDataEnabled)
+            {
+                var inputParams = new DynamicParameters();
+                inputParams.Add("exchangeName", exchangeName);
+                var res = await _tradeViewRepo.ExcecuteNonQueryAsync("archiveTradeViewData", parameters: inputParams, cmdType: CommandType.StoredProcedure);
+                return res;
+            }
+            return -1;
         }
 
         public async Task<int> SyncWithTradeViewRefTable(string guid)

@@ -8,5 +8,7 @@ namespace DataAccess.Repository.Repositories
     public interface ITradeViewNseFoRepository
     {
         Task LoadTradeviewFromSource(DateTime dateTimeVal = default(DateTime), bool isDeltaLoadRequested = false);
+
+        Task LoadTradeviewFulDataFromSource();
     }
 }

@@ -43,6 +43,8 @@ namespace TraderBlotter.Api.Controllers
                 _logger.Info($"Archived old days data of - {Constants.BseCmExchangeName}");
                 await _tradeViewGenericRepository.ArchiveAndPurgeTradeView(Constants.NseFoExchangeName);
                 _logger.Info($"Archived old days data of - {Constants.NseFoExchangeName}");
+                await _tradeViewGenericRepository.ArchiveAndPurgeTradeView(Constants.NseCmExchangeName);
+                _logger.Info($"Archived old days data of - {Constants.NseCmExchangeName}");
 
                 //await _loadTradeviewData.LoadBseCmDataFromSourceDb();
                 //_logger.Info($"Auto Sync of BSE CM Data Started");

@@ -17,11 +17,13 @@ namespace BatchManager.Services
         private static ILoadTradeviewData _loadTradeviewData;
         private readonly ILog _logger = LogService.GetLogger(typeof(AutoSyncService));
         private readonly ILoadTradeviewDataNseFo _loadTradeviewDataNseFo;
+        private readonly ILoadTradeviewDataNseCm _loadTradeviewDataNseCm;
 
-        public AutoSyncService(ILoadTradeviewData loadTradeviewData, ILoadTradeviewDataNseFo loadTradeviewDataNseFo)
+        public AutoSyncService(ILoadTradeviewData loadTradeviewData, ILoadTradeviewDataNseFo loadTradeviewDataNseFo, ILoadTradeviewDataNseCm loadTradeviewDataNseCm)
         {
             _loadTradeviewData = loadTradeviewData;
             _loadTradeviewDataNseFo = loadTradeviewDataNseFo;
+            _loadTradeviewDataNseCm = loadTradeviewDataNseCm;
         }
 
         public async Task StartAutoSyncFromSource()
@@ -37,12 +39,13 @@ namespace BatchManager.Services
                     {
                         await _loadTradeviewData.LoadBseCmDataFromSourceDb();
                         await _loadTradeviewDataNseFo.LoadNseFoDataFromSourceDb();
+                        await _loadTradeviewDataNseCm.LoadNseCmDataFromSourceDb();
                     }
                     catch (Exception ex)
                     {
                         _logger.Error($"Exception in LoadNseCmDataFromSourceDb ", ex);
                     }
-                    await Task.Delay(60000, cts.Token);
+                    await Task.Delay(30000, cts.Token);
                 }
 
                 //tasklst.Add(_loadTradeviewData.LoadBseCmDataFromSourceDb());
