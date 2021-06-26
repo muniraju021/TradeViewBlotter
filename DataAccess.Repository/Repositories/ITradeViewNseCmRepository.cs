@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Repository.Repositories
 {
-    public interface ITradeViewBseCmRepository
+    public interface ITradeViewNseCmRepository
     {
         Task LoadTradeviewFromSource(DateTime dateVal = default(DateTime), bool isDeltaLoadRequested = false);
 

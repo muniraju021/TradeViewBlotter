@@ -152,6 +152,7 @@ namespace DataAccess.Repository.Repositories
                     i.TradeTime = !string.IsNullOrWhiteSpace(i.TradeDateTime) ?
                                     DateTime.ParseExact(i.TradeDateTime, Constants.StrDateTimeFormat, provider).ToString(Constants.TimeFormat) : null; ;
                     i.Guid = guid;
+                    i.BuySell = i.BuySell == "1" ? "Buy" : "Sell";
                     return i;
                 }).ToList();
 
@@ -168,6 +169,50 @@ namespace DataAccess.Repository.Repositories
                 //Sync with main table
                 await _tradeViewRepo.SyncWithTradeViewRefTable(guid);
                 _log.Info($"TradeViewNseFoRepository: LoadTradeviewRefTable - NSE FO Synching Completed - {output.Count}");
+            }
+        }
+
+        public async Task LoadTradeviewFulDataFromSource()
+        {
+            try
+            {
+                int chunkIndex = 0;
+                string query = string.Empty;
+                bool isChunkingEnded = false;
+                while (!isChunkingEnded)
+                {
+                    query = string.Format($"select FillId,UserId,ExchUser,BranchId,mnmLocationId,Symbol,SymbolName,TradingSymbol,ExpiryDate,StrikePrice,OptionType,OrderType," +
+                            $"TransactionType,FillPrice,FillSize,TradeDateTime,ExchOrdId,mnmLotSize,ExecutingBroker,ExchAccountId,ReportType from NSE_FO " +
+                            $" order by TradeDateTime desc LIMIT {chunkIndex},{_chunkSize}");
+
+                    var resultSet = new List<TradeViewNseFo>();
+                    using (var reader = await _tradeViewNseFoRepo.GetDataReaderAsync(query, connectionName: _connectionName))
+                    {
+                        var colNames = reader.GetColumnNames();
+                        while (reader.Read())
+                        {
+                            var dt = new Dictionary<string, string>();
+                            foreach (var item in colNames)
+                            {
+                                dt.Add(item, reader[item].ToString());
+                            }
+                            resultSet.Add(JsonConvert.DeserializeObject<TradeViewNseFo>(JsonConvert.SerializeObject(dt)));
+                        }
+                    }
+                    _log.Info($"TradeViewNseFoRepository: LoadTradeviewFulDataFromSource - NseFo Full Data requested - ChunkIndex:{chunkIndex} - DataCount:{resultSet?.Count}");
+
+                    if (resultSet.Count <= 0)
+                        isChunkingEnded = true;
+                    chunkIndex += Convert.ToInt32(_chunkSize);
+                    await LoadTradeViewRefTable(resultSet);
+
+                    _log.Info($"TradeViewNseFoRepository: LoadTradeviewFulDataFromSource - NseFo Full Data Request Complete - ChunkIndex {chunkIndex}");
+                }
+            }
+            catch (Exception ex)
+            {
+                _log.Error($"Exception in LoadTradeviewFulDataFromSource ", ex);
+                throw ex;
             }
         }
     }

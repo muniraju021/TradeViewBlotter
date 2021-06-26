@@ -56,10 +56,14 @@ namespace TraderBlotter.Api
             services.AddScoped<ITradeViewRefRepository, TradeViewRefRepository>();
 
             services.AddScoped<ITradeViewBseCmRepository, TradeViewBseCmReposiotry>();
-            services.AddScoped<ITradeViewNseFoRepository, TradeViewNseFoRepository>();            
+            services.AddScoped<ITradeViewNseFoRepository, TradeViewNseFoRepository>();      
+            services.AddScoped<ITradeViewNseCmRepository, TradeViewNseCmReposiotry>();
+
 
             services.AddScoped<ILoadTradeviewData, LoadTradeViewDataBseCm>();
             services.AddScoped<ILoadTradeviewDataNseFo, LoadTradeviewDataNseFo>();
+            services.AddScoped<ILoadTradeviewDataNseCm, LoadTradeViewDataNseCm>();
+
             services.AddScoped<IAutoSyncService, AutoSyncService>();
 
 

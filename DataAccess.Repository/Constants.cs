@@ -8,6 +8,8 @@ namespace DataAccess.Repository
     {
         public const string BseCmExchangeName = "BSE_CM";
         public const string NseFoExchangeName = "NSE_FO";
+        public const string NseCmExchangeName = "NSE_CM";
+
 
         public const string StrDateTimeFormat = "dd MMM yyyy HH:mm:ss";
         public const string StrDateFormat = "yyyy-MM-dd";

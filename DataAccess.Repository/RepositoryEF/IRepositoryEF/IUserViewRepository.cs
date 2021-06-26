@@ -20,6 +20,7 @@ namespace DataAccess.Repository.RepositoryEF.IRepositoryEF
         void DeleteUser(UserView userView);
         ICollection<DealerView> GetDealersByGroupName(string groupName);
         ICollection<ClientView> GetClientCodesByDealerCode(string dealerCode);
-
+        ICollection<ClientView> GetClientCodesNotMappedToDealerCode(string dealerCode);
+        ICollection<DealerView> GetDealersNotMappedToGroupName(string groupName);
     }
 }

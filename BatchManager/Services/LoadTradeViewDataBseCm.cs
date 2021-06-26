@@ -72,5 +72,18 @@ namespace BatchManager.Services
                 _logger.Error($"Exception in LoadNseCmDataFromSourceDb", ex);
             }
         }
+
+        public async Task LoadTradeviewFulDataFromSource()
+        {
+            try
+            {
+                _logger.Info($"LoadBseCmFullDataFromSourceDb Started");
+                await _tradeViewBseCmRepository.LoadTradeviewFulDataFromSource();
+            }
+            catch (Exception ex)
+            {
+                _logger.Error($"Exception in LoadNseCmDataFromSourceDb", ex);
+            }
+        }
     }
 }

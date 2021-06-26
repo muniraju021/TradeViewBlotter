@@ -16,26 +16,26 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Repository.Repositories
 {
-    public class TradeViewBseCmReposiotry : ITradeViewBseCmRepository
+    public class TradeViewNseCmReposiotry : ITradeViewNseCmRepository
     {
-        private readonly IGenericRepository<object> _tradeViewBseCmRepo;
+        private readonly IGenericRepository<object> _tradeViewGenericRepo;
         private readonly ITradeViewGenericRepository _tradeViewRepo;
         private readonly ITradeViewRepository _tradeViewRepositoryEf;
         private readonly ITradeViewRefRepository _tradeViewRefRepository;
         private readonly IMapper _mapper;
         private readonly string _connectionName = "OmneDataSource";
         private readonly string LotSize = "1";
-        private readonly string BrokerId = "3107";
-        private readonly string ClientCode = "12562";
-        private static ILog _log = LogService.GetLogger(typeof(TradeViewBseCmReposiotry));
+        private readonly string BrokerId = "12562";
+        private readonly string ClientCodeConst = "12562";        
+        private static ILog _log = LogService.GetLogger(typeof(TradeViewNseCmReposiotry));
         private static IConfiguration _configuration;
         private readonly string _chunkSize;
 
-        public TradeViewBseCmReposiotry(IGenericRepository<object> tradeViewBseCmRepo,
+        public TradeViewNseCmReposiotry(IGenericRepository<object> tradeViewGenericRepo,
             ITradeViewRepository tradeViewRepositoryEf,
             IMapper mapper, ITradeViewRefRepository tradeViewRefRepository, ITradeViewGenericRepository tradeViewGenericRepository, IConfiguration configuration)
         {
-            _tradeViewBseCmRepo = tradeViewBseCmRepo;
+            _tradeViewGenericRepo = tradeViewGenericRepo;
             _tradeViewRepositoryEf = tradeViewRepositoryEf;
             _tradeViewRefRepository = tradeViewRefRepository;
             _tradeViewRepo = tradeViewGenericRepository;
@@ -55,13 +55,13 @@ namespace DataAccess.Repository.Repositories
                 var dtInputTill = DateTime.Now.ToString("yyyy-MM-dd HH:mm:00");
 
                 var whereCond = $" where STR_TO_DATE(TradeDateTime,'%d %M %Y %H:%i:%s') >= '{dtInputFrom}' and STR_TO_DATE(TradeDateTime,'%d %M %Y %H:%i:%s') <= '{dtInputTill}' ";
-                query = string.Format($"SELECT FillId,UserId,ExchUser,BranchId,mnmLocationId,Symbol,SymbolName,PriceType,TransactionType,FillPrice,FillSize,FillTime,FillDate,ExchangeTime,ExchOrdId,ExecutingBroker," +
-                                        $"ExchAccountId,Source,ReportType,TradeDateTime FROM BSE_CM {whereCond} order by FillTime desc");
+                query = string.Format($"SELECT FillId,UserId,ExchUser,BranchId,mnmLocationId,Symbol,SymbolName,TransactionType,FillPrice,FillSize," +
+                                        $"ExchOrdId,ExecutingBroker,ExchAccountId,Source,ReportType,TradeDateTime FROM NSE_CM {whereCond} order by TradeDateTime desc");
 
-                _log.Info($"TradeViewBseCmRepository: LoadTradeviewFromSource: BseCM Data Request- From: '{dtInputFrom}' Till: '{dtInputTill}'");
+                _log.Info($"TradeViewNseCmRepository: LoadTradeviewFromSource: NseCM Data Request- From: '{dtInputFrom}' Till: '{dtInputTill}'");
 
-                var resultSet = new List<TradeViewBseCm>();
-                using (var reader = await _tradeViewBseCmRepo.GetDataReaderAsync(query, connectionName: _connectionName))
+                var resultSet = new List<TradeViewNseCm>();
+                using (var reader = await _tradeViewGenericRepo.GetDataReaderAsync(query, connectionName: _connectionName))
                 {
                     var colNames = reader.GetColumnNames();
                     while (reader.Read())
@@ -71,15 +71,15 @@ namespace DataAccess.Repository.Repositories
                         {
                             dt.Add(item, reader[item].ToString());
                         }
-                        resultSet.Add(JsonConvert.DeserializeObject<TradeViewBseCm>(JsonConvert.SerializeObject(dt)));
+                        resultSet.Add(JsonConvert.DeserializeObject<TradeViewNseCm>(JsonConvert.SerializeObject(dt)));
                     }
                 }
-                _log.Info($"TradeViewBseCmRepository: LoadTradeviewFromSource: BseCM Data Request- Data Count:{resultSet?.Count} From: '{dtInputFrom}' Till: '{dtInputTill}'");
+                _log.Info($"TradeViewNseCmRepository: LoadTradeviewFromSource: NseCM Data Request- Data Count:{resultSet?.Count} From: '{dtInputFrom}' Till: '{dtInputTill}'");
 
                 if(resultSet.Count > 0)
                     await LoadTradeviewRefTable(resultSet);
 
-                _log.Info($"TradeViewBseCmRepository: LoadTradeviewFromSource: BseCM Data Request Complete- From: '{dtInputFrom}' Till: '{dtInputTill}'");
+                _log.Info($"TradeViewNseCmRepository: LoadTradeviewFromSource: NseCM Data Request Complete- From: '{dtInputFrom}' Till: '{dtInputTill}'");
 
 
             }
@@ -89,14 +89,14 @@ namespace DataAccess.Repository.Repositories
                 var dateValueStr = dateVal.ToString("yyyy-MM-dd 00:00:00");
                 while (!isChunkingEnded)
                 {
-                    query = string.Format($"SELECT FillId,UserId,ExchUser,BranchId,mnmLocationId,Symbol,SymbolName,PriceType,TransactionType,FillPrice,FillSize,FillTime,FillDate,ExchangeTime,ExchOrdId,ExecutingBroker," +
-                                        $"ExchAccountId,Source,ReportType,TradeDateTime FROM BSE_CM WHERE STR_TO_DATE(TradeDateTime, '%d %M %Y %H:%i:%s') >= '{dateValueStr}'" +
-                                        $" order by FillTime desc Limit {chunkIndex},{_chunkSize}");
+                    query = string.Format($"SELECT FillId,UserId,ExchUser,BranchId,mnmLocationId,Symbol,SymbolName,TransactionType,FillPrice,FillSize," +
+                                        $"ExchOrdId,ExecutingBroker,ExchAccountId,Source,ReportType,TradeDateTime FROM NSE_CM WHERE STR_TO_DATE(TradeDateTime, '%d %M %Y %H:%i:%s') >= '{dateValueStr}'" +
+                                        $" order by TradeDateTime desc Limit {chunkIndex},{_chunkSize}");
 
-                    _log.Info($"TradeViewBseCmRepository: LoadTradeviewFromSource - BseCM Full Data requested - Chunk {chunkIndex}");
+                    _log.Info($"TradeViewNseCmRepository: LoadTradeviewFromSource - NseCM Full Data requested - Chunk {chunkIndex}");
 
-                    var resultSet = new List<TradeViewBseCm>();
-                    using (var reader = await _tradeViewBseCmRepo.GetDataReaderAsync(query, connectionName: _connectionName))
+                    var resultSet = new List<TradeViewNseCm>();
+                    using (var reader = await _tradeViewGenericRepo.GetDataReaderAsync(query, connectionName: _connectionName))
                     {
                         var colNames = reader.GetColumnNames();
                         while (reader.Read())
@@ -106,18 +106,18 @@ namespace DataAccess.Repository.Repositories
                             {
                                 dt.Add(item, reader[item].ToString());
                             }
-                            resultSet.Add(JsonConvert.DeserializeObject<TradeViewBseCm>(JsonConvert.SerializeObject(dt)));
+                            resultSet.Add(JsonConvert.DeserializeObject<TradeViewNseCm>(JsonConvert.SerializeObject(dt)));
                         }
                     }
 
-                    _log.Info($"TradeViewBseCmRepository: LoadTradeviewFromSource - BseCM Full Data requested - ChunkIndex:{chunkIndex} - DataCount:{resultSet?.Count}");
+                    _log.Info($"TradeViewNseCmRepository: LoadTradeviewFromSource - NseCM Full Data requested - ChunkIndex:{chunkIndex} - DataCount:{resultSet?.Count}");
 
                     if (resultSet.Count <= 0)
                         isChunkingEnded = true;
                     chunkIndex += Convert.ToInt32(_chunkSize);
                     await LoadTradeviewRefTable(resultSet);
 
-                    _log.Info($"TradeViewBseCmRepository: LoadTradeviewFromSource - BseCM Full Data Request Complete - ChunkIndex {chunkIndex}");
+                    _log.Info($"TradeViewNseCmRepository: LoadTradeviewFromSource - NseCM Full Data Request Complete - ChunkIndex {chunkIndex}");
 
 
                 }
@@ -134,14 +134,14 @@ namespace DataAccess.Repository.Repositories
                 bool isChunkingEnded = false;
                 while (!isChunkingEnded)
                 {
-                    query = string.Format($"SELECT FillId,UserId,ExchUser,BranchId,mnmLocationId,Symbol,SymbolName,PriceType,TransactionType,FillPrice,FillSize,FillTime,FillDate,ExchangeTime,ExchOrdId,ExecutingBroker," +
-                                        $"ExchAccountId,Source,ReportType,TradeDateTime FROM BSE_CM " +
-                                        $" order by FillTime desc Limit {chunkIndex},{_chunkSize}");
+                    query = string.Format($"SELECT FillId,UserId,ExchUser,BranchId,mnmLocationId,Symbol,SymbolName,TransactionType,FillPrice,FillSize," +
+                                        $"ExchOrdId,ExecutingBroker,ExchAccountId,Source,ReportType,TradeDateTime FROM NSE_CM " +
+                                        $" order by TradeDateTime desc Limit {chunkIndex},{_chunkSize}");
 
-                    _log.Info($"TradeViewBseCmRepository: LoadTradeviewFulDataFromSource - BseCM Full Data requested - Chunk {chunkIndex}");
+                    _log.Info($"TradeViewNseCmRepository: LoadTradeviewFulDataFromSource - NseCM Full Data requested - Chunk {chunkIndex}");
 
-                    var resultSet = new List<TradeViewBseCm>();
-                    using (var reader = await _tradeViewBseCmRepo.GetDataReaderAsync(query, connectionName: _connectionName))
+                    var resultSet = new List<TradeViewNseCm>();
+                    using (var reader = await _tradeViewGenericRepo.GetDataReaderAsync(query, connectionName: _connectionName))
                     {
                         var colNames = reader.GetColumnNames();
                         while (reader.Read())
@@ -151,35 +151,35 @@ namespace DataAccess.Repository.Repositories
                             {
                                 dt.Add(item, reader[item].ToString());
                             }
-                            resultSet.Add(JsonConvert.DeserializeObject<TradeViewBseCm>(JsonConvert.SerializeObject(dt)));
+                            resultSet.Add(JsonConvert.DeserializeObject<TradeViewNseCm>(JsonConvert.SerializeObject(dt)));
                         }
                     }
 
-                    _log.Info($"TradeViewBseCmRepository: LoadTradeviewFulDataFromSource - BseCM Full Data requested - ChunkIndex:{chunkIndex} - DataCount:{resultSet?.Count}");
+                    _log.Info($"TradeViewNseCmRepository: LoadTradeviewFulDataFromSource - NseCM Full Data requested - ChunkIndex:{chunkIndex} - DataCount:{resultSet?.Count}");
 
                     if (resultSet.Count <= 0)
                         isChunkingEnded = true;
                     chunkIndex += Convert.ToInt32(_chunkSize);
                     await LoadTradeviewRefTable(resultSet);
 
-                    _log.Info($"TradeViewBseCmRepository: LoadTradeviewFulDataFromSource - BseCM Full Data Request Complete - ChunkIndex {chunkIndex}");
+                    _log.Info($"TradeViewNseCmRepository: LoadTradeviewFulDataFromSource - NseCM Full Data Request Complete - ChunkIndex {chunkIndex}");
                 }
             }
             catch (Exception ex)
             {
-                _log.Error($"TradeViewBseCmRepository: LoadTradeviewFulDataFromSource - Error in BseCM Full Data Request ", ex);
+                _log.Error($"TradeViewNseCmRepository: LoadTradeviewFulDataFromSource - Error in NseCM Full Data Request ", ex);
                 throw ex;
             }
         }
 
-        private async Task LoadTradeviewRefTable(List<TradeViewBseCm> tradeViewBseCms)
+        private async Task LoadTradeviewRefTable(List<TradeViewNseCm> tradeViewNseCms)
         {
 
-            if (tradeViewBseCms?.Count > 0)
+            if (tradeViewNseCms?.Count > 0)
             {
 
                 var output = new List<TradeViewRef>();
-                foreach (var item in tradeViewBseCms)
+                foreach (var item in tradeViewNseCms)
                     output.Add(_mapper.Map<TradeViewRef>(item));
                 var guid = Guid.NewGuid().ToString();
 
@@ -188,17 +188,20 @@ namespace DataAccess.Repository.Repositories
                     i.LotSize = LotSize;
                     i.BrokerId = BrokerId;
                     i.StockName = i.SymbolName;
-                    i.ProClient = i.ClientCode == ClientCode ? "PRO" : "CLI";
-                    i.ExchangeName = Constants.BseCmExchangeName;
-                    i.BuySell = i.BuySell == "B" ? "Buy" : "Sell";
-                    if (i.OrderType == "L")
-                        i.OrderType = "LMT";
-                    else if (i.OrderType == "M")
-                        i.OrderType = "MKT";
-                    else if (i.OrderType == "SL")
-                        i.OrderType = "SL";
-                    else if (i.OrderType == "SL-M")
-                        i.OrderType = "SL-MKT";
+                    i.ProClient = i.ParticipantId != ClientCodeConst ? "PRO" : "CLI";
+                    i.ExchangeName = Constants.NseCmExchangeName;
+                    i.TradeDate = i.TradeDateTime;
+                    i.TradeTime = i.TradeDateTime;
+                    i.BuySell = i.BuySell == "1" ? "Buy" : "Sell";
+                    //if (i.OrderType == "L")
+                    //    i.OrderType = "LMT";
+                    //else if (i.OrderType == "M")
+                    //    i.OrderType = "MKT";
+                    //else if (i.OrderType == "SL")
+                    //    i.OrderType = "SL";
+                    //else if (i.OrderType == "SL-M")
+                    //    i.OrderType = "SL-MKT";
+                    i.Source = 
                     i.Guid = guid;
                     return i;
                 }
@@ -209,14 +212,14 @@ namespace DataAccess.Repository.Repositories
                 //_tradeViewRepositoryEf.MergeTradeView(output.ToCollection<TradeView>());
 
                 //Insert into Ref Table
-                _log.Info($"TradeViewBseCmRepository: LoadTradeviewRefTable Ref table Insertion Starting - {output.Count}");
+                _log.Info($"TradeViewNseCmRepository: LoadTradeviewRefTable Ref table Insertion Starting - {output.Count}");
                 await _tradeViewRefRepository.AddTradeView(output.ToCollection<TradeViewRef>());
-                _log.Info($"TradeViewBseCmRepository: LoadTradeviewRefTable Ref table Finished Starting - {output.Count}");
+                _log.Info($"TradeViewNseCmRepository: LoadTradeviewRefTable Ref table Finished Starting - {output.Count}");
 
                 //Sync with main table
                 await _tradeViewRepo.SyncWithTradeViewRefTable(guid);
 
-                _log.Info($"TradeViewBseCmRepository: LoadTradeviewRefTable - Bse CM Syncing Completed - {output.Count}");
+                _log.Info($"TradeViewNseCmRepository: LoadTradeviewRefTable - Nse CM Syncing Completed - {output.Count}");
             }
         }
 
