@@ -142,8 +142,24 @@ namespace TraderBlotter.Api.Controllers
             {
                 _log.Error($"Error in GetDealersByGroupName - ", ex);
                 return StatusCode(500, new ErrorModel { HttpStatusCode = 500, Message = "Internal Server Error" });
+            }            
+        }
+
+        [HttpGet]
+        [Route("getDealerNotMappedToGroupName")]
+        public IActionResult GetDealerNotMappedToGroupName(string groupName)
+        {
+            try
+            {
+                _log.Info($"GetDealerNotMappedToGroupName Calling - {groupName} ");
+                var lst = _userViewRepository.GetDealersNotMappedToGroupName(groupName);
+                return Ok(lst);
             }
-            
+            catch (Exception ex)
+            {
+                _log.Error($"Error in GetDealerNotMappedToGroupName - ", ex);
+                return StatusCode(500, new ErrorModel { HttpStatusCode = 500, Message = "Internal Server Error" });
+            }
         }
 
         [HttpGet]
@@ -162,6 +178,24 @@ namespace TraderBlotter.Api.Controllers
                 return StatusCode(500, new ErrorModel { HttpStatusCode = 500, Message = "Internal Server Error" });
             }
 
+        }
+
+        [HttpGet]
+        [Route("getClientCodesNotMappedToDealerCode")]
+        public IActionResult GetClientCodesNotMappedToDealerCode(string dealerCode)
+        {
+            try
+            {
+                _log.Info($"GetClientCodesNotMappedToDealerCode Calling - {dealerCode} ");
+                var lst = _userViewRepository.GetClientCodesNotMappedToDealerCode(dealerCode);
+                _log.Info($"GetClientCodesNotMappedToDealerCode: DealerCode:{dealerCode} UnMappedClients:{lst.Count}");
+                return Ok(lst);
+            }
+            catch (Exception ex)
+            {
+                _log.Error($"Error in GetClientCodesNotMappedToDealerCode - ", ex);
+                return StatusCode(500, new ErrorModel { HttpStatusCode = 500, Message = "Internal Server Error" });
+            }
         }
 
         [HttpGet]

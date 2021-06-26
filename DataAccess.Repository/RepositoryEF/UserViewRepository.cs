@@ -88,9 +88,23 @@ namespace DataAccess.Repository.RepositoryEF
             return _db.GroupDealerMappingViews.Where(i => i.GroupName == groupName).ToList().Select(j => new DealerView { DealerCode = j.DealerCode }).ToList();
         }
 
+        public ICollection<DealerView> GetDealersNotMappedToGroupName(string groupName)
+        {
+            var dealerCodes = _db.DealerViews.ToList();
+            var dealerCodesMapped = GetDealersByGroupName(groupName);
+            return dealerCodes.Where(i => !(dealerCodesMapped.Select(j => j.DealerCode).ToList().Any(k => k == i.DealerCode))).ToList();
+        }
+
         public ICollection<ClientView> GetClientCodesByDealerCode(string dealerCode)
         {
             return _db.DealerClientMappingViews.Where(i => i.DealerCode == dealerCode).Select(j => new ClientView { ClientCode = j.ClientCode }).ToList();
+        }
+
+        public ICollection<ClientView> GetClientCodesNotMappedToDealerCode(string dealerCode)
+        {
+            var clientCodes = _db.ClientViews.ToList();
+            var clientCodesMapped = GetClientCodesByDealerCode(dealerCode);
+            return clientCodes.Where(i => !(clientCodesMapped.Select(j => j.ClientCode).Any(k => k == i.ClientCode))).ToList();
         }
     }
 }
