@@ -3,6 +3,7 @@ using System.IO;
 using System.Net.Http;
 using System.Reflection;
 using System.Runtime.InteropServices;
+using System.Text;
 using System.Threading.Tasks;
 using BatchManager.Services;
 using DataAccess.Repository;
@@ -12,8 +13,10 @@ using DataAccess.Repository.Repositories;
 using DataAccess.Repository.RepositoryEF;
 using DataAccess.Repository.RepositoryEF.IRepositoryEF;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Hosting.Server.Features;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
@@ -23,6 +26,7 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+using TraderBlotter.Api.Models.Dto;
 using TraderBlotter.Api.Models.Mapper;
 
 namespace TraderBlotter.Api
@@ -132,6 +136,27 @@ namespace TraderBlotter.Api
                 options.RoutePrefix = string.Empty;
             });
 
+            app.UseExceptionHandler(errorApp =>
+            {
+                errorApp.Run(async context =>
+                {
+                    context.Response.StatusCode = 500; // or another Status accordingly to Exception Type
+                    context.Response.ContentType = "application/json";
+
+                    var error = context.Features.Get<IExceptionHandlerFeature>();
+                    if (error != null)
+                    {
+                        var ex = error.Error;
+
+                        await context.Response.WriteAsync(new ErrorModel()
+                        {
+                            HttpStatusCode = 500,
+                            Message = ex.Message
+                        }.ToString(), Encoding.UTF8);
+                    }
+                });
+            });
+
             app.UseRouting();
 
             app.UseAuthorization();
@@ -150,7 +175,7 @@ namespace TraderBlotter.Api
                     var resp = await client.GetAsync("api/v1/healthcheck");
                 }
             });
-
+                    
             applicationLifetime.ApplicationStopping.Register(OnShutDown);
 
         }
