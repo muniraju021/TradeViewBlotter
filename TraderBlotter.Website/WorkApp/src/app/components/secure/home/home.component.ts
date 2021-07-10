@@ -80,10 +80,10 @@ export class HomeComponent {
 
     getRowStyle(params) {
         if (params.data.buySell === 'Buy') {
-            return { 'background-color': '#F0FFFF' }
+            //return { 'color': 'blue' }
         }
         if (params.data.buySell === 'Sell') {
-            return { 'background-color': '#E6E6FA' }
+            //return { 'color': 'red' }
         }
         return null;
     }

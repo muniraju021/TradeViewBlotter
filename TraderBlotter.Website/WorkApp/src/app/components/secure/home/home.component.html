@@ -1,34 +1,34 @@
 <div class="parentDiv">
     <div class="form-row" style="margin-top: 10px">
-        <div class="form-group col-md-3">
+        <div class="form-group col-md-2">
             <div *ngIf="loading" class="spinner-border spinner-border-sm"></div>
             <input type="text" style="margin-top: 5px;" id="filter-text-box" placeholder="Search..." (change)="onFilterTextBoxChanged()">
         </div>
-        <div class="form-group col-md-1 ">
-            <label class="label" for="buyValue"> Buy Value(BV) </label>
+        <div class="form-group col-md-1 " style="background-color: slategray; margin-left:4%">
+            <label class="label" for="buyValue" > BV </label>
             <input type="text" readonly class="form-control-plaintext label-text" [(ngModel)]='buyValue' id="buyValue">
         </div>
-        <div class="form-group col-md-1">
-            <label class="label" for="sellValue"> Sell Value(SV) </label>
+        <div class="form-group col-md-1" style="background-color: slategray;">
+            <label class="label" for="sellValue"> SV </label>
             <input type="text" readonly class="form-control-plaintext label-text" id="sellValue" [(ngModel)]='sellValue'>
         </div>
-        <div class="form-group col-md-1">
-            <label class="label" for="buyQty"> Buy Qty(BQ) </label>
+        <div class="form-group col-md-1" style="background-color: slategray;"> 
+            <label class="label" for="buyQty"> BQ </label>
             <input type="text" readonly class="form-control-plaintext label-text" id="buyQty" [(ngModel)]='buyQty'>
         </div>
-        <div class="form-group col-md-1">
-            <label class="label" for="sellQty"> Sell Qty(SQ) </label>
+        <div class="form-group col-md-1" style="background-color: slategray;">
+            <label class="label" for="sellQty"> SQ </label>
             <input type="text" readonly class="form-control-plaintext label-text" id="sellQty" [(ngModel)]='sellQty'>
         </div>
-        <div class="form-group col-md-1">
-            <label class="label" for="avgPriceBuy"> Buy Average Price(BA) </label>
+        <div class="form-group col-md-1" style="background-color: slategray;">
+            <label class="label" for="avgPriceBuy"> BA </label>
             <input type="text" readonly class="form-control-plaintext label-text" id="avgPriceBuy" [(ngModel)]='avgPriceBuy'>
         </div>
-        <div class="form-group col-md-1">
-            <label class="label" for="avgPriceSell"> Sell Average Price(SA) </label>
+        <div class="form-group col-md-1" style="background-color: slategray;">
+            <label class="label" for="avgPriceSell"> SA </label>
             <input type="text" readonly class="form-control-plaintext label-text" id="avgPriceSell" [(ngModel)]='avgPriceSell'>
         </div>
-        <div class="form-group col-md-1">
+        <div class="form-group col-md-1" style="background-color: slategray; padding-left:-1">
             <label class="label" for="totalNetQty"> Total Net Qty </label>
             <input type="text" readonly class="form-control-plaintext label-text" id="totalNetQty" [(ngModel)]='totalNetQty'>
         </div>

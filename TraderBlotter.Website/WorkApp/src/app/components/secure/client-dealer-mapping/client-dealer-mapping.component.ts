@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MappingService } from '../../../shared/services/mappingService';
-import { DealerClientMapping } from 'src/app/shared/models/dealerCLientMapping';
 
 @Component({
   selector: 'app-client-dealer-mapping',
