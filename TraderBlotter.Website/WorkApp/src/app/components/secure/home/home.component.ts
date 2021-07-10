@@ -33,31 +33,31 @@ export class HomeComponent {
     rowData: any[];
     userLoginName: string = ''
     columnDefs = [
-        { field: 'tradeViewId', headerName: 'Blotter ID' },
-        { field: 'tradeId', headerName: 'Exch Trade ID' },
-        { field: 'symbolName', headerName: 'Instrument Name' },
-        { field: 'stockName' },
-        { field: 'tradePrice', headerName: 'Price' },
-        { field: 'tradeQty', headerName: 'Qty' },
+        { field: 'exchangeName', headerName: 'Exch Name' },
+        { field: 'clientCode' },
+        { field: 'proClient', headerName: 'Pro / Client' },
+        { field: 'stockName', headerName: 'Stock Name' },
         { field: 'expiryDate', headerName: 'Expiry' },
         { field: 'strikePrice', headerName: 'Strike' },
         { field: 'optionType', headerName: 'CE / PE' },
         { field: 'buySell', headerName: 'Buy / Sell' },
+        { field: 'tradeQty', headerName: 'Qty' },
+        { field: 'tradePrice', headerName: 'Price' },
         { field: 'tradeTime', headerName: 'Time' },
+        { field: 'participantId' },
+        { field: 'userId', headerName: 'User Id' },
+        { field: 'tradeViewId', headerName: 'Blotter ID' },
+        { field: 'tradeId', headerName: 'Exch Trade ID' },
+        { field: 'symbolName', headerName: 'Instrument Name' },  
         { field: 'exchangeTime', headerName: 'Exch Timestamp' },
         { field: 'exchangeOrderId', headerName: 'Exch Order ID' },
         { field: 'orderType' },
         { field: 'tokenNo' },
-        { field: 'exchangeName', headerName: 'Exch Name' },
         { field: 'brokerId' },
-        { field: 'userId' },
         { field: 'exchangeUser', headerName: 'CTCL ID' },
         { field: 'branchId' },
-        { field: 'proClient', headerName: 'Pro / Client' },
         { field: 'nNFCode' },
         { field: 'lotSize' },
-        { field: 'participantId' },
-        { field: 'clientCode' },
         { field: 'source', headerName: 'Data Source' },
         { field: 'tradeModifyFlag', headerName: 'Trade Modified' }
     ];
@@ -79,10 +79,10 @@ export class HomeComponent {
     }
 
     getRowStyle(params) {
-        if (params.data.buySell === 'B') {
+        if (params.data.buySell === 'Buy') {
             return { 'background-color': '#F0FFFF' }
         }
-        if (params.data.buySell === 'S') {
+        if (params.data.buySell === 'Sell') {
             return { 'background-color': '#E6E6FA' }
         }
         return null;
@@ -142,9 +142,9 @@ export class HomeComponent {
 
         columnsWithAggregation.forEach(element => {
             this.gridApi.forEachNodeAfterFilter((rowNode: RowNode) => {
-                if (rowNode.data['buySell'] == 'B' && rowNode.data[element])
+                if (rowNode.data['buySell'] == 'Buy' && rowNode.data[element])
                     tradePriceBuy += Number(rowNode.data[element]);
-                if (rowNode.data['buySell'] == 'S' && rowNode.data[element])
+                if (rowNode.data['buySell'] == 'Sell' && rowNode.data[element])
                     tradePriceSell += Number(rowNode.data[element]);
             });
         })
@@ -165,9 +165,9 @@ export class HomeComponent {
 
         columnsWithAggregation.forEach(element => {
             this.gridApi.forEachNodeAfterFilter((rowNode: RowNode) => {
-                if (rowNode.data['buySell'] == 'B' && rowNode.data[element])
+                if (rowNode.data['buySell'] == 'Buy' && rowNode.data[element])
                     tradeQtyBuy += Number(rowNode.data[element]);
-                if (rowNode.data['buySell'] == 'S' && rowNode.data[element])
+                if (rowNode.data['buySell'] == 'Sell' && rowNode.data[element])
                     tradeQtySell += Number(rowNode.data[element]);
             });
         })

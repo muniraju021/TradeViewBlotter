@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import {CdkDragDrop, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
-import { FormGroup } from '@angular/forms';
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { FormBuilder, FormGroup } from '@angular/forms';
+import { MappingService } from '../../../shared/services/mappingService';
+import { DealerClientMapping } from 'src/app/shared/models/dealerCLientMapping';
 
 @Component({
   selector: 'app-client-dealer-mapping',
@@ -8,51 +10,72 @@ import { FormGroup } from '@angular/forms';
   styleUrls: ['./client-dealer-mapping.component.scss']
 })
 export class ClientDealerMappingComponent implements OnInit {
-dealer:string = '';
-dealers: any =[];
-userForm: FormGroup;
-error = '';
-success = '';
+  mappingForm: FormGroup;
+  dealer: string = '';
+  dealers: any = [];
+  userForm: FormGroup;
+  error = '';
+  success = '';
+  currentDealer: string = '';
+  //lstMappings: any = [];
 
 
-  todo = [
-    'Mapping 1',
-    'Mapping 2',
-    'Mapping 3',
-    'Mapping 4'
-  ];
+  availableMapping = [];
 
-  done = [
-    'Mapping 5',
-    'Mapping 6',
-    'Mapping 7',
-    'Mapping 8',
-    'Mapping 9'
-  ];
+  currentMapping = [];
 
   drop(event: CdkDragDrop<string[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
       transferArrayItem(event.previousContainer.data,
-                        event.container.data,
-                        event.previousIndex,
-                        event.currentIndex);
+        event.container.data,
+        event.previousIndex,
+        event.currentIndex);
     }
   }
 
-  constructor() { }
+  constructor(private mappingService: MappingService, private formBuilder: FormBuilder,) { }
 
   ngOnInit(): void {
+    this.mappingForm = this.formBuilder.group({
+  });
+
+    this.mappingService.getDealers().subscribe(
+      (data) => { this.dealers = data.map(({ dealerCode }) => dealerCode)}
+    )
+  }
+
+  onDealerSelected(value: string) {
+    this.currentDealer = value;
+    this.mappingService.getClientCodeByDealerCode(value).subscribe(
+      (data) => { this.currentMapping = data.map(({ clientCode }) => clientCode)}
+    )
+
+    this.mappingService.getClientCodesNotMappedToDealerCode(value).subscribe(
+      (data) => { this.availableMapping = data.map(({ clientCode }) => clientCode)}
+    )
+
+  }
+
+  onSubmit() { 
+
+    let lstMappings = [];
     
+    this.currentMapping.forEach(element => {
+      lstMappings.push({dealerCode: this.currentDealer, clientCode: element})
+    });
+
+
+    this.mappingService.addDealerClientMapping(lstMappings).subscribe((data) => {
+      this.error = '';
+      this.success = 'User successfully updated';
+    },
+      () => {
+        this.success = '';
+        this.error = 'Error while trying to update Mappings';
+      }
+    );
   }
-
-  onDealerSelected(value:string)
-  {
-
-  }
-
-  createMapping()
-  {}
 
 }

@@ -6,6 +6,7 @@ import { AuthGuard } from './shared/common/auth.guard'
 import {UserComponent} from './components/secure/user/user.component'
 import { ClientDealerMappingComponent } from './components/secure/client-dealer-mapping/client-dealer-mapping.component';
 import { ManageUserComponent } from './components/secure/manage-user/manage-user.component';
+import {NetPositionViewComponent} from './components/secure/net-position-view/net-position-view.component';
 
 const routes: Routes = [
     { path: '', component: HomeComponent, canActivate: [AuthGuard] },
@@ -13,6 +14,7 @@ const routes: Routes = [
     { path: 'user', component: UserComponent },
     { path: 'client-dealer-mapping', component: ClientDealerMappingComponent },
     { path: 'manage-user', component: ManageUserComponent },
+    { path: 'net-position-view', component: NetPositionViewComponent },
     // otherwise redirect to home
     { path: '**', redirectTo: '' }
 

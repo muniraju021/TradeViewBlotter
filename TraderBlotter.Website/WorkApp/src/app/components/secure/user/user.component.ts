@@ -64,7 +64,7 @@ export class UserComponent implements OnInit {
       (data) => {
         this.userRoles = data.map(({ roleName }) => roleName)
       },
-      error => {
+      () => {
         this.success = '';
         this.error = 'An error occurred while fetching User roles';
       }
@@ -74,7 +74,7 @@ export class UserComponent implements OnInit {
       (data) => {
         this.rowData = data;
       },
-      error => {
+      () => {
         this.success = '';
         this.error = 'An error occurred while fetching Users';
       }

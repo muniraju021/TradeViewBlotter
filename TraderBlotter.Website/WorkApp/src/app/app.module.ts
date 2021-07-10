@@ -14,6 +14,7 @@ import { UserComponent } from './components/secure/user/user.component';
 import { ClientDealerMappingComponent } from './components/secure/client-dealer-mapping/client-dealer-mapping.component';
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { ManageUserComponent } from './components/secure/manage-user/manage-user.component';
+import { NetPositionViewComponent } from './components/secure/net-position-view/net-position-view.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { ManageUserComponent } from './components/secure/manage-user/manage-user
     HomeComponent,
     UserComponent,
     ClientDealerMappingComponent,
-    ManageUserComponent
+    ManageUserComponent,
+    NetPositionViewComponent
   ],
   imports: [
     HttpClientModule,
