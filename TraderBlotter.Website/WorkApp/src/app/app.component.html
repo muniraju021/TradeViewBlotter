@@ -1,5 +1,5 @@
 <!-- nav -->
-<nav class="navbar navbar-expand-md navbar-light bg-light" style=" font-weight: bold; font-size: 17px;" *ngIf="currentUser">
+<nav class="navbar navbar-expand-md navbar-light bg-light" style=" color:black ;font-weight: bold; " *ngIf="currentUser">
     <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item">
@@ -8,28 +8,28 @@
         </ul>
         <ul class="navbar-nav mr-auto" >
             <li class="nav-item">
-                <a class="nav-item nav-link" routerLink="/" >Home</a>
+                <a class="nav-item nav-link" routerLink="/home" [routerLinkActive]="['active']" >Home</a>
             </li>
             <li  class="nav-item" *ngIf="authenticationService.roleId && authenticationService.roleId=='1'">
-                <a class="nav-item nav-link" routerLink="/user">CreateUser</a>
+                <a class="nav-item nav-link" routerLink="/user" [routerLinkActive]="['active']">CreateUser</a>
             </li>
             <li class="nav-item" *ngIf="authenticationService.roleId && authenticationService.roleId=='1'">
-                <a class="nav-item nav-link" routerLink="/manage-user">ManageUser</a>
+                <a class="nav-item nav-link" routerLink="/manage-user" [routerLinkActive]="['active']">ManageUser</a>
             </li>
             <li class="nav-item">
-                <a class="nav-item nav-link" routerLink="/client-dealer-mapping">Client-Dealer-Mappping</a>
+                <a class="nav-item nav-link" routerLink="/client-dealer-mapping" [routerLinkActive]="['active']">Client-Dealer-Mappping</a>
             </li>
             <li class="nav-item">
-                <a class="nav-item nav-link" routerLink="/net-position-view" >Net position view</a>
-            </li>
-            <li class="nav-item mr-auto">
-                <a class="nav-item nav-link ml-auto" >{{authenticationService.userLogin}}</a>
-            </li>
+                <a class="nav-item nav-link" routerLink="/net-position-view" [routerLinkActive]="['active']">Net position view</a>
+            </li>            
             <li class="nav-item">
                 <a class="nav-item nav-link ml-auto" href="#" (click)="logout()">Logout</a>
             </li>
         </ul>
-        <ul class="navbar-nav">            
+        <ul class="navbar-nav">      
+            <li class="nav-item mr-auto">
+                <a class="nav-item nav-link ml-auto" >{{authenticationService.userLogin}}</a>
+            </li>      
             <li class="nav-item">
                 <img class="img-responsive" src="assets/images/image1.png" style="width: 190px; height: 35px; margin-left:35px;">
             </li>

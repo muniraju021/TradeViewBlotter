@@ -9,14 +9,14 @@ import { ManageUserComponent } from './components/secure/manage-user/manage-user
 import {NetPositionViewComponent} from './components/secure/net-position-view/net-position-view.component';
 
 const routes: Routes = [
-    { path: '', component: HomeComponent, canActivate: [AuthGuard] },
+    { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
     { path: 'login', component: LoginComponent },
     { path: 'user', component: UserComponent },
     { path: 'client-dealer-mapping', component: ClientDealerMappingComponent },
     { path: 'manage-user', component: ManageUserComponent },
     { path: 'net-position-view', component: NetPositionViewComponent },
     // otherwise redirect to home
-    { path: '**', redirectTo: '' }
+    { path: '**', redirectTo: 'home' }
 
 ];
 

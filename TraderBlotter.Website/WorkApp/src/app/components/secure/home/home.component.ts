@@ -32,6 +32,9 @@ export class HomeComponent {
     user: string = '';
     rowData: any[];
     userLoginName: string = ''
+    usd: any = 0.013;
+    euro : any = 0.011;
+    uk:any = 0.0097;
     columnDefs = [
         { field: 'exchangeName', headerName: 'Exch Name' },
         { field: 'clientCode' },
