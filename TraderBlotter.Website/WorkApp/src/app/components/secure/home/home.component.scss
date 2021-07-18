@@ -1,8 +1,13 @@
+body {
+    font-family: Verdana;
+  }
+
 .parentDiv
 {
     position: absolute;
     width: 95%;
-    margin-left:40px;
+    margin-left:20px;
+    font-family: Verdana;
 }
 
 .label
@@ -30,3 +35,4 @@
     border-width: 0px; 
     background-color:white
 }
+

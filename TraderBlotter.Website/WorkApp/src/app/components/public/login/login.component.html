@@ -1,15 +1,12 @@
 <div class="parentDiv row no-gutters">
     <div class="col-md-4 div1">
-
-        <div style="margin-top: 20px; ">
             <h4>
-                <img src="assets/images/image8.PNG" style="border: none;">
+                <img src="assets/images/image9.PNG" style="border: none;">
             </h4>
-            <br />
             <div>
                 <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
                     <div class="form-group">
-                        <label for="username">Username</label>
+                        <label for="username">Login ID</label>
                         <input type="text" formControlName="username" class="form-control textBox"
                             [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
                         <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
@@ -30,25 +27,33 @@
                         <input type="checkbox" id="rememberMe" class="form-check-input" formControlName="rememberMe"
                             style="margin-left: 1px;">
                         <label for="rememberMe" style="margin-left: 25px;"> Remember Me </label>
+                        <b style="color: red;float: right;">Forget Password?</b>
                     </div>
 
                     <button [disabled]="loading" class="btn btn-primary login">
                         <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1 "></span>
                         Login
                     </button>
-                    <br />
                     <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
                 </form>
-            </div>
         </div>
     </div>
     <div class="col-md-4">
         <div class="form-group" style="margin-left: 500px;">
             <img src="assets/images/image1.png" style="border: none;">
         </div>
-        <br />
         <div class="form-group">
-            <img src="assets/images/image.png" style="border: none ; margin-left:100px; height: 500px;width: 800px;">
+            <img src="assets/images/image.png" style="border: none ; margin-left:150px; height: 400px;width: 700px;">
         </div>
     </div>
+
+    <div >
+        <b> What is Trade Blotter? <br /> <br /> </b>
+        
+        <b> RapidCube Trade Blotter </b> is a accumulation of all Trade record of Spark Capital with relevant trade
+        details
+        like Traded Price, Quantity, Time, Order number etc. It also indicate whether the trade was bought or sold.
+        Trade Records will be updated in real time.
+    </div>
+
 </div>
