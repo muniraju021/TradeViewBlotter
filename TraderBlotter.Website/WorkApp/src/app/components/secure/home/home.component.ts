@@ -14,6 +14,10 @@ import { single } from 'rxjs/internal/operators/single';
 
 @Component({ templateUrl: 'home.component.html', styleUrls: ['./home.component.scss'] })
 export class HomeComponent {
+    tradePriceBuy: number = 0;
+    tradePriceSell: number = 0;
+    tradeQtyBuy: number = 0;
+    tradeQtySell: number = 0;
     buyValue: string = '';
     sellValue: string = '';
     buyQty: string = '';
@@ -138,30 +142,28 @@ export class HomeComponent {
 
     tradePricecalculations() {
         let columnsWithAggregation = ['tradePrice']
-        let tradePriceBuy: number = 0;
-        let tradePriceSell: number = 0;
         this.buyValue = '';
         this.sellValue = '';
+        this.tradePriceBuy = this.tradePriceSell = 0;
 
         columnsWithAggregation.forEach(element => {
             this.gridApi.forEachNodeAfterFilter((rowNode: RowNode) => {
                 if (rowNode.data['buySell'] == 'Buy' && rowNode.data[element])
-                    tradePriceBuy += Number(rowNode.data[element]);
+                    this.tradePriceBuy += Number(rowNode.data[element]);
                 if (rowNode.data['buySell'] == 'Sell' && rowNode.data[element])
-                    tradePriceSell += Number(rowNode.data[element]);
+                    this.tradePriceSell += Number(rowNode.data[element]);
             });
         })
-        if (tradePriceBuy)
-            this.buyValue = `${tradePriceBuy.toFixed(2)}`;
-        if (tradePriceSell)
-            this.sellValue = `${tradePriceSell.toFixed(2)}`;
+        if (this.tradePriceBuy)
+            this.buyValue = `${this.tradePriceBuy.toFixed(2)}`;
+        if (this.tradePriceSell)
+            this.sellValue = `${this.tradePriceSell.toFixed(2)}`;
     }
 
     tradeQtycalculations() {
         let columnsWithAggregation = ['tradeQty']
-        let tradeQtyBuy: number = 0;
-        let tradeQtySell: number = 0;
         let totalNetQuantity: number = 0;
+        this.tradeQtyBuy = this.tradeQtySell = 0;
         this.buyQty = '';
         this.sellQty = '';
         this.totalNetQty = '';
@@ -169,17 +171,17 @@ export class HomeComponent {
         columnsWithAggregation.forEach(element => {
             this.gridApi.forEachNodeAfterFilter((rowNode: RowNode) => {
                 if (rowNode.data['buySell'] == 'Buy' && rowNode.data[element])
-                    tradeQtyBuy += Number(rowNode.data[element]);
+                    this.tradeQtyBuy += Number(rowNode.data[element]);
                 if (rowNode.data['buySell'] == 'Sell' && rowNode.data[element])
-                    tradeQtySell += Number(rowNode.data[element]);
+                this.tradeQtySell += Number(rowNode.data[element]);
             });
         })
-        if (tradeQtyBuy)
-            this.buyQty = `${tradeQtyBuy}`;
-        if (tradeQtySell)
-            this.sellQty = `${tradeQtySell}`;
+        if (this.tradeQtyBuy)
+            this.buyQty = `${this.tradeQtyBuy}`;
+        if (this.tradeQtySell)
+            this.sellQty = `${this.tradeQtySell}`;
 
-        totalNetQuantity = Number(this.buyQty) - Number(this.sellQty)
+        totalNetQuantity = this.tradeQtyBuy - this.tradeQtySell
 
         if (totalNetQuantity)
             this.totalNetQty = `${totalNetQuantity}`;
@@ -191,11 +193,11 @@ export class HomeComponent {
         let averageBuy: number = 0;
         let averageSell: number = 0;
 
-        if (this.buyValue && this.buyQty)
-            averageBuy = Number(this.buyValue) / Number(this.buyQty);
+        if (this.tradePriceBuy && this.tradeQtyBuy)
+            averageBuy = this.tradePriceBuy / this.tradeQtyBuy;
 
-        if (this.sellValue && this.sellQty)
-            averageSell = Number(this.sellValue) / Number(this.sellQty);
+        if (this.tradePriceSell && this.tradeQtySell)
+            averageSell = this.tradePriceSell / this.tradeQtySell;
 
         if (averageBuy)
             this.avgPriceBuy = `${averageBuy.toFixed(2)}`;
