@@ -1,0 +1,39 @@
+body {
+    font-family: Verdana;
+  }
+
+.parentDiv
+{
+    position: absolute;
+    width: 95%;
+    margin-left:20px;
+    font-family: Verdana;
+}
+
+.label
+{
+    font-size: 10px;
+    color: black;
+    font-weight: bold;
+    display: block;
+    text-align: center;
+}
+
+.label-text
+{
+    font-size: 10px;
+    height: 16px;
+    outline: none;
+    font-weight: bold;
+    display: block;
+    text-align: center;
+}
+
+.csvExport
+{
+    float: right; 
+    outline:none;
+    border-width: 0px; 
+    background-color:white
+}
+
