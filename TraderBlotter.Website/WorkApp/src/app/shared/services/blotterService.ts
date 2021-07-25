@@ -25,7 +25,6 @@ export class BlotterService {
     getAllTradesCount(): Observable<any> {
         return this.http.get<any>(`${environment.apiUrl}/v1/TradeView/getAllTradesCount`)
             .pipe(map((response: Response) => {
-                console.log(response);
                 return response;
             }));
     }
