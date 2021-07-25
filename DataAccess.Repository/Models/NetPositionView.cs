@@ -13,7 +13,16 @@ namespace DataAccess.Repository.Models
         public string SellTotalValue { get; set; }
         public string BuyAvg { get; set; }
         public string SellAvg { get; set; }
-        public string Quantity { get; set; }
+        public string NetQuantity
+        {
+            get
+            {
+                long sellQty, buyQty;
+                long.TryParse(SellQuantity, out sellQty);
+                long.TryParse(BuyQuantity, out buyQty);
+                return (buyQty - sellQty).ToString();
+            }
+        }
         public string ExpriyDate { get; set; }
         public string Profit
         {

@@ -16,5 +16,6 @@ namespace DataAccess.Repository.Repositories
         Task<int> ArchiveAndPurgeTradeView(string exchangeName);
         Task<int> SyncWithTradeViewRefTable(string guid);
         Task<IEnumerable<NetPositionView>> GetNetPositionView();
+        Task<long> GetAllTradesCount();
     }
 }

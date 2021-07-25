@@ -13,6 +13,8 @@ namespace DataAccess.Repository
 
         Task<IEnumerable<T>> GetAllEntityAsync<T>(string spName, object parameters = null, CommandType cmdType = CommandType.Text, string connectionName = null);
 
+        Task<T> GetEntityAsync<T>(string spName, object parameters = null, CommandType cmdType = CommandType.Text, string connectionName = null);
+
         void Add(TEntity entity);
         void Delete(TEntity entity);
         void Update(TEntity entity);

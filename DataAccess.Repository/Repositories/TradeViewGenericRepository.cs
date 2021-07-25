@@ -84,5 +84,11 @@ namespace DataAccess.Repository.Repositories
             var res = await _tradeViewRepo.GetAllEntityAsync<NetPositionView>(spName: "getNetPositionByStockName", cmdType: CommandType.StoredProcedure);
             return res;
         }
+
+        public async Task<long> GetAllTradesCount()
+        {
+            var res = await _tradeViewRepo.GetEntityAsync<long>(spName: "GetAllTradesCount", cmdType: CommandType.StoredProcedure);
+            return res;
+        }
     }
 }

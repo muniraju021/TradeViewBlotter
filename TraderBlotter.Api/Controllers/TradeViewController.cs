@@ -108,10 +108,25 @@ namespace TraderBlotter.Api.Controllers
             }
 
         }
-
-        private void List<T>()
+        
+        [HttpGet]
+        [Route("getAllTradesCount")]
+        public async Task<IActionResult> GetAllTradesCount()
         {
-            throw new NotImplementedException();
+            try
+            {
+                _log.Info($"TradeViewController - In GetAllTradesCount - Starting..");
+                var res = await _tradeViewGenericRepository.GetAllTradesCount();
+                _log.Info($"TradeViewController - In GetAllTradesCount - Finished.. -Count:{res}");
+                return Ok(res);
+
+            }
+            catch (Exception ex)
+            {
+                _log.Error("Error in GetAllTradesCount ", ex);
+                return StatusCode(500, ModelState);
+            }
         }
+
     }
 }

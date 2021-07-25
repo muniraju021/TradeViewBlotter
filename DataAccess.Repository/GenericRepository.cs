@@ -72,6 +72,15 @@ namespace DataAccess.Repository
             }
         }
 
+        public async Task<T> GetEntityAsync<T>(string spName, object parameters = null, CommandType cmdType = CommandType.Text, string connectionName = null)
+        {
+            using (var con = GetDbConnection(connectionName))
+            {
+                var res = await con.QuerySingleAsync<T>(spName, param: parameters, commandType: cmdType);
+                return res;
+            }
+        }
+
         public async Task<int> ExcecuteNonQueryAsync(string spName, object parameters = null, CommandType cmdType = CommandType.Text, string connectionName = null)
         {
             using (var con = GetDbConnection(connectionName))
