@@ -1,4 +1,5 @@
 ﻿using DataAccess.Repository.Data;
+using DataAccess.Repository.Models;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -14,5 +15,6 @@ namespace DataAccess.Repository.Repositories
         Task<IEnumerable<TradeView>> GetAllTradeViewsByClientCodes(List<string> clientCodes);
         Task<int> ArchiveAndPurgeTradeView(string exchangeName);
         Task<int> SyncWithTradeViewRefTable(string guid);
+        Task<IEnumerable<NetPositionView>> GetNetPositionView();
     }
 }

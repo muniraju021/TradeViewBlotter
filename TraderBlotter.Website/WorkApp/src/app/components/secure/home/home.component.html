@@ -7,7 +7,7 @@
             <div *ngIf="loading" class="spinner-border spinner-border-sm"></div>
             <input type="text" style="margin-top: 5px;" id="filter-text-box" placeholder="Type in to Search..." (change)="onFilterTextBoxChanged()">
         </div>
-        <div class="form-group col-md-1 " style="background-color: slategray; margin-left:4%">
+        <div class="form-group col-md-1" style="background-color: slategray; margin-left:4%">
             <label class="label" for="buyValue" > BV </label>
             <input type="text" readonly class="form-control-plaintext label-text" [(ngModel)]='buyValue' id="buyValue">
         </div>

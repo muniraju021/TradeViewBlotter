@@ -43,7 +43,7 @@ namespace DataAccess.Repository
         }
 
         public async Task<IEnumerable<TEntity>> GetAllEntityAsync(string spName, object parameters = null, CommandType cmdType = CommandType.Text, string connectionName = null)
-        {            
+        {
             using (var con = GetDbConnection(connectionName))
             {
                 var res = await con.QueryAsync<TEntity>(spName, param: parameters, commandType: cmdType);

@@ -1,6 +1,7 @@
 ﻿using Dapper;
 using DataAccess.Repository.Data;
 using DataAccess.Repository.Infrastructure;
+using DataAccess.Repository.Models;
 using Microsoft.Extensions.Configuration;
 using MySql.Data.MySqlClient.Memcached;
 using System;
@@ -75,6 +76,12 @@ namespace DataAccess.Repository.Repositories
             var inputParams = new DynamicParameters();
             inputParams.Add("guidKey", guid);
             var res = await _tradeViewRepo.ExcecuteNonQueryAsync("SyncTradeViewWithRefTable", parameters: inputParams, cmdType: CommandType.StoredProcedure);
+            return res;
+        }
+
+        public async Task<IEnumerable<NetPositionView>> GetNetPositionView()
+        {
+            var res = await _tradeViewRepo.GetAllEntityAsync<NetPositionView>(spName: "getNetPositionByStockName", cmdType: CommandType.StoredProcedure);
             return res;
         }
     }

@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DataAccess.Repository.LogServices;
+using DataAccess.Repository.Repositories;
+using log4net;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TraderBlotter.Api.Controllers
@@ -11,6 +14,32 @@ namespace TraderBlotter.Api.Controllers
     [ApiVersion("1.0")]
     public class NetPositionController : ControllerBase
     {
+        private readonly ITradeViewGenericRepository _tradeViewGenericRepo;
+        private static ILog _log = LogService.GetLogger(typeof(NetPositionController));
+
+        public NetPositionController(ITradeViewGenericRepository tradeViewGenericRepo)
+        {
+            _tradeViewGenericRepo = tradeViewGenericRepo;
+        }
+
+        [HttpGet]
+        [Route("getNetPositionViewDetails")]
+        public async Task<IActionResult> GetNetPositionViewDetails()
+        {
+            try
+            {
+                _log.Info($"NetPositionController: GetNetPositionViewDetails Starting..");
+                var res = await _tradeViewGenericRepo.GetNetPositionView();
+                _log.Info($"NetPositionController: GetNetPositionViewDetails Finished.. Count:{res?.ToList().Count}");
+                return Ok(res);
+            }
+            catch (Exception ex)
+            {
+                _log.Error("Error in GetNetPositionViewDetails ", ex);
+                return StatusCode(500);
+            }
+        }
+
 
     }
 }
