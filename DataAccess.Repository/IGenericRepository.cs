@@ -20,6 +20,6 @@ namespace DataAccess.Repository
         void Update(TEntity entity);
         Task<IDataReader> GetDataReaderAsync(string spName, object parameters = null, CommandType cmdType = CommandType.Text, string connectionName = null);
 
-        Task<int> ExcecuteNonQueryAsync(string spName, object parameters = null, CommandType cmdType = CommandType.Text, string connectionName = null);
+        Task<int> ExcecuteNonQueryAsync(string spName, object parameters = null, CommandType cmdType = CommandType.Text, string connectionName = null, int commandTimeout = 30);
     }
 }

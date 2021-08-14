@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using DataAccess.Repository;
 using DataAccess.Repository.Data;
 using DataAccess.Repository.LogServices;
 using DataAccess.Repository.Repositories;
@@ -59,39 +61,63 @@ namespace TraderBlotter.Api.Controllers
                 //}
 
                 _log.Info($"In GetAllTrades Started");
-                List<TradeView> tradeDetails = null;
+                ConcurrentBag<TradeView> tradeDetails = new ConcurrentBag<TradeView>();
                 var userDetails = _userViewRepository.GetUserById(userName);
                 var role = _roleViewRepository.GetRoles().Where(i => i.RoleId == userDetails.RoleId).FirstOrDefault().RoleName;
 
                 if (role == Roles.SuperAdmin.ToString())
                 {
-                    var trades = await _tradeViewGenericRepository.GetAllTradeViewsByPageIndex();
-                    tradeDetails = trades.ToList();
+                    var tradeCount = await _tradeViewGenericRepository.GetAllTradesCount();
+                    var iteration = Math.Ceiling(Convert.ToDecimal(tradeCount) / DataAccess.Repository.Constants.ChunkCount);
+                    int offset = 0;
+                    //for (int i = 0; i < iteration; i++)
+                    //{
+                    //    _log.Info($"TradeViewController - GetAllTrades userName-{userName} ChunkIndex-[{i}]");
+                    //    var trades = await _tradeViewGenericRepository.GetAllTradeViewsByPageIndex(offset);
+                    //    tradeDetails.AddRange(trades);
+                    //    offset += DataAccess.Repository.Constants.ChunkCount;
+                    //}                    
+                    //tradeDetails = trades.ToList();
+
+                    var lstOffset = new List<int> { offset };
+                    for (int i = 0; i < iteration - 1; i++)
+                    {
+                        offset += DataAccess.Repository.Constants.ChunkCount;
+                        lstOffset.Add(offset);
+                    }
+
+                    Parallel.ForEach(lstOffset, offset =>
+                    {
+                        _log.Info($"TradeViewController - GetAllTrades userName-{userName} ChunkIndex-[{offset}]");
+                        var trades = _tradeViewGenericRepository.GetAllTradeViewsByPageIndex(offset);
+                        tradeDetails.AddRange<TradeView>(trades.Result);
+                    });
+
                 }
                 else if (role == Roles.GroupUser.ToString())
                 {
                     var clientCodes = await _tradeViewGenericRepository.GetClientCodesByGroupName(userDetails.GroupName);
                     var trades = await _tradeViewGenericRepository.GetAllTradeViewsByClientCodes(clientCodes);
-                    tradeDetails = trades.ToList();
+                    tradeDetails.AddRange<TradeView>(trades.ToList());
                 }
                 else if (role == Roles.Dealer.ToString())
                 {
                     var clientCodes = await _tradeViewGenericRepository.GetClientCodesByDealerCode(userDetails.DealerCode);
                     var trades = await _tradeViewGenericRepository.GetAllTradeViewsByClientCodes(clientCodes);
-                    tradeDetails = trades.ToList();
+                    tradeDetails.AddRange<TradeView>(trades.ToList());
                 }
                 else if (role == Roles.Client.ToString() && !string.IsNullOrWhiteSpace(userDetails.ClientCode))
                 {
                     var trades = await _tradeViewGenericRepository.GetAllTradeViewsByClientCodes(new List<string> { userDetails.ClientCode });
-                    tradeDetails = trades.ToList();
+                    tradeDetails.AddRange<TradeView>(trades.ToList());
                 }
                 else
                 {
                     return StatusCode(204, ModelState);
                 }
 
-                if (tradeDetails == null)
-                    return NotFound();
+                //if (tradeDetails == null || tradeDetails.Count == 0)
+                //    return NotFound();
                 foreach (var item in tradeDetails)
                 {
                     resultSet.Add(_mapper.Map<TradeViewDto>(item));
@@ -108,7 +134,7 @@ namespace TraderBlotter.Api.Controllers
             }
 
         }
-        
+
         [HttpGet]
         [Route("getAllTradesCount")]
         public async Task<IActionResult> GetAllTradesCount()

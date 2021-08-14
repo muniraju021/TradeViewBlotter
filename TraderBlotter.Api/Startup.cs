@@ -45,6 +45,7 @@ namespace TraderBlotter.Api
         public void ConfigureServices(IServiceCollection services)
         {
 
+            services.AddResponseCompression();
             services.AddDbContext<ApplicationDbContext>(options => options.UseMySql(Configuration.GetConnectionString("DefaultConnectionString"),
                 new MySqlServerVersion(new Version(8, 0, 21)))); // use MariaDbServerVersion for MariaDB
                         //mySqlOptions => mySqlOptions.cha(CharSet.NeverAppend)));
@@ -69,7 +70,6 @@ namespace TraderBlotter.Api
             services.AddScoped<ILoadTradeviewDataNseCm, LoadTradeViewDataNseCm>();
 
             services.AddScoped<IAutoSyncService, AutoSyncService>();
-
 
             services.AddScoped<IDealerClientMappingRepository, DealerClientMappingRepository>();
             services.AddScoped<IGroupDealerMappingRepository, GroupDealerMappingRepository>();
@@ -128,6 +128,7 @@ namespace TraderBlotter.Api
             .AllowAnyMethod()
             .AllowAnyHeader());
 
+            app.UseResponseCompression();
             app.UseHttpsRedirection();
             app.UseSwagger();
             app.UseSwaggerUI(options =>
@@ -157,6 +158,7 @@ namespace TraderBlotter.Api
                 });
             });
 
+            
             app.UseRouting();
 
             app.UseAuthorization();

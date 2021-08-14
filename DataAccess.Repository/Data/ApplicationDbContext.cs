@@ -32,7 +32,13 @@ namespace DataAccess.Repository.Data
         public DbSet<DealerClientMappingView> DealerClientMappingViews { get; set; }
         public DbSet<GroupDealerMappingView> GroupDealerMappingViews { get; set; }
 
-
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder
+                .Entity<TradeViewRef>()
+                .Property(e => e.TotalBuySellTotalValue)
+                .UsePropertyAccessMode(PropertyAccessMode.PreferFieldDuringConstruction);            
+        }
 
     }
 }

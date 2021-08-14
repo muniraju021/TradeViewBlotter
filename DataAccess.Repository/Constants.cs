@@ -15,5 +15,7 @@ namespace DataAccess.Repository
         public const string StrDateFormat = "yyyy-MM-dd";
         public const string TimeFormat = "HH:mm:ss";
 
+        public const int ChunkCount = 10000;
+
     }
 }

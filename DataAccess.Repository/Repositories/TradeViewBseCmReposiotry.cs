@@ -200,6 +200,7 @@ namespace DataAccess.Repository.Repositories
                     else if (i.OrderType == "SL-M")
                         i.OrderType = "SL-MKT";
                     i.Guid = guid;
+                    i.ComputeTotalPriceValue();
                     return i;
                 }
                 ).ToList();

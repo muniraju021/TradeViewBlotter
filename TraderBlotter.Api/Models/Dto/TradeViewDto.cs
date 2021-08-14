@@ -38,5 +38,6 @@ namespace TraderBlotter.Api.Models.Dto
         public string ClientCode { get; set; }
         public string Source { get; set; }
         public string TradeModifyFlag { get; set; }
+        public string TotalBuySellTotalValue { get; set; }
     }
 }

@@ -153,6 +153,7 @@ namespace DataAccess.Repository.Repositories
                                     DateTime.ParseExact(i.TradeDateTime, Constants.StrDateTimeFormat, provider).ToString(Constants.TimeFormat) : null; ;
                     i.Guid = guid;
                     i.BuySell = i.BuySell == "1" ? "Buy" : "Sell";
+                    i.ComputeTotalPriceValue();
                     return i;
                 }).ToList();
 

@@ -19,17 +19,17 @@ namespace DataAccess.Repository.Repositories
         private readonly IConfiguration _configuration;
         private readonly bool _blnArchiveDataEnabled;
 
-        public TradeViewGenericRepository(IGenericRepository<TradeView> tradeViewRepo,IConfiguration configuration)
+        public TradeViewGenericRepository(IGenericRepository<TradeView> tradeViewRepo, IConfiguration configuration)
         {
             _tradeViewRepo = tradeViewRepo;
             _configuration = configuration;
             _blnArchiveDataEnabled = _configuration.GetSection("ArchiveEnabled")?.Value != null ? Convert.ToBoolean(_configuration.GetSection("ArchiveEnabled")?.Value) : false;
         }
 
-        public async Task<IEnumerable<TradeView>> GetAllTradeViewsByPageIndex()
+        public async Task<IEnumerable<TradeView>> GetAllTradeViewsByPageIndex(int offset)
         {
-            //var query = $"SELECT * FROM tradeview order by TradeDate desc LIMIT {pageIndex}, {pageSize}";
-            var query = $"SELECT * FROM tradeview order by TradeDateTime desc";
+            var query = $"SELECT * FROM tradeview order by TradeDate desc LIMIT {offset}, {Constants.ChunkCount}";
+            //var query = $"SELECT * FROM tradeview order by TradeDateTime desc";
             var res = await _tradeViewRepo.GetAllEntityAsync(query);
             return res;
         }
@@ -75,7 +75,7 @@ namespace DataAccess.Repository.Repositories
         {
             var inputParams = new DynamicParameters();
             inputParams.Add("guidKey", guid);
-            var res = await _tradeViewRepo.ExcecuteNonQueryAsync("SyncTradeViewWithRefTable", parameters: inputParams, cmdType: CommandType.StoredProcedure);
+            var res = await _tradeViewRepo.ExcecuteNonQueryAsync("SyncTradeViewWithRefTable", parameters: inputParams, cmdType: CommandType.StoredProcedure, commandTimeout: 240);
             return res;
         }
 

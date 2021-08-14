@@ -39,5 +39,6 @@ namespace DataAccess.Repository.Data
         public string Source { get; set; }
         public string TradeModifyFlag { get; set; }
         public string TradeDateTime { get; set; }
+        public string TotalBuySellTotalValue { get; set; }
     }
 }

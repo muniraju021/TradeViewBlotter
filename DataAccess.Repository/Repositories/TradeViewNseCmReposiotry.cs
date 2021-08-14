@@ -23,6 +23,7 @@ namespace DataAccess.Repository.Repositories
         private readonly ITradeViewRepository _tradeViewRepositoryEf;
         private readonly ITradeViewRefRepository _tradeViewRefRepository;
         private readonly IMapper _mapper;
+        private readonly string Source = "OMNE";
         private readonly string _connectionName = "OmneDataSource";
         private readonly string LotSize = "1";
         private readonly string BrokerId = "12562";
@@ -188,7 +189,7 @@ namespace DataAccess.Repository.Repositories
                     i.LotSize = LotSize;
                     i.BrokerId = BrokerId;
                     i.StockName = i.SymbolName;
-                    i.ProClient = i.ParticipantId != ClientCodeConst ? "PRO" : "CLI";
+                    i.ProClient = i.ParticipantId != ClientCodeConst ? "CLI" : "PRO";
                     i.ExchangeName = Constants.NseCmExchangeName;
                     i.TradeDate = i.TradeDateTime;
                     i.TradeTime = i.TradeDateTime;
@@ -201,8 +202,9 @@ namespace DataAccess.Repository.Repositories
                     //    i.OrderType = "SL";
                     //else if (i.OrderType == "SL-M")
                     //    i.OrderType = "SL-MKT";
-                    i.Source = 
+                    i.Source = Source;
                     i.Guid = guid;
+                    i.ComputeTotalPriceValue();
                     return i;
                 }
                 ).ToList();

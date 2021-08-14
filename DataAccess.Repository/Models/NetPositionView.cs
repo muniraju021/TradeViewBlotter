@@ -9,10 +9,55 @@ namespace DataAccess.Repository.Models
         public string StockName { get; set; }
         public string BuyQuantity { get; set; }
         public string SellQuantity { get; set; }
-        public string BuyTotalValue { get; set; }
-        public string SellTotalValue { get; set; }
-        public string BuyAvg { get; set; }
-        public string SellAvg { get; set; }
+
+        private string _buyTotalValue;
+        public string BuyTotalValue 
+        {
+            get
+            {
+                decimal val;
+                decimal.TryParse(_buyTotalValue, out val);
+                return Math.Round(val, 2).ToString();
+            }
+            set { _buyTotalValue = value; }
+        }
+
+        private string _sellTotalValue;
+        public string SellTotalValue 
+        { 
+            get
+            {
+                decimal val;
+                decimal.TryParse(_sellTotalValue, out val);
+                return Math.Round(val, 2).ToString();
+            }
+            set { _sellTotalValue = value; }
+        }
+
+        private string _buyAvg;
+        public string BuyAvg
+        {
+            get
+            {
+                decimal val;
+                decimal.TryParse(_buyAvg, out val);
+                return Math.Round(val, 2).ToString();
+            }
+            set { _buyAvg = value; }
+        }
+
+        private string _sellAvg;
+        public string SellAvg 
+        { 
+            get
+            {
+                decimal val;
+                decimal.TryParse(_sellAvg, out val);
+                return Math.Round(val, 2).ToString();
+            }
+            set { _sellAvg = value; }
+        }
+
         public string NetQuantity
         {
             get
@@ -23,15 +68,15 @@ namespace DataAccess.Repository.Models
                 return (buyQty - sellQty).ToString();
             }
         }
-        public string ExpriyDate { get; set; }
+        public string ExpiryDate { get; set; }
         public string Profit
         {
             get 
             {
                 decimal sellPrice, buyPrice;
                 decimal.TryParse(SellTotalValue, out sellPrice);
-                decimal.TryParse(BuyTotalValue, out buyPrice);
-                return (sellPrice - buyPrice).ToString();
+                decimal.TryParse(BuyTotalValue, out buyPrice);                
+                return Math.Round((sellPrice - buyPrice),2).ToString();
             }
         }
         public string UserId { get; set; }
