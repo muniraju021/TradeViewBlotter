@@ -26,7 +26,7 @@ export class NetPositionViewComponent implements OnInit {
           //mark police cells as red
           return { color: 'green' };
         }
-        return null;
+        return { color: 'red' };
       }
     },
     { field: 'userId', headerName: 'User Id' },

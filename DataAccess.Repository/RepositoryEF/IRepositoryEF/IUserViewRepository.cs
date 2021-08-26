@@ -12,6 +12,7 @@ namespace DataAccess.Repository.RepositoryEF.IRepositoryEF
         ICollection<UserView> GetUserViews();
         UserView GetUserById(string loginName);
         UserView ValidateLogin(string loginName, string password);
+        Task UpdateUserLastLogin(string userName);
         ICollection<GroupView> GetGroups();
         ICollection<DealerView> GetDealers();
         ICollection<ClientView> GetClientViews();

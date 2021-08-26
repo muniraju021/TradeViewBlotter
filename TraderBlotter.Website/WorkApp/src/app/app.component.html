@@ -6,22 +6,36 @@
                 <img class="img-responsive" src="assets/images/BlotterGray.PNG" style="width: 190px; height: 35px; margin-left:15px; border-radius: 10px;">
             </li>
         </ul>
-        <ul class="navbar-nav mr-auto" >
+        <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-                <a class="nav-item nav-link" routerLink="/home" [routerLinkActive]="['active']" >Home</a>
+                <a class="nav-item nav-link" href="" >Dashboard</a>
             </li>
-            <li  class="nav-item" *ngIf="authenticationService.roleId && authenticationService.roleId=='1'">
+            <li class="nav-item">
+                <a class="nav-item nav-link" routerLink="/home" [routerLinkActive]="['active']" >Trades</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-item nav-link" routerLink="/net-position-view" [routerLinkActive]="['active']">Positions</a>
+            </li> 
+            <li class="nav-item">
+                <a class="nav-item nav-link" href="#">Arbitrage Positions</a>
+            </li> 
+            <li class="nav-item dropdown">
+                <a class="nav-link  dropdown-toggle" href="#" data-bs-toggle="dropdown">UserManagement</a>
+                <ul class="dropdown-menu">
+                  <li><a class="nav-item nav-link" routerLink="/user" [routerLinkActive]="['active']">CreateUser</a></li>
+                  <li><a class="nav-item nav-link" routerLink="/manage-user" [routerLinkActive]="['active']">ManageUser</a></li>
+                  <li><a class="nav-item nav-link" routerLink="/client-dealer-mapping" [routerLinkActive]="['active']">Client-Dealer-Mappping</a></li>
+                </ul>
+            </li>
+            <!-- <li  class="nav-item" *ngIf="authenticationService.roleId && authenticationService.roleId=='1'">
                 <a class="nav-item nav-link" routerLink="/user" [routerLinkActive]="['active']">CreateUser</a>
-            </li>
-            <li class="nav-item" *ngIf="authenticationService.roleId && authenticationService.roleId=='1'">
+            </li> -->
+            <!-- <li class="nav-item" *ngIf="authenticationService.roleId && authenticationService.roleId=='1'">
                 <a class="nav-item nav-link" routerLink="/manage-user" [routerLinkActive]="['active']">ManageUser</a>
-            </li>
-            <li class="nav-item">
+            </li> -->
+            <!-- <li class="nav-item">
                 <a class="nav-item nav-link" routerLink="/client-dealer-mapping" [routerLinkActive]="['active']">Client-Dealer-Mappping</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-item nav-link" routerLink="/net-position-view" [routerLinkActive]="['active']">Net position view</a>
-            </li>            
+            </li>                        -->
             <li class="nav-item">
                 <a class="nav-item nav-link ml-auto" href="#" (click)="logout()">Logout</a>
             </li>

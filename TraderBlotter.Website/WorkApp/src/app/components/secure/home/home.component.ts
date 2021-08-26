@@ -66,7 +66,8 @@ export class HomeComponent {
         { field: 'nNFCode' },
         { field: 'lotSize' },
         { field: 'source', headerName: 'Data Source' },
-        { field: 'tradeModifyFlag', headerName: 'Trade Modified' }
+        { field: 'tradeModifyFlag', headerName: 'Trade Modified' },
+        { field: 'totalBuySellTotalValue', headerName: 'Total Price Value' }
     ];
 
     defaultColDef = {
@@ -141,7 +142,7 @@ export class HomeComponent {
 
 
     tradePricecalculations() {
-        let columnsWithAggregation = ['tradePrice']
+        let columnsWithAggregation = ['totalBuySellTotalValue']
         this.buyValue = '';
         this.sellValue = '';
         this.tradePriceBuy = this.tradePriceSell = 0;

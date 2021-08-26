@@ -106,5 +106,16 @@ namespace DataAccess.Repository.RepositoryEF
             var clientCodesMapped = GetClientCodesByDealerCode(dealerCode);
             return clientCodes.Where(i => !(clientCodesMapped.Select(j => j.ClientCode).Any(k => k == i.ClientCode))).ToList();
         }
+
+        public async Task UpdateUserLastLogin(string userName)
+        {
+            var user = _db.UserViews.Where(i => i.LoginName == userName).FirstOrDefault();
+            user.LastLogin = DateTime.Now;
+
+            _db.UserViews.Attach(user);
+            _db.Entry(user).Property(i => i.LastLogin).IsModified = true;
+            var res = await _db.SaveChangesAsync();
+
+        }
     }
 }

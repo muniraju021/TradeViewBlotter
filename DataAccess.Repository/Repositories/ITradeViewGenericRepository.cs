@@ -17,5 +17,6 @@ namespace DataAccess.Repository.Repositories
         Task<int> SyncWithTradeViewRefTable(string guid);
         Task<IEnumerable<NetPositionView>> GetNetPositionView();
         Task<long> GetAllTradesCount();
+        Task<TradeStats> GetTradeStats();
     }
 }

@@ -1,12 +1,15 @@
 <div class="parentDiv row no-gutters">
     <div class="col-md-4 div1">
-            <h4>
-                <img src="assets/images/image9.PNG" style="border: none;">
-            </h4>
-            <div>
+            <!--<h4>
+                <img src="assets/images/hex4.jpg" width="400px" style="border: none;">
+            </h4>-->
+            <div style="margin-top: 60px; background-image: url(./assets/images/hex4.jpg);background-image: space; background-size: cover; width: 430px;height: 460px;"> 
+                
+            </div>
+            <div style="margin-top: -350px; margin-left: 20px;">
                 <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
                     <div class="form-group">
-                        <label for="username">Login ID</label>
+                        <label for="username" style="font-size:14px;font-weight: bold;">Login ID</label>
                         <input type="text" formControlName="username" class="form-control textBox"
                             [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
                         <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
@@ -14,7 +17,7 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="password">Password</label>
+                        <label for="password" style="font-size:14px;font-weight: bold;">Password</label>
                         <input type="password" formControlName="password" class="form-control textBox"
                             [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
                         <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
@@ -24,20 +27,29 @@
                     <br />
 
                     <div class="form-group">
-                        <input type="checkbox" id="rememberMe" class="form-check-input" formControlName="rememberMe"
+                        <div>
+                            <input type="checkbox" id="rememberMe" class="form-check-input" formControlName="rememberMe"
                             style="margin-left: 2px;">
-                        <label for="rememberMe" style="margin-left: 25px; margin-top: 3px;"> Remember Me </label>
-                        <b style="color: red; margin-left:130px; margin-top: 3px; ">Forget Password?</b>
+                            <label for="rememberMe" style="margin-left: 25px; margin-top: 3px;font-weight: bold;"> Remember Me </label>
+                            <b style="color: red; margin-top: 10px;font-weight:bold;margin-left: 80px;">Forget Password?</b>
+                        </div>
+                        <div>
+                            
+                        </div>    
                     </div>
 
-                    <button [disabled]="loading" class="btn btn-primary login">
-                        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1 "></span>
-                        Login
-                    </button>
-                    <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
+                    <div class="form-group"> 
+                        <button [disabled]="loading" class="btn btn-primary login" style="font-weight: bold;">
+                            <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                            Login
+                        </button>
+                        <div *ngIf="error" class="alert alert-danger mt-3 mb-0">{{error}}</div>
+                    </div>
+                    
                 </form>
         </div>
     </div>
+
     <div class="col-md-4">
         <div class="form-group" style="margin-left: 500px;">
             <img src="assets/images/image1.png" style="border: none;">
@@ -47,7 +59,7 @@
         </div>
     </div>
 
-    <div >
+    <div style="margin-top: 20px;">
         <b> What is Trade Blotter? <br /> <br /> </b>
         
         <b> RapidCube Trade Blotter </b> is a accumulation of all Trade record of Spark Capital with relevant trade

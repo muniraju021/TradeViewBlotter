@@ -18,6 +18,7 @@ namespace DataAccess.Repository.Models
         public string DealerCode { get; set; }
         public string ClientCode { get; set; }
         public bool IsActive { get; set; }
+        public DateTime LastLogin { get; set; }
 
     }
 }
