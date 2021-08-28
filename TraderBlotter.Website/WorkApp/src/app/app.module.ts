@@ -15,6 +15,8 @@ import { ClientDealerMappingComponent } from './components/secure/client-dealer-
 import {DragDropModule} from '@angular/cdk/drag-drop';
 import { ManageUserComponent } from './components/secure/manage-user/manage-user.component';
 import { NetPositionViewComponent } from './components/secure/net-position-view/net-position-view.component';
+import { DashboardComponent } from './components/secure/dashboard/dashboard.component';
+import { ArbitragePositionComponent } from './components/secure/arbitrage-position/arbitrage-position.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +26,9 @@ import { NetPositionViewComponent } from './components/secure/net-position-view/
     UserComponent,
     ClientDealerMappingComponent,
     ManageUserComponent,
-    NetPositionViewComponent
+    NetPositionViewComponent,
+    DashboardComponent,
+    ArbitragePositionComponent
   ],
   imports: [
     HttpClientModule,
