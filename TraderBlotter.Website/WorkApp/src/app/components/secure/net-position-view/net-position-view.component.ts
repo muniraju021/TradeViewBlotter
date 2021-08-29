@@ -23,7 +23,6 @@ export class NetPositionViewComponent implements OnInit {
     {
       field: 'profit', headerName: 'Profit', cellStyle: params => {
         if (params.value > 0) {
-          //mark police cells as red
           return { color: 'green' };
         }
         return { color: 'red' };

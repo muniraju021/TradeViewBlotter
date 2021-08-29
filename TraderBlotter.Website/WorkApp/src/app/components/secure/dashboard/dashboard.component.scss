@@ -1,0 +1,31 @@
+body {
+    font-family: Verdana;
+  }
+
+.parentDiv
+{
+    display: block; 
+    position: absolute;
+}
+
+.canvas
+{
+    margin-top: 80px;
+}
+
+.label
+{
+    font-size: 20px;
+    color: black;
+    font-weight: bold;
+}
+
+
+.label-text
+{
+    font-size: 20px;
+    height: 18px;
+    outline: none;
+    font-weight: bold;
+    margin-left: 25%;
+}

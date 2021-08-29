@@ -3,19 +3,30 @@
         <div class="form-group col-md-12" style="color:Red; text-align: center;; line-height: 1;">
             <b>Currency Rate 1 Indian Rupees in USD : {{usd}}$ | EURO : {{euro}} | UK Dollar : {{uk}}</b>
         </div>
-        <div class="form-group col-md-2">
+        <div class="form-group col-md-1">
             <div *ngIf="loading" class="spinner-border spinner-border-sm"></div>
-            <input type="text" style="margin-top: 5px;" id="filter-text-box" placeholder="Type in to Search..." (change)="onFilterTextBoxChanged()">
+            <input type="text" style="margin-top: 5px; width:10vw; height: 30px; font-size: 12px;" id="filter-text-box"
+                placeholder="Type in to Search..." (change)="onFilterTextBoxChanged()">
         </div>
+        
         <div class="form-group col-md-1" style="background-color: slategray; margin-left:4%">
-            <label class="label" for="buyValue" > BV </label>
-            <input type="text" readonly class="form-control-plaintext label-text" [(ngModel)]='buyValue' id="buyValue">
+            <label class="label" for="avgPriceBuy"> BAP </label>
+            <input type="text" readonly class="form-control-plaintext label-text" [(ngModel)]='avgPriceBuy' id="avgPriceBuy">
+        </div>
+        <div class="form-group col-md-1" style="background-color: slategray;">
+            <label class="label" for="avgPriceSell"> SAP </label>
+            <input type="text" readonly class="form-control-plaintext label-text" id="avgPriceSell" [(ngModel)]='avgPriceSell'>
+        </div>
+        <div class="form-group col-md-1" style="background-color: slategray;">
+            <label class="label" for="buyValue"> BV </label>
+            <input type="text" readonly class="form-control-plaintext label-text" id="buyValue" [(ngModel)]='buyValue'>
         </div>
         <div class="form-group col-md-1" style="background-color: slategray;">
             <label class="label" for="sellValue"> SV </label>
-            <input type="text" readonly class="form-control-plaintext label-text" id="sellValue" [(ngModel)]='sellValue'>
+            <input type="text" readonly class="form-control-plaintext label-text" id="sellValue"
+                [(ngModel)]='sellValue'>
         </div>
-        <div class="form-group col-md-1" style="background-color: slategray;"> 
+        <div class="form-group col-md-1" style="background-color: slategray;">
             <label class="label" for="buyQty"> BQ </label>
             <input type="text" readonly class="form-control-plaintext label-text" id="buyQty" [(ngModel)]='buyQty'>
         </div>
@@ -23,23 +34,33 @@
             <label class="label" for="sellQty"> SQ </label>
             <input type="text" readonly class="form-control-plaintext label-text" id="sellQty" [(ngModel)]='sellQty'>
         </div>
-        <div class="form-group col-md-1" style="background-color: slategray;">
-            <label class="label" for="avgPriceBuy"> BA </label>
-            <input type="text" readonly class="form-control-plaintext label-text" id="avgPriceBuy" [(ngModel)]='avgPriceBuy'>
-        </div>
-        <div class="form-group col-md-1" style="background-color: slategray;">
-            <label class="label" for="avgPriceSell"> SA </label>
-            <input type="text" readonly class="form-control-plaintext label-text" id="avgPriceSell" [(ngModel)]='avgPriceSell'>
+        <div class="form-group col-md-1" style="background-color: slategray; ">
+            <label class="label" for="totalNetQty"> NQ </label>
+            <input type="text" readonly class="form-control-plaintext label-text" id="totalNetQty"
+                [(ngModel)]='totalNetQty'>
         </div>
         <div class="form-group col-md-1" style="background-color: slategray; ">
-            <label class="label" for="totalNetQty"> Total Net Qty </label>
-            <input type="text" readonly class="form-control-plaintext label-text" id="totalNetQty" [(ngModel)]='totalNetQty'>
+            <label class="label" for="pnl"> P&L </label>
+            <input type="text" readonly class="form-control-plaintext label-text" id="pnl" [(ngModel)]='pnl'>
         </div>
 
-        <div class="form-group col-md-2">
-            <button title="Download as csv" (click)="onBtnExport()" class="csvExport">
-                <img src="assets/images/csv.png" style="border: none ;  height: 40px;width: 40px;"/>
-            </button>
+
+        <div class="col-md-2" style="margin-left: 20px;">
+            <div class="row">
+                <div class="form-group col-md-4" style="background-color: slategray; padding-top: 5px; display: flex; justify-content: center;align-items: center; ">
+                    <label class="label" for="tradesCount"> Trades Count </label>
+                </div>
+
+                <div class="form-group col-md-4" style="background-color: slategray;display: flex; justify-content: center;align-items: center;">
+                    <input type="text" readonly class="form-control-plaintext label-text" id="tradesCount"
+                        [(ngModel)]='tradesCount'>
+                </div>
+                <div class="form-group col-md-4">
+                    <button title="Download as csv" (click)="onBtnExport()" class="csvExport">
+                        <img src="assets/images/csv.png" style="border: none ;  height: 40px;width: 40px;" />
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 

@@ -37,8 +37,10 @@ export class HomeComponent {
     rowData: any[];
     userLoginName: string = ''
     usd: any = 0.013;
-    euro : any = 0.011;
-    uk:any = 0.0097;
+    euro: any = 0.011;
+    uk: any = 0.0097;
+    tradesCount: string = '';
+    pnl: string = '';
     columnDefs = [
         { field: 'exchangeName', headerName: 'Exch Name' },
         { field: 'clientCode' },
@@ -55,7 +57,7 @@ export class HomeComponent {
         { field: 'userId', headerName: 'User Id' },
         { field: 'tradeViewId', headerName: 'Blotter ID' },
         { field: 'tradeId', headerName: 'Exch Trade ID' },
-        { field: 'symbolName', headerName: 'Instrument Name' },  
+        { field: 'symbolName', headerName: 'Instrument Name' },
         { field: 'exchangeTime', headerName: 'Exch Timestamp' },
         { field: 'exchangeOrderId', headerName: 'Exch Order ID' },
         { field: 'orderType' },
@@ -174,7 +176,7 @@ export class HomeComponent {
                 if (rowNode.data['buySell'] == 'Buy' && rowNode.data[element])
                     this.tradeQtyBuy += Number(rowNode.data[element]);
                 if (rowNode.data['buySell'] == 'Sell' && rowNode.data[element])
-                this.tradeQtySell += Number(rowNode.data[element]);
+                    this.tradeQtySell += Number(rowNode.data[element]);
             });
         })
         if (this.tradeQtyBuy)
@@ -191,8 +193,10 @@ export class HomeComponent {
     avgCalculations() {
         this.avgPriceBuy = '';
         this.avgPriceSell = '';
+        this.pnl = '';
         let averageBuy: number = 0;
         let averageSell: number = 0;
+        let pAndL: number = 0;
 
         if (this.tradePriceBuy && this.tradeQtyBuy)
             averageBuy = this.tradePriceBuy / this.tradeQtyBuy;
@@ -204,12 +208,24 @@ export class HomeComponent {
             this.avgPriceBuy = `${averageBuy.toFixed(2)}`;
         if (averageSell)
             this.avgPriceSell = `${averageSell.toFixed(2)}`;
+
+        if (this.tradePriceBuy || this.tradePriceSell) {
+            pAndL = this.tradePriceSell - this.tradePriceBuy;
+            this.pnl = `${pAndL.toFixed(2)}`;
+        }
+
+        this.blotterService.getAllTradesCount().subscribe(
+            (data) => {
+              this.tradesCount = data;
+            }
+          )
+
     }
 
     onBtnExport() {
         var params = this.getParams();
         if (params.suppressQuotes || params.columnSeparator) {
-            
+
         }
         this.gridOptions.api.exportDataAsCsv(params);
     }

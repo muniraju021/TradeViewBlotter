@@ -16,6 +16,8 @@ import {DragDropModule} from '@angular/cdk/drag-drop';
 import { ManageUserComponent } from './components/secure/manage-user/manage-user.component';
 import { NetPositionViewComponent } from './components/secure/net-position-view/net-position-view.component';
 import { DashboardComponent } from './components/secure/dashboard/dashboard.component';
+import { ChartsModule } from 'ng2-charts';
+
 import { ArbitragePositionComponent } from './components/secure/arbitrage-position/arbitrage-position.component';
 
 @NgModule({
@@ -37,7 +39,9 @@ import { ArbitragePositionComponent } from './components/secure/arbitrage-positi
     FormsModule,
     ReactiveFormsModule,
     AgGridModule.withComponents([]),
-    DragDropModule
+
+    DragDropModule,
+    ChartsModule
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true },

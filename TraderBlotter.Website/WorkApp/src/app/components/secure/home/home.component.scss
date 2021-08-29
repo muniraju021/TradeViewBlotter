@@ -15,17 +15,19 @@ body {
     font-size: 10px;
     color: black;
     font-weight: bold;
-    padding-left: 3%;
+    display: block;
+    text-align: center;
+    padding-top: 4px;
 }
 
 .label-text
 {
     font-size: 10px;
     height: 18px;
-    margin-left: -5;
-    padding: -5;
     outline: none;
     font-weight: bold;
+    display: block;
+    text-align: center;
 }
 
 .csvExport

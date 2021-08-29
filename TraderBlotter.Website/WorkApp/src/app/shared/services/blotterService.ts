@@ -28,4 +28,11 @@ export class BlotterService {
                 return response;
             }));
     }
+
+    getTradesCount(): Observable<any> {
+        return this.http.get<any>(`${environment.apiUrl}/v1/Dashboard/getTradesCount`)
+            .pipe(map((response: Response) => {
+                return response;
+            }));
+    }
 }
