@@ -22,5 +22,7 @@ namespace TraderBlotter.Api.Models.Dto
         [JsonProperty(NullValueHandling = NullValueHandling.Ignore)]
         public string ClientCode { get; set; }
         public bool IsActive { get; set; }
+        public string Token { get; set; }
+        public DateTime TokenExpiration { get; set; }
     }
 }

@@ -10,6 +10,7 @@ using DataAccess.Repository.LogServices;
 using DataAccess.Repository.Repositories;
 using DataAccess.Repository.RepositoryEF.IRepositoryEF;
 using log4net;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using TraderBlotter.Api.Models.Dto;

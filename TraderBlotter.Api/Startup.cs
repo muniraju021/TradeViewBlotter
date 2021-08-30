@@ -12,6 +12,7 @@ using DataAccess.Repository.Infrastructure;
 using DataAccess.Repository.Repositories;
 using DataAccess.Repository.RepositoryEF;
 using DataAccess.Repository.RepositoryEF.IRepositoryEF;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Hosting;
@@ -24,8 +25,10 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+using TraderBlotter.Api.ConfigurationFilters;
 using TraderBlotter.Api.Models.Dto;
 using TraderBlotter.Api.Models.Mapper;
 
@@ -109,7 +112,32 @@ namespace TraderBlotter.Api
                 options.IncludeXmlComments(cmlCommentsFullFilePath);
             });
 
+            //Add Authentication
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.SaveToken = true;
+                options.RequireHttpsMetadata = false;
+                options.TokenValidationParameters = new TokenValidationParameters()
+                {
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    //ValidAudience = Configuration["JWT:ValidAudience"],
+                    //ValidIssuer = Configuration["JWT:ValidIssuer"],
+                    IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JWT:Secret"]))
+                };
+            });
 
+            services.AddMvc(config =>
+            {
+                config.Filters.Add(typeof(CustomExceptionFilter));
+                config.Filters.Add(typeof(CustomAuthorizationFilter));
+            });
 
         }
 
@@ -148,7 +176,7 @@ namespace TraderBlotter.Api
                     if (error != null)
                     {
                         var ex = error.Error;
-
+                        
                         await context.Response.WriteAsync(new ErrorModel()
                         {
                             HttpStatusCode = 500,
@@ -161,6 +189,7 @@ namespace TraderBlotter.Api
             
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
