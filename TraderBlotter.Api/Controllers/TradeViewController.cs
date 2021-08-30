@@ -23,6 +23,7 @@ namespace TraderBlotter.Api.Controllers
     [Route("api/v{v:apiVersion}/[controller]")]
     [ApiController]
     [ApiVersion("1.0")]
+    [Authorize]
     public class TradeViewController : ControllerBase
     {
         private readonly IMapper _mapper;

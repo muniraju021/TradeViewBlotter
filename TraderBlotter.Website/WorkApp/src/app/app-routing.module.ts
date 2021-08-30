@@ -13,12 +13,12 @@ import { ArbitragePositionComponent } from './components/secure/arbitrage-positi
 const routes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },
-  { path: 'user', component: UserComponent },
-  { path: 'client-dealer-mapping', component: ClientDealerMappingComponent },
-  { path: 'manage-user', component: ManageUserComponent },
-  { path: 'net-position-view', component: NetPositionViewComponent },
-  { path: 'dashboard', component: DashboardComponent },
-  { path: 'arbitrage-position', component: ArbitragePositionComponent },
+  { path: 'user', component: UserComponent , canActivate: [AuthGuard] },
+  { path: 'client-dealer-mapping', component: ClientDealerMappingComponent, canActivate: [AuthGuard]  },
+  { path: 'manage-user', component: ManageUserComponent, canActivate: [AuthGuard]  },
+  { path: 'net-position-view', component: NetPositionViewComponent, canActivate: [AuthGuard]  },
+  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]  },
+  { path: 'arbitrage-position', component: ArbitragePositionComponent, canActivate: [AuthGuard]  },
   // otherwise redirect to home
   { path: '**', redirectTo: 'dashboard' },
 ];

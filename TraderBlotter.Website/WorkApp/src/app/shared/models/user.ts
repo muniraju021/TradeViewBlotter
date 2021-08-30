@@ -6,6 +6,7 @@ export class User {
     UserCode: string;
     IsActive: boolean;
     authdata?: string;
+    token: string;
 }
 
 export class UserRole {

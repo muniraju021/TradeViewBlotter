@@ -9,7 +9,7 @@ import { AuthenticationService } from '../../../shared/services/authenticationse
     selector: 'app-home',
     templateUrl: './login.component.html',
     styleUrls: ['./login.component.scss']
-  })
+})
 export class LoginComponent implements OnInit {
     loginForm: FormGroup;
     loading = false;
@@ -22,9 +22,9 @@ export class LoginComponent implements OnInit {
         private route: ActivatedRoute,
         private router: Router,
         private authenticationService: AuthenticationService
-    ) { 
+    ) {
         // redirect to home if already logged in
-        if (this.authenticationService.currentUserValue) { 
+        if (this.authenticationService.currentUserValue) {
             this.router.navigate(['/']);
         }
     }
@@ -33,7 +33,7 @@ export class LoginComponent implements OnInit {
         this.loginForm = this.formBuilder.group({
             username: ['', Validators.required],
             password: ['', Validators.required],
-            rememberMe : []
+            rememberMe: []
         });
 
         // get return url from route parameters or default to '/'
