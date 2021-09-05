@@ -5,15 +5,24 @@ import { BlotterService } from 'src/app/shared/services/blotterService';
 @Component({
   selector: 'app-net-position-view',
   templateUrl: './net-position-view.component.html',
-  styleUrls: ['./net-position-view.component.scss']
+  styleUrls: ['./net-position-view.component.scss'],
 })
 export class NetPositionViewComponent implements OnInit {
   rowHeight: number;
   public gridOptions: GridOptions;
   columnDefs = [
+    { field: 'exchangeName', headerName: 'Exchange Name' },
     { field: 'stockName', headerName: 'Stock Name' },
-    { field: 'buyQuantity', headerName: 'Buy Qty', cellStyle: { color: 'navy' } },
-    { field: 'sellQuantity', headerName: 'Sell Qty', cellStyle: { color: 'red' } },
+    {
+      field: 'buyQuantity',
+      headerName: 'Buy Qty',
+      cellStyle: { color: 'navy' },
+    },
+    {
+      field: 'sellQuantity',
+      headerName: 'Sell Qty',
+      cellStyle: { color: 'red' },
+    },
     { field: 'buyTotalValue', headerName: 'Buy Value' },
     { field: 'sellTotalValue', headerName: 'Sell Value' },
     { field: 'buyAvg', headerName: 'Buy Avg' },
@@ -21,15 +30,17 @@ export class NetPositionViewComponent implements OnInit {
     { field: 'netQuantity', headerName: 'Net Qty' },
     { field: 'expiryDate', headerName: 'Expiry' },
     {
-      field: 'profit', headerName: 'Profit', cellStyle: params => {
+      field: 'profit',
+      headerName: 'Profit',
+      cellStyle: (params) => {
         if (params.value > 0) {
           return { color: 'green' };
         }
         return { color: 'red' };
-      }
+      },
     },
     { field: 'userId', headerName: 'User Id' },
-    { field: 'clientCode', headerName: 'Client Id' }
+    { field: 'clientCode', headerName: 'Client Id' },
   ];
   rowData: any;
 
@@ -37,7 +48,7 @@ export class NetPositionViewComponent implements OnInit {
     resizable: true,
     sortable: true,
     filter: true,
-    minWidth: 100
+    minWidth: 100,
   };
   gridApi: any;
   gridColumnApi: any;
@@ -59,13 +70,11 @@ export class NetPositionViewComponent implements OnInit {
     this.rowHeight = 28;
     this.gridOptions = {
       columnDefs: this.columnDefs,
-      rowData: this.rowData
-    }
-
+      rowData: this.rowData,
+    };
   }
 
-  onGridReady(params) {
-  }
+  onGridReady(params) {}
 
   onFirstDataRendered(params) {
     this.gridApi = params.api;
@@ -74,20 +83,18 @@ export class NetPositionViewComponent implements OnInit {
     params.api.sizeColumnsToFit();
 
     this.calculations();
-
   }
 
   ngOnInit(): void {
-    this.blotterService.getNetPositionViewDetails().subscribe(
-      (data) => {
-        this.rowData = data;
-      }
-    )
+    this.blotterService.getNetPositionViewDetails().subscribe((data) => {
+      this.rowData = data;
+    });
   }
 
-
   onFilterTextBoxChanged() {
-    this.gridApi.setQuickFilter((<HTMLInputElement>document.getElementById("filter-text-box")).value);
+    this.gridApi.setQuickFilter(
+      (<HTMLInputElement>document.getElementById('filter-text-box')).value
+    );
   }
 
   onFilterChanged(params) {
@@ -97,7 +104,6 @@ export class NetPositionViewComponent implements OnInit {
   onBtnExport() {
     var params = this.getParams();
     if (params.suppressQuotes || params.columnSeparator) {
-
     }
     this.gridOptions.api.exportDataAsCsv(params);
   }
@@ -105,16 +111,23 @@ export class NetPositionViewComponent implements OnInit {
   getParams() {
     return {
       suppressQuotes: true,
-      columnSeparator: ','
+      columnSeparator: ',',
     };
   }
 
-  getRowStyle(params) {
-
-  }
+  getRowStyle(params) {}
 
   calculations() {
-    this.bap = this.sap = this.buyValue = this.sellValue = this.buyQty = this.sellQty = this.totalNetQty = this.pnl = this.tradesCount = '';
+    this.bap =
+      this.sap =
+      this.buyValue =
+      this.sellValue =
+      this.buyQty =
+      this.sellQty =
+      this.totalNetQty =
+      this.pnl =
+      this.tradesCount =
+        '';
     let buyAvgPrice = 0;
     let sellAvgPrice = 0;
     let buyValue = 0;
@@ -124,89 +137,70 @@ export class NetPositionViewComponent implements OnInit {
     let netQty = 0;
     let pAndL = 0;
 
-    let columnsWithAggregation = ['buyAvg']
-    columnsWithAggregation.forEach(element => {
+    let columnsWithAggregation = ['buyAvg'];
+    columnsWithAggregation.forEach((element) => {
       this.gridApi.forEachNodeAfterFilter((rowNode: RowNode) => {
-
         buyAvgPrice += Number(rowNode.data[element]);
       });
-    })
+    });
 
-    columnsWithAggregation = ['sellAvg']
-    columnsWithAggregation.forEach(element => {
+    columnsWithAggregation = ['sellAvg'];
+    columnsWithAggregation.forEach((element) => {
       this.gridApi.forEachNodeAfterFilter((rowNode: RowNode) => {
-
         sellAvgPrice += Number(rowNode.data[element]);
       });
-    })
+    });
 
-    columnsWithAggregation = ['buyTotalValue']
-    columnsWithAggregation.forEach(element => {
+    columnsWithAggregation = ['buyTotalValue'];
+    columnsWithAggregation.forEach((element) => {
       this.gridApi.forEachNodeAfterFilter((rowNode: RowNode) => {
-
         buyValue += Number(rowNode.data[element]);
       });
-    })
+    });
 
-    columnsWithAggregation = ['sellTotalValue']
-    columnsWithAggregation.forEach(element => {
+    columnsWithAggregation = ['sellTotalValue'];
+    columnsWithAggregation.forEach((element) => {
       this.gridApi.forEachNodeAfterFilter((rowNode: RowNode) => {
-
         sellValue += Number(rowNode.data[element]);
       });
-    })
+    });
 
-    columnsWithAggregation = ['buyQuantity']
-    columnsWithAggregation.forEach(element => {
+    columnsWithAggregation = ['buyQuantity'];
+    columnsWithAggregation.forEach((element) => {
       this.gridApi.forEachNodeAfterFilter((rowNode: RowNode) => {
-
         buyQty += Number(rowNode.data[element]);
       });
-    })
+    });
 
-    columnsWithAggregation = ['sellQuantity']
-    columnsWithAggregation.forEach(element => {
+    columnsWithAggregation = ['sellQuantity'];
+    columnsWithAggregation.forEach((element) => {
       this.gridApi.forEachNodeAfterFilter((rowNode: RowNode) => {
-
         sellQty += Number(rowNode.data[element]);
       });
-    })
+    });
 
-    columnsWithAggregation = ['netQuantity']
-    columnsWithAggregation.forEach(element => {
+    columnsWithAggregation = ['netQuantity'];
+    columnsWithAggregation.forEach((element) => {
       this.gridApi.forEachNodeAfterFilter((rowNode: RowNode) => {
-
         netQty += Number(rowNode.data[element]);
       });
-    })
+    });
 
-
-    if (buyAvgPrice)
-      this.bap = `${buyAvgPrice.toFixed(2)}`;
-    if (sellAvgPrice)
-      this.sap = `${sellAvgPrice.toFixed(2)}`;
-    if (buyValue)
-      this.buyValue = `${buyValue.toFixed(2)}`;
-    if (sellValue)
-      this.sellValue = `${sellValue.toFixed(2)}`;
-    if (buyQty)
-      this.buyQty = `${buyQty.toFixed(2)}`;
-    if (sellQty)
-      this.sellQty = `${sellQty.toFixed(2)}`;
-    if (netQty)
-      this.totalNetQty = `${netQty.toFixed(2)}`;
+    if (buyAvgPrice) this.bap = `${buyAvgPrice.toFixed(2)}`;
+    if (sellAvgPrice) this.sap = `${sellAvgPrice.toFixed(2)}`;
+    if (buyValue) this.buyValue = `${buyValue.toFixed(2)}`;
+    if (sellValue) this.sellValue = `${sellValue.toFixed(2)}`;
+    if (buyQty) this.buyQty = `${buyQty.toFixed(2)}`;
+    if (sellQty) this.sellQty = `${sellQty.toFixed(2)}`;
+    if (netQty) this.totalNetQty = `${netQty.toFixed(2)}`;
 
     if (buyValue || sellValue) {
       pAndL = sellValue - buyValue;
       this.pnl = `${pAndL.toFixed(2)}`;
     }
 
-    this.blotterService.getAllTradesCount().subscribe(
-      (data) => {
-        this.tradesCount = data;
-      }
-    )
-
+    this.blotterService.getAllTradesCount().subscribe((data) => {
+      this.tradesCount = data;
+    });
   }
-
 }

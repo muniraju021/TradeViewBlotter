@@ -82,6 +82,13 @@ namespace DataAccess.Repository.Repositories
         public async Task<IEnumerable<NetPositionView>> GetNetPositionView()
         {
             var res = await _tradeViewRepo.GetAllEntityAsync<NetPositionView>(spName: "getNetPositionByStockName", cmdType: CommandType.StoredProcedure);
+            
+            foreach (var item in res)
+            {
+                item.SellQuantity = item.SellQuantity ?? "0";
+                item.BuyQuantity = item.BuyQuantity ?? "0";
+            }
+
             return res;
         }
 
