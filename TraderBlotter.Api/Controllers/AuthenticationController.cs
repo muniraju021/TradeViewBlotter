@@ -64,6 +64,7 @@ namespace TraderBlotter.Api.Controllers
                 var userDto = _mapper.Map<UserDto>(user);
                 userDto.Token = new JwtSecurityTokenHandler().WriteToken(token);
                 userDto.TokenExpiration = token.ValidTo;
+                userDto.LastLogin = DateTime.Now;
 
                 return Ok(userDto);
             }

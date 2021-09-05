@@ -24,5 +24,6 @@ namespace TraderBlotter.Api.Models.Dto
         public bool IsActive { get; set; }
         public string Token { get; set; }
         public DateTime TokenExpiration { get; set; }
+        public DateTime LastLogin { get; set; }
     }
 }

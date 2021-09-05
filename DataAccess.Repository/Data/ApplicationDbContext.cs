@@ -40,5 +40,10 @@ namespace DataAccess.Repository.Data
                 .UsePropertyAccessMode(PropertyAccessMode.PreferFieldDuringConstruction);            
         }
 
+        public override void Dispose()
+        {
+            base.Dispose();
+        }
+
     }
 }

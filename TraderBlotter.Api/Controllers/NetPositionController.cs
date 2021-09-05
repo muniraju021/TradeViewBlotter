@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using DataAccess.Repository.LogServices;
 using DataAccess.Repository.Repositories;
 using log4net;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace TraderBlotter.Api.Controllers
@@ -12,6 +13,7 @@ namespace TraderBlotter.Api.Controllers
     [Route("api/v{v:apiVersion}/[controller]")]
     [ApiController]
     [ApiVersion("1.0")]
+    [Authorize]
     public class NetPositionController : ControllerBase
     {
         private readonly ITradeViewGenericRepository _tradeViewGenericRepo;

@@ -3,6 +3,7 @@ using DataAccess.Repository.LogServices;
 using DataAccess.Repository.Models;
 using DataAccess.Repository.RepositoryEF.IRepositoryEF;
 using log4net;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using System;
@@ -15,6 +16,7 @@ namespace TraderBlotter.Api.Controllers
     [Route("api/v{v:apiVersion}/[controller]")]
     [ApiController]
     [ApiVersion("1.0")]
+    [Authorize]
     public class MappingController : Controller
     {
         private readonly IMapper _mapper;

@@ -36,6 +36,7 @@ namespace TraderBlotter.Api
 {
     public class Startup
     {
+        public static IAutoSyncService _autoSyncservice = null;
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -198,14 +199,18 @@ namespace TraderBlotter.Api
             });
 
 
-            Task.Run(async () =>
-            {
-                using (var client = new HttpClient())
-                {
-                    client.BaseAddress = new Uri(Configuration.GetSection("BaseUrl").Value);
-                    var resp = await client.GetAsync("api/v1/healthcheck");
-                }
-            });
+            //Task.Run(async () =>
+            //{
+            //    using (var client = new HttpClient())
+            //    {
+            //        client.BaseAddress = new Uri(Configuration.GetSection("BaseUrl").Value);
+            //        var resp = await client.GetAsync("api/v1/healthcheck");
+            //    }
+            //});
+
+            var scope = app.ApplicationServices.CreateScope();
+            _autoSyncservice = scope.ServiceProvider.GetService<IAutoSyncService>();
+            _autoSyncservice.StartAutoSyncFromSource();
                     
             applicationLifetime.ApplicationStopping.Register(OnShutDown);
 

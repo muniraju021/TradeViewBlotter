@@ -19,19 +19,19 @@ namespace TraderBlotter.Api.Controllers
     [ApiVersion("1.0")]
     public class HealthCheckController : ControllerBase
     {
-        private static ILoadTradeviewData _loadTradeviewData;
         private readonly ILog _logger = LogService.GetLogger(typeof(HealthCheckController));
         private readonly ITradeViewGenericRepository _tradeViewGenericRepository;
-        private readonly ILoadTradeviewDataNseFo _loadTradeviewDataNseFo;
         private readonly IAutoSyncService _autoSyncService;
 
+        private static bool IsArchived = false;
+
         //public HealthCheckController(ILoadTradeviewData loadTradeviewData, ITradeViewGenericRepository tradeViewGenericRepository, ILoadTradeviewDataNseFo loadTradeviewDataNseFo)
-        public HealthCheckController(ITradeViewGenericRepository tradeViewGenericRepository, IAutoSyncService autoSyncService)
+        public HealthCheckController(ITradeViewGenericRepository tradeViewGenericRepository)
         {
             //_loadTradeviewData = loadTradeviewData;
             //_loadTradeviewDataNseFo = loadTradeviewDataNseFo;
             _tradeViewGenericRepository = tradeViewGenericRepository;
-            _autoSyncService = autoSyncService;
+            //_autoSyncService = autoSyncService;
         }
 
         [HttpGet]
@@ -39,12 +39,21 @@ namespace TraderBlotter.Api.Controllers
         {
             try
             {
-                await _tradeViewGenericRepository.ArchiveAndPurgeTradeView(Constants.BseCmExchangeName);
-                _logger.Info($"Archived old days data of - {Constants.BseCmExchangeName}");
-                await _tradeViewGenericRepository.ArchiveAndPurgeTradeView(Constants.NseFoExchangeName);
-                _logger.Info($"Archived old days data of - {Constants.NseFoExchangeName}");
-                await _tradeViewGenericRepository.ArchiveAndPurgeTradeView(Constants.NseCmExchangeName);
-                _logger.Info($"Archived old days data of - {Constants.NseCmExchangeName}");
+                if (!IsArchived)
+                {
+                    _logger.Info($"HealthCheckController - Archiving Running..");
+
+                    await _tradeViewGenericRepository.ArchiveAndPurgeTradeView(Constants.BseCmExchangeName);
+                    _logger.Info($"Archived old days data of - {Constants.BseCmExchangeName}");
+                    await _tradeViewGenericRepository.ArchiveAndPurgeTradeView(Constants.NseFoExchangeName);
+                    _logger.Info($"Archived old days data of - {Constants.NseFoExchangeName}");
+                    await _tradeViewGenericRepository.ArchiveAndPurgeTradeView(Constants.NseCmExchangeName);
+                    _logger.Info($"Archived old days data of - {Constants.NseCmExchangeName}");
+
+                    IsArchived = true;
+                    _logger.Info($"HealthCheckController - Archiving Complete..");
+
+                }
 
                 //await _loadTradeviewData.LoadBseCmDataFromSourceDb();
                 //_logger.Info($"Auto Sync of BSE CM Data Started");
@@ -52,10 +61,10 @@ namespace TraderBlotter.Api.Controllers
                 //await _loadTradeviewDataNseFo.LoadNseFoDataFromSourceDb();
                 //_logger.Info($"Auto Sync of NSE FO Data Started");
 
-                await _autoSyncService.StartAutoSyncFromSource();
+                //await _autoSyncService.StartAutoSyncFromSource();
 
                 _logger.Info($"HealthCheckController - Returning");
-                return Ok();
+                return Ok(new { IsHealthy = true });
             }
             catch (Exception ex)
             {

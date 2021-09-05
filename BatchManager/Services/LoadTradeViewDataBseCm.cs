@@ -69,7 +69,7 @@ namespace BatchManager.Services
             }
             catch (Exception ex)
             {
-                _logger.Error($"Exception in LoadNseCmDataFromSourceDb", ex);
+                _logger.Error($"LoadTradeViewDataBseCm: Exception in LoadBseCmDataFromSourceDb", ex);
             }
         }
 
@@ -82,7 +82,7 @@ namespace BatchManager.Services
             }
             catch (Exception ex)
             {
-                _logger.Error($"Exception in LoadNseCmDataFromSourceDb", ex);
+                _logger.Error($"LoadTradeViewDataBseCm: Exception in LoadTradeviewFulDataFromSource", ex);
             }
         }
     }

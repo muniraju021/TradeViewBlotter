@@ -8,6 +8,7 @@ using DataAccess.Repository.LogServices;
 using DataAccess.Repository.Repositories;
 using DataAccess.Repository.RepositoryEF.IRepositoryEF;
 using log4net;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
@@ -18,6 +19,7 @@ namespace TraderBlotter.Api.Controllers
     [Route("api/v{v:apiVersion}/[controller]")]
     [ApiController]
     [ApiVersion("1.0")]
+    [Authorize]
     public class DashboardController : ControllerBase
     {
         private readonly IMapper _mapper;
@@ -40,7 +42,7 @@ namespace TraderBlotter.Api.Controllers
         public async Task<IActionResult> GetTradeCounts()
         {
             try
-            {
+            { 
                 _log.Info($"DashboardController - In GetTradeCounts");
                 var tradstats = await _tradeViewGenericRepository.GetTradeStats();
                 var resultSet = _mapper.Map<TradeStatsDto>(tradstats);

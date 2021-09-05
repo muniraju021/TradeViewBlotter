@@ -5,6 +5,7 @@ using DataAccess.Repository.LogServices;
 using DataAccess.Repository.Repositories;
 using DataAccess.Repository.RepositoryEF.IRepositoryEF;
 using log4net;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -18,6 +19,7 @@ namespace TraderBlotter.Api.Controllers
     [Route("api/v{v:apiVersion}/[controller]")]
     [ApiController]
     [ApiVersion("1.0")]
+    [Authorize]
     public class LoadTradeViewController : ControllerBase
     {
         private readonly IMapper _mapper;

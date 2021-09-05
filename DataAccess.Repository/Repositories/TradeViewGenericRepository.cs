@@ -28,7 +28,7 @@ namespace DataAccess.Repository.Repositories
 
         public async Task<IEnumerable<TradeView>> GetAllTradeViewsByPageIndex(int offset)
         {
-            var query = $"SELECT * FROM tradeview order by TradeDate desc LIMIT {offset}, {Constants.ChunkCount}";
+            var query = $"SELECT * FROM tradeview where STR_TO_DATE(TradeDateTime,'%d %M %Y %H:%i:%s') >= curdate() order by TradeDate desc LIMIT {offset}, {Constants.ChunkCount}";
             //var query = $"SELECT * FROM tradeview order by TradeDateTime desc";
             var res = await _tradeViewRepo.GetAllEntityAsync(query);
             return res;
@@ -65,7 +65,7 @@ namespace DataAccess.Repository.Repositories
             {
                 var inputParams = new DynamicParameters();
                 inputParams.Add("exchangeName", exchangeName);
-                var res = await _tradeViewRepo.ExcecuteNonQueryAsync("archiveTradeViewData", parameters: inputParams, cmdType: CommandType.StoredProcedure);
+                var res = await _tradeViewRepo.ExcecuteNonQueryAsync("archiveTradeViewData", parameters: inputParams, cmdType: CommandType.StoredProcedure, commandTimeout: 24);
                 return res;
             }
             return -1;

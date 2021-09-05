@@ -33,10 +33,12 @@ namespace BatchManager.Services
                 var tasklst = new List<Task>();
                 var isSyncDataStarted = true;
                 var cts = new CancellationTokenSource();
+                _logger.Info("AutoSyncService: StartAutoSyncFromSource Initated");
+
                 while (isSyncDataStarted)
                 {                    
                     try
-                    {
+                    {                        
                         await _loadTradeviewData.LoadBseCmDataFromSourceDb();
                         await _loadTradeviewDataNseFo.LoadNseFoDataFromSourceDb();
                         await _loadTradeviewDataNseCm.LoadNseCmDataFromSourceDb();
