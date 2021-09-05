@@ -35,4 +35,11 @@ export class BlotterService {
                 return response;
             }));
     }
+
+    getHealthCheckStats(): Observable<any> {
+        return this.http.get<any>(`${environment.apiUrl}/v1/Dashboard/getHealthCheckStats`)
+            .pipe(map((response: Response) => {
+                return response;
+            }));
+    }
 }

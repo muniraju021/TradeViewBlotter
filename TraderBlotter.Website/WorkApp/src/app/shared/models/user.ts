@@ -7,6 +7,7 @@ export class User {
     IsActive: boolean;
     authdata?: string;
     token: string;
+    lastLogin: string;
 }
 
 export class UserRole {

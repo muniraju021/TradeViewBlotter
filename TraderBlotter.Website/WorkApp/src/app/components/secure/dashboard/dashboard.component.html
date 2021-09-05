@@ -1,12 +1,24 @@
 <div class="offset-md-2 mt-3 parentDiv">
-        <div style="height: 230px;width:500px; float:left; ">
-            <canvas class=" canvas" width="1" height="1" style="float:right" baseChart [data]="doughnutChartData" [labels]="doughnutChartLabels"
-                [chartType]="doughnutChartType">
+    <div style="float:left;">
+        <label class="label" for="totalCount"> Good afternoon, User </label>
+    </div>
+    <div style=" margin-left: 700px;">
+        <label class="label" for="userName"> Current Username: {{this.authenticationService.userLogin}} </label>
+        <label class="label" for="server"> Server Connection: {{server}} </label>
+        <label class="label" for="loginTime"> Login Time: {{this.authenticationService.userLastLogin | date: 'dd/MM/yyyy HH:mm:ss'}} </label>
+    </div>
+
+    <div>
+        <div style="height: 200px;width:420px; float:left; margin-left:200px; margin-top:40px ">
+            <canvas class=" canvas" width="1" height="1" style="float:right" baseChart [data]="doughnutChartData"
+                [labels]="doughnutChartLabels" [chartType]="doughnutChartType">
             </canvas>
         </div>
-        <div style="float:left; margin-top: 300px; margin-left:-5px">
+        <div style="float:left; margin-top: 250px; margin-left:-5px">
             <label class="label" for="totalCount"> Total Trade Count </label>
             <input type="text" readonly class="form-control-plaintext label-text" [(ngModel)]="totalCount"
                 id="totalCount">
         </div>
+    </div>
+
 </div>

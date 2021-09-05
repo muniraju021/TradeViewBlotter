@@ -13,6 +13,7 @@ export class AuthenticationService {
     roleId: string = '';
     userLogin: string = '';
     authToken: string = '';
+    userLastLogin: string = '';
 
     constructor(private http: HttpClient) {
         this.currentUserSubject = new BehaviorSubject<User>(JSON.parse(localStorage.getItem('currentUser')));
@@ -21,12 +22,13 @@ export class AuthenticationService {
             this.roleId = this.currentUserSubject.value["roleId"];
             this.userLogin = this.currentUserSubject.value["loginName"];
             this.authToken = this.currentUserSubject.value["token"];
+            this.userLastLogin = this.currentUserSubject.value["lastLogin"];
         }
     }
 
     public get currentUserValue(): User {
         return this.currentUserSubject.value;
-    } z
+    }
 
     login(username: string, password: string) {
 
@@ -39,6 +41,7 @@ export class AuthenticationService {
                 this.roleId = JSON.parse(localStorage.getItem('currentUser'))["roleId"];
                 this.userLogin = JSON.parse(localStorage.getItem('currentUser'))["loginName"];
                 this.authToken = JSON.parse(localStorage.getItem('currentUser'))["token"];
+                this.userLastLogin = JSON.parse(localStorage.getItem('currentUser'))["lastLogin"];
                 return user;
             }));
     }

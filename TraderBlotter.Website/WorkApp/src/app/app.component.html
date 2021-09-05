@@ -52,7 +52,7 @@
           >Arbitrage Positions</a
         >
       </li>
-      <li class="nav-item dropdown">
+      <li class="nav-item dropdown"  *ngIf="authenticationService.roleId && authenticationService.roleId=='1'">
         <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
           >UserManagement</a
         >
