@@ -42,19 +42,19 @@ namespace DataAccess.Repository
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<TEntity>> GetAllEntityAsync(string spName, object parameters = null, CommandType cmdType = CommandType.Text, string connectionName = null)
+        public async Task<IEnumerable<TEntity>> GetAllEntityAsync(string spName, object parameters = null, CommandType cmdType = CommandType.Text, string connectionName = null, int commandTimeout = 30)
         {
             using (var con = GetDbConnection(connectionName))
             {
-                var res = await con.QueryAsync<TEntity>(spName, param: parameters, commandType: cmdType);
+                var res = await con.QueryAsync<TEntity>(spName, param: parameters, commandType: cmdType, commandTimeout:commandTimeout);
                 return res;
             }
         }
 
-        public async Task<IDataReader> GetDataReaderAsync(string spName, object parameters = null, CommandType cmdType = CommandType.Text, string connectionName = null)
+        public async Task<IDataReader> GetDataReaderAsync(string spName, object parameters = null, CommandType cmdType = CommandType.Text, string connectionName = null, int commandTimeout = 30)
         {
             var con = GetDbConnection(connectionName);
-            var reader = await con.ExecuteReaderAsync(spName, commandType: cmdType);
+            var reader = await con.ExecuteReaderAsync(spName, commandType: cmdType, commandTimeout:commandTimeout);
             return reader;
         }
 
@@ -63,20 +63,20 @@ namespace DataAccess.Repository
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<T>> GetAllEntityAsync<T>(string spName, object parameters = null, CommandType cmdType = CommandType.Text, string connectionName = null)
+        public async Task<IEnumerable<T>> GetAllEntityAsync<T>(string spName, object parameters = null, CommandType cmdType = CommandType.Text, string connectionName = null, int commandTimeout = 30)
         {
             using (var con = GetDbConnection(connectionName))
             {
-                var res = await con.QueryAsync<T>(spName, param: parameters, commandType: cmdType);
+                var res = await con.QueryAsync<T>(spName, param: parameters, commandType: cmdType, commandTimeout: commandTimeout);
                 return res;
             }
         }
 
-        public async Task<T> GetEntityAsync<T>(string spName, object parameters = null, CommandType cmdType = CommandType.Text, string connectionName = null)
+        public async Task<T> GetEntityAsync<T>(string spName, object parameters = null, CommandType cmdType = CommandType.Text, string connectionName = null, int commandTimeout = 30)
         {
             using (var con = GetDbConnection(connectionName))
             {
-                var res = await con.QuerySingleAsync<T>(spName, param: parameters, commandType: cmdType);
+                var res = await con.QuerySingleAsync<T>(spName, param: parameters, commandType: cmdType, commandTimeout: commandTimeout);
                 return res;
             }
         }

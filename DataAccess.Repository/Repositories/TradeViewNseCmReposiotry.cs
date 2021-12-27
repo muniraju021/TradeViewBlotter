@@ -137,6 +137,7 @@ namespace DataAccess.Repository.Repositories
                 {
                     query = string.Format($"SELECT FillId,UserId,ExchUser,BranchId,mnmLocationId,Symbol,SymbolName,TransactionType,FillPrice,FillSize," +
                                         $"ExchOrdId,ExecutingBroker,ExchAccountId,Source,ReportType,TradeDateTime FROM NSE_CM " +
+                                        $" where STR_TO_DATE(TradeDateTime,'%d %M %Y %H:%i:%s') > curdate()" +
                                         $" order by TradeDateTime desc Limit {chunkIndex},{_chunkSize}");
 
                     _log.Info($"TradeViewNseCmRepository: LoadTradeviewFulDataFromSource - NseCM Full Data requested - Chunk {chunkIndex}");

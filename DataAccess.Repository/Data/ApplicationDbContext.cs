@@ -32,6 +32,8 @@ namespace DataAccess.Repository.Data
         public DbSet<DealerClientMappingView> DealerClientMappingViews { get; set; }
         public DbSet<GroupDealerMappingView> GroupDealerMappingViews { get; set; }
 
+        public DbSet<CurrentExpirtyRefView> CurrentExpirtyRefViews { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder

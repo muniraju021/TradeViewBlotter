@@ -29,9 +29,11 @@ namespace DataAccess.Repository.Repositories
         private static ILog _log = LogService.GetLogger(typeof(TradeViewNseFoRepository));
         private static IConfiguration _configuration;
         private readonly string _chunkSize;
+        private readonly ICurrentExprityDateRefRepository _currentExprityDateRefRepository;
 
         public TradeViewNseFoRepository(IGenericRepository<object> tradeViewNseFoRepo, ITradeViewRepository tradeViewRepositoryEf,
-            IMapper mapper, ITradeViewGenericRepository tradeViewRepo, ITradeViewRefRepository tradeViewRefRepository, IConfiguration configuration)
+            IMapper mapper, ITradeViewGenericRepository tradeViewRepo, ITradeViewRefRepository tradeViewRefRepository, IConfiguration configuration, 
+            ICurrentExprityDateRefRepository currentExprityDateRefRepository)
         {
             _tradeViewNseFoRepo = tradeViewNseFoRepo;
             _tradeViewRepositoryEf = tradeViewRepositoryEf;
@@ -40,6 +42,7 @@ namespace DataAccess.Repository.Repositories
             _mapper = mapper;
             _configuration = configuration;
             _chunkSize = _configuration.GetSection("SynchChunkSize")?.Value ?? "10000";
+            _currentExprityDateRefRepository = currentExprityDateRefRepository;
         }
 
         public async Task LoadTradeviewFromSource(DateTime dateTimeVal = default(DateTime), bool isDeltaLoadRequested = false)
@@ -184,6 +187,7 @@ namespace DataAccess.Repository.Repositories
                 {
                     query = string.Format($"select FillId,UserId,ExchUser,BranchId,mnmLocationId,Symbol,SymbolName,TradingSymbol,ExpiryDate,StrikePrice,OptionType,OrderType," +
                             $"TransactionType,FillPrice,FillSize,TradeDateTime,ExchOrdId,mnmLotSize,ExecutingBroker,ExchAccountId,ReportType from NSE_FO " +
+                            $" where STR_TO_DATE(TradeDateTime,'%d %M %Y %H:%i:%s') > curdate()" +
                             $" order by TradeDateTime desc LIMIT {chunkIndex},{_chunkSize}");
 
                     var resultSet = new List<TradeViewNseFo>();

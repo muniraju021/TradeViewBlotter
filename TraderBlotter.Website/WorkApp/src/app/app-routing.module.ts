@@ -9,16 +9,48 @@ import { ManageUserComponent } from './components/secure/manage-user/manage-user
 import { NetPositionViewComponent } from './components/secure/net-position-view/net-position-view.component';
 import { DashboardComponent } from './components/secure/dashboard/dashboard.component';
 import { ArbitragePositionComponent } from './components/secure/arbitrage-position/arbitrage-position.component';
+import { GroupDealerMappingComponent } from './components/secure/group-dealer-mapping/group-dealer-mapping-component';
+import { SupServicesComponent } from './components/secure/sup-services/sup-services.component';
 
 const routes: Routes = [
   { path: 'home', component: HomeComponent, canActivate: [AuthGuard] },
   { path: 'login', component: LoginComponent },
-  { path: 'user', component: UserComponent , canActivate: [AuthGuard] },
-  { path: 'client-dealer-mapping', component: ClientDealerMappingComponent, canActivate: [AuthGuard]  },
-  { path: 'manage-user', component: ManageUserComponent, canActivate: [AuthGuard]  },
-  { path: 'net-position-view', component: NetPositionViewComponent, canActivate: [AuthGuard]  },
-  { path: 'dashboard', component: DashboardComponent, canActivate: [AuthGuard]  },
-  { path: 'arbitrage-position', component: ArbitragePositionComponent, canActivate: [AuthGuard]  },
+  { path: 'user', component: UserComponent, canActivate: [AuthGuard] },
+  {
+    path: 'client-dealer-mapping',
+    component: ClientDealerMappingComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'group-dealer-mapping',
+    component: GroupDealerMappingComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'manage-user',
+    component: ManageUserComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'net-position-view',
+    component: NetPositionViewComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'arbitrage-position',
+    component: ArbitragePositionComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'sup-services',
+    component: SupServicesComponent,
+    canActivate: [AuthGuard],
+  },
   // otherwise redirect to home
   { path: '**', redirectTo: 'dashboard' },
 ];

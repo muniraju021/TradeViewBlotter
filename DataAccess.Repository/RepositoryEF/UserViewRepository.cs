@@ -48,7 +48,15 @@ namespace DataAccess.Repository.RepositoryEF
 
         public UserView ValidateLogin(string loginName, string password)
         {
-            return _db.UserViews.Where(i => i.LoginName == loginName && i.Password == password && i.IsActive).FirstOrDefault();
+            var user = _db.UserViews.Where(i => i.LoginName == loginName && i.Password == password && i.IsActive).FirstOrDefault();
+            if (user != null)
+            {
+                Task.Run(async () =>
+                {
+                    await UpdateUserLastLogin(loginName);
+                }).Wait();
+            }
+            return user;
         }
 
         public async Task AddUserAsync(UserView userView)

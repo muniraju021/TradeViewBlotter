@@ -52,7 +52,12 @@
           >Arbitrage Positions</a
         >
       </li>
-      <li class="nav-item dropdown"  *ngIf="authenticationService.roleId && authenticationService.roleId=='1'">
+      <li
+        class="nav-item dropdown"
+        *ngIf="
+          authenticationService.roleId && authenticationService.roleId == '1'
+        "
+      >
         <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown"
           >UserManagement</a
         >
@@ -73,12 +78,28 @@
               >ManageUser</a
             >
           </li>
-          <li>
+          <!-- <li>
             <a
               class="nav-item nav-link"
               routerLink="/client-dealer-mapping"
               [routerLinkActive]="['active']"
               >Client-Dealer-Mappping</a
+            >
+          </li> -->
+          <li>
+            <a
+              class="nav-item nav-link"
+              routerLink="/group-dealer-mapping"
+              [routerLinkActive]="['active']"
+              >Group-Dealer-Mapping</a
+            >
+          </li>
+          <li>
+            <a
+              class="nav-item nav-link"
+              routerLink="/sup-services"
+              [routerLinkActive]="['active']"
+              >Support Services</a
             >
           </li>
         </ul>

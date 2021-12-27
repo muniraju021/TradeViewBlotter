@@ -1,0 +1,87 @@
+<div class="parentDiv offset-md-1 mt-1">
+  <br />
+  <br />
+  <div *ngIf="error" class="col-md-6 alert alert-danger">{{ error }}</div>
+  <div *ngIf="success" class="col-md-6 alert alert-danger">{{ success }}</div>
+
+  <div
+    class="card-header"
+    style="background-color: lightgray; font-weight: bold"
+  >
+    Group Dealer Mapping
+  </div>
+  <div class="card-body">
+    <form [formGroup]="mappingForm" (ngSubmit)="onSubmit()">
+      <div class="form-group col-md-8">
+        <label for="dropDownGroup">
+          <h5>Groups</h5>
+        </label>
+        <select
+          class="form-control c(ol-md-8"
+          id="dropDownGroup"
+          [(ngModel)]="groupName"
+          [ngModelOptions]="{ standalone: true }"
+          #dropDownGroup
+          (change)="onGroupNameSelected(dropDownGroup.value)"
+        >
+          <option value="" selected disabled hidden>Select Group Name</option>
+          <option *ngFor="let group of groupNames" [value]="group">
+            {{ group }}
+          </option>
+        </select>
+      </div>
+
+      <br />
+      <br />
+
+      <div cdkDropListGroup style="margin-left: 16px">
+        <div class="example-container">
+          <h5>Available Dealers</h5>
+          <div
+            cdkDropList
+            [cdkDropListData]="availableMapping"
+            class="example-list"
+            (cdkDropListDropped)="drop($event)"
+          >
+            <div
+              class="example-box"
+              *ngFor="let item of availableMapping"
+              cdkDrag
+            >
+              {{ item }}
+            </div>
+          </div>
+        </div>
+
+        <div class="example-container">
+          <h5>Mapped Dealer Codes</h5>
+
+          <div
+            cdkDropList
+            [cdkDropListData]="currentMapping"
+            class="example-list"
+            (cdkDropListDropped)="drop($event)"
+          >
+            <div
+              class="example-box"
+              *ngFor="let item of currentMapping"
+              cdkDrag
+            >
+              {{ item }}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group offset-md-2">
+        <button
+          type="submit"
+          style="width: 300px; height: 45px"
+          class="btn btn-primary"
+        >
+          Submit Mappings
+        </button>
+      </div>
+    </form>
+  </div>
+</div>

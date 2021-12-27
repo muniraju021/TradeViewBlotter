@@ -83,5 +83,6 @@ namespace DataAccess.Repository.Models
         public string ClientCode { get; set; }
         public string ExchangeName { get; set; }
 
+        public string OptionType { get; set; }
     }
 }

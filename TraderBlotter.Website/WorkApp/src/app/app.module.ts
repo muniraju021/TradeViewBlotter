@@ -12,13 +12,15 @@ import { ErrorInterceptor } from '../app/shared/common/error.interceptor';
 import { AgGridModule } from 'ag-grid-angular';
 import { UserComponent } from './components/secure/user/user.component';
 import { ClientDealerMappingComponent } from './components/secure/client-dealer-mapping/client-dealer-mapping.component';
-import {DragDropModule} from '@angular/cdk/drag-drop';
+import { DragDropModule } from '@angular/cdk/drag-drop';
 import { ManageUserComponent } from './components/secure/manage-user/manage-user.component';
 import { NetPositionViewComponent } from './components/secure/net-position-view/net-position-view.component';
 import { DashboardComponent } from './components/secure/dashboard/dashboard.component';
 import { ChartsModule } from 'ng2-charts';
 
 import { ArbitragePositionComponent } from './components/secure/arbitrage-position/arbitrage-position.component';
+import { GroupDealerMappingComponent } from './components/secure/group-dealer-mapping/group-dealer-mapping-component';
+import { SupServicesComponent } from './components/secure/sup-services/sup-services.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +32,9 @@ import { ArbitragePositionComponent } from './components/secure/arbitrage-positi
     ManageUserComponent,
     NetPositionViewComponent,
     DashboardComponent,
-    ArbitragePositionComponent
+    ArbitragePositionComponent,
+    GroupDealerMappingComponent,
+    SupServicesComponent,
   ],
   imports: [
     HttpClientModule,
@@ -41,12 +45,12 @@ import { ArbitragePositionComponent } from './components/secure/arbitrage-positi
     AgGridModule.withComponents([]),
 
     DragDropModule,
-    ChartsModule
+    ChartsModule,
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
-],
-  bootstrap: [AppComponent]
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+  ],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

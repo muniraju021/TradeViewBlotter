@@ -8,5 +8,7 @@ namespace BatchManager.Services
     public interface ILoadTradeviewDataNseFo
     {
         Task LoadNseFoDataFromSourceDb();
+
+        Task LoadNseFoDataFromGreek();
     }
 }

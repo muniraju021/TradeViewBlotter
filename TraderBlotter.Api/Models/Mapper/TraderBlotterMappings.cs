@@ -23,6 +23,8 @@ namespace TraderBlotter.Api.Models.Mapper
             CreateMap<GroupDealerMappingView, GroupDealerMappingDto>().ReverseMap();
 
             CreateMap<TradeStats, TradeStatsDto>();
+            CreateMap<TradeViewGreekNseCm, TradeViewRef>();
+            CreateMap<TradeViewGreekNseFo, TradeViewRef>();
         }
     }
 }

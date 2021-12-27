@@ -8,5 +8,6 @@ namespace DataAccess.Repository.RepositoryEF.IRepositoryEF
     public interface IGroupDealerMappingRepository
     {
         void MergeGroupDealerMapping(ICollection<GroupDealerMappingView> lstGroupDealerMappping);
+        ICollection<string> GetDealerByGroupName(string groupName);
     }
 }

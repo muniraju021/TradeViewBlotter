@@ -10,5 +10,7 @@ namespace BatchManager.Services
         Task LoadBseCmDataFromSourceDb();
 
         Task LoadTradeviewFulDataFromSource();
+
+        Task LoadBseCmDataFromGreek();
     }
 }

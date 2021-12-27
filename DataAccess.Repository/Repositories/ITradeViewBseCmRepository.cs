@@ -11,5 +11,7 @@ namespace DataAccess.Repository.Repositories
         Task LoadTradeviewFromSource(DateTime dateVal = default(DateTime), bool isDeltaLoadRequested = false);
 
         Task LoadTradeviewFulDataFromSource();
+
+        
     }
 }

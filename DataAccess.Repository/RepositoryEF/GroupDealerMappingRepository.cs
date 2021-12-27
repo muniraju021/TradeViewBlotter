@@ -22,9 +22,17 @@ namespace DataAccess.Repository.RepositoryEF
             var existingMaps = _db.GroupDealerMappingViews.Where(i => i.GroupName == lstGroupDealerMappping.ToList()[0].GroupName).ToList();
 
             _db.GroupDealerMappingViews.RemoveRange(existingMaps);
+            if(lstGroupDealerMappping?.Count > 0 && lstGroupDealerMappping.Where(i => !string.IsNullOrWhiteSpace(i.DealerCode)).ToList().Count > 0)
+                _db.GroupDealerMappingViews.AddRange(lstGroupDealerMappping);
             var val = _db.SaveChanges();
 
-            _db.BulkMerge(lstGroupDealerMappping, options => options.ColumnPrimaryKeyExpression = c => new { c.GroupName, c.DealerCode });
+            //_db.BulkMerge(lstGroupDealerMappping, options => options.ColumnPrimaryKeyExpression = c => new { c.GroupName, c.DealerCode });
+
+        }
+
+        public ICollection<string> GetDealerByGroupName(string groupName)
+        {
+            return _db.GroupDealerMappingViews.Where(i => i.GroupName == groupName).Select(j => j.DealerCode).ToList();
         }
     }
 }

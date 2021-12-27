@@ -136,6 +136,7 @@ namespace DataAccess.Repository.Repositories
                 {
                     query = string.Format($"SELECT FillId,UserId,ExchUser,BranchId,mnmLocationId,Symbol,SymbolName,PriceType,TransactionType,FillPrice,FillSize,FillTime,FillDate,ExchangeTime,ExchOrdId,ExecutingBroker," +
                                         $"ExchAccountId,Source,ReportType,TradeDateTime FROM BSE_CM " +
+                                        $" where STR_TO_DATE(FillTime,'%d %M %Y %H:%i:%s') > curdate()" +
                                         $" order by FillTime desc Limit {chunkIndex},{_chunkSize}");
 
                     _log.Info($"TradeViewBseCmRepository: LoadTradeviewFulDataFromSource - BseCM Full Data requested - Chunk {chunkIndex}");

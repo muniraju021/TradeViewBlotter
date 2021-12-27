@@ -16,10 +16,12 @@ namespace BatchManager.Services
         private readonly ITradeViewNseCmRepository _tradeViewNseCmRepository;
         private readonly ILog _logger = LogService.GetLogger(typeof(LoadTradeViewDataNseCm));
         public static bool isSyncDataStarted = false;
+        private readonly IGreekNseCmRepository _greekNseCmRepository;
 
-        public LoadTradeViewDataNseCm(ITradeViewNseCmRepository tradeViewNseCmRepository)
+        public LoadTradeViewDataNseCm(ITradeViewNseCmRepository tradeViewNseCmRepository, IGreekNseCmRepository greekNseCmRepository)
         {
             _tradeViewNseCmRepository = tradeViewNseCmRepository;
+            _greekNseCmRepository = greekNseCmRepository;
         }
 
         public async Task LoadNseCmDataFromSourceDb()
@@ -31,7 +33,20 @@ namespace BatchManager.Services
             }
             catch (Exception ex)
             {
-                _logger.Error($"Exception in LoadNseCmDataFromSourceDb", ex);
+                _logger.Error($"LoadTradeViewDataNseCm: LoadNseCmDataFromSourceDb - Exception in LoadNseCmDataFromSourceDb - {ex}");
+            }
+        }
+
+        public async Task LoadNseCmDataFromGreek()
+        {
+            try
+            {
+                _logger.Info($"LoadTradeViewDataNseCm: LoadNseCmDataFromGreek - Loading NSE CM Data from Greek File");
+                await _greekNseCmRepository.LoadTradeviewFromSource(isDeltaLoadRequested: true);
+            }
+            catch (Exception ex)
+            {
+                _logger.Error($"LoadTradeViewDataNseCm: LoadNseCmDataFromGreek - Exception in LoadNseCmDataFromSourceDb - {ex}");
             }
         }
     }

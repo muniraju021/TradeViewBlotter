@@ -23,9 +23,11 @@ namespace DataAccess.Repository.RepositoryEF
             var existingMaps = _db.DealerClientMappingViews.Where(i => i.DealerCode == lstDealerClientMappping.ToList()[0].DealerCode).ToList();
 
             _db.DealerClientMappingViews.RemoveRange(existingMaps);
+            if(lstDealerClientMappping?.Count > 0)
+                _db.DealerClientMappingViews.AddRange(lstDealerClientMappping);
             var val = _db.SaveChanges();
 
-            _db.BulkMerge(lstDealerClientMappping, options => options.ColumnPrimaryKeyExpression = c => new { c.DealerCode, c.ClientCode });
+            //_db.BulkMerge(lstDealerClientMappping, options => options.ColumnPrimaryKeyExpression = c => new { c.DealerCode, c.ClientCode });
         }
     }
 }

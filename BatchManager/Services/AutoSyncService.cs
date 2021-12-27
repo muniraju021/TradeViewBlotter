@@ -38,10 +38,15 @@ namespace BatchManager.Services
                 while (isSyncDataStarted)
                 {                    
                     try
-                    {                        
+                    {
                         await _loadTradeviewData.LoadBseCmDataFromSourceDb();
                         await _loadTradeviewDataNseFo.LoadNseFoDataFromSourceDb();
                         await _loadTradeviewDataNseCm.LoadNseCmDataFromSourceDb();
+
+                        await _loadTradeviewDataNseCm.LoadNseCmDataFromGreek();
+                        await _loadTradeviewDataNseFo.LoadNseFoDataFromGreek();
+                        await _loadTradeviewData.LoadBseCmDataFromGreek();
+
                     }
                     catch (Exception ex)
                     {

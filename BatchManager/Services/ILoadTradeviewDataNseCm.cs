@@ -8,5 +8,8 @@ namespace BatchManager.Services
     public interface ILoadTradeviewDataNseCm
     {
         Task LoadNseCmDataFromSourceDb();
+
+        Task LoadNseCmDataFromGreek();
+
     }
 }

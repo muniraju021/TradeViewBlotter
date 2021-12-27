@@ -7,5 +7,6 @@ by editing this MSBuild file. In order to learn more about this please visit htt
   <PropertyGroup>
     <TimeStampOfAssociatedLegacyPublishXmlFile />
     <_PublishTargetUrl>C:\inetpub\wwwroot\tradeblotter</_PublishTargetUrl>
+    <History>True|2021-11-23T07:20:10.7170708Z;True|2021-11-07T22:31:40.7317266+05:30;True|2021-11-02T10:56:56.2235236+05:30;True|2021-10-04T20:34:05.1493424+05:30;True|2021-10-01T08:01:32.8663454+05:30;True|2021-09-30T10:37:50.2831318+05:30;</History>
   </PropertyGroup>
 </Project>

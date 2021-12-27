@@ -1,0 +1,222 @@
+<div class="parentDiv">
+  <br />
+  <br />
+  <div class="offset-md-1">Synchronize Data</div>
+  <div class="card cardDiv offset-md-1">
+    <div class="Form-Group" style="margin: 20px">
+      <div class="row">
+        <div class="col-md-auto">
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="SyncNseCmData()"
+            style="width: 180px"
+          >
+            Sync NSE CM
+          </button>
+        </div>
+        <div class="col-md-auto" style="height: 35px; align-items: center">
+          <progress
+            *ngIf="!nseCmError && !nseCmSuccess"
+            [hidden]="nseCmIsProgressBarHidden"
+            style="height: 30px"
+          >
+            In Progress
+          </progress>
+          <div *ngIf="nseCmSuccess" class="col-md-12 alert alert-success">
+            {{ nseCmSuccess }}
+          </div>
+          <div *ngIf="nseCmError" class="col-md-12 alert alert-danger">
+            {{ nseCmError }}
+          </div>
+        </div>
+      </div>
+
+      <br />
+      <br />
+
+      <div class="row">
+        <div class="col-md-auto">
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="SyncNseFoData()"
+            style="width: 180px"
+          >
+            Sync NSE FO
+          </button>
+        </div>
+        <div class="col-md-auto" style="height: 35px; align-items: center">
+          <progress
+            *ngIf="!nseFoError && !nseFoSuccess"
+            [hidden]="nseFoIsProgressBarHidden"
+            style="height: 30px"
+          >
+            In Progress
+          </progress>
+          <div *ngIf="nseFoSuccess" class="col-md-12 alert alert-success">
+            {{ nseFoSuccess }}
+          </div>
+          <div *ngIf="nseFoError" class="col-md-12 alert alert-danger">
+            {{ nseFoError }}
+          </div>
+        </div>
+      </div>
+
+      <br />
+      <br />
+
+      <div class="row">
+        <div class="col-md-auto">
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="SyncBseCmData()"
+            style="width: 180px"
+          >
+            Sync BSE CM
+          </button>
+        </div>
+        <div class="col-md-auto" style="height: 35px; align-items: center">
+          <progress
+            *ngIf="!bseCmError && !bseCmSuccess"
+            [hidden]="bseCmIsProgressBarHidden"
+            style="height: 30px"
+          >
+            In Progress
+          </progress>
+          <div *ngIf="bseCmSuccess" class="col-md-12 alert alert-success">
+            {{ bseCmSuccess }}
+          </div>
+          <div *ngIf="bseCmError" class="col-md-12 alert alert-danger">
+            {{ bseCmError }}
+          </div>
+        </div>
+      </div>
+
+      <br />
+      <br />
+
+      <div class="row">
+        <div class="col-md-auto">
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="GreekSyncNseCmData()"
+            style="width: 180px"
+          >
+            G Sync NSE CM
+          </button>
+        </div>
+        <div class="col-md-auto" style="height: 35px; align-items: center">
+          <progress
+            *ngIf="!gNseCmError && !gNseCmSuccess"
+            [hidden]="gNseCmIsProgressBarHidden"
+            style="height: 30px"
+          >
+            In Progress
+          </progress>
+          <div *ngIf="gNseCmSuccess" class="col-md-12 alert alert-success">
+            {{ gNseCmSuccess }}
+          </div>
+          <div *ngIf="gNseCmError" class="col-md-12 alert alert-danger">
+            {{ gNseCmError }}
+          </div>
+        </div>
+      </div>
+
+      <br />
+      <br />
+
+      <div class="row">
+        <div class="col-md-auto">
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="GreekSyncNseFoData()"
+            style="width: 180px"
+          >
+            G Sync NSE FO
+          </button>
+        </div>
+        <div class="col-md-auto" style="height: 35px; align-items: center">
+          <progress
+            *ngIf="!gNseFoError && !gNseFoSuccess"
+            [hidden]="gNseFoIsProgressBarHidden"
+            style="height: 30px"
+          >
+            In Progress
+          </progress>
+          <div *ngIf="gNseFoSuccess" class="col-md-12 alert alert-success">
+            {{ gNseFoSuccess }}
+          </div>
+          <div *ngIf="gNseFoError" class="col-md-12 alert alert-danger">
+            {{ gNseFoError }}
+          </div>
+        </div>
+      </div>
+
+      <br />
+      <br />
+
+      <div class="row">
+        <div class="col-md-auto">
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="GreekSyncBseCmData()"
+            style="width: 180px"
+          >
+            G Sync BSE CM
+          </button>
+        </div>
+        <div class="col-md-auto" style="height: 35px; align-items: center">
+          <progress
+            *ngIf="!gBseCmError && !gBseCmSuccess"
+            [hidden]="gBseCmIsProgressBarHidden"
+            style="height: 30px"
+          >
+            In Progress
+          </progress>
+          <div *ngIf="gBseCmSuccess" class="col-md-12 alert alert-success">
+            {{ gBseCmSuccess }}
+          </div>
+          <div *ngIf="gBseCmError" class="col-md-12 alert alert-danger">
+            {{ gBseCmError }}
+          </div>
+        </div>
+      </div>
+
+      <br />
+      <br />
+
+      <div class="row">
+        <div class="col-md-auto">
+          <button
+            type="button"
+            class="btn btn-primary"
+            (click)="HealthCheck()"
+            style="width: 180px"
+          >
+            Health Check
+          </button>
+        </div>
+        <div class="col-md-auto" style="height: 35px; align-items: center">
+          <progress
+            *ngIf="!healthError && !healthSuccess"
+            [hidden]="healthIsProgressBarHidden"
+            style="height: 30px"
+          >
+            In Progress
+          </progress>
+          <div *ngIf="healthSuccess" class="col-md-12 alert alert-success">
+            {{ healthSuccess }}
+          </div>
+          <div *ngIf="healthError" class="col-md-12 alert alert-danger">
+            {{ healthError }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

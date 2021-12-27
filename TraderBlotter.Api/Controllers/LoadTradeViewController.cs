@@ -29,10 +29,14 @@ namespace TraderBlotter.Api.Controllers
         private readonly ITradeViewNseFoRepository _tradeViewNseFoRepository;
         private readonly ITradeViewNseCmRepository _tradeViewNseCmRepo;
         private readonly ITradeViewBseCmRepository _tradeViewBseCmRepository;
+        private readonly IGreekNseCmRepository _greekNseCmRepository;
+        private readonly IGreekNseFoRepository _greekNseFoRepository;
+        private readonly IGreekBseCmRepository _greekBseCmRepository;
 
         public LoadTradeViewController(IMapper mapper, ITradeViewRepository tradeViewRepository,
             ITradeViewGenericRepository tradeViewGenericRepository, ITradeViewBseCmRepository tradeViewBseCmRepository, ITradeViewNseFoRepository tradeViewNseFoRepository,
-            ITradeViewNseCmRepository tradeViewNseCmRepo)
+            ITradeViewNseCmRepository tradeViewNseCmRepo, IGreekNseCmRepository greekNseCmRepository, 
+            IGreekNseFoRepository greekNseFoRepository, IGreekBseCmRepository greekBseCmRepository)
         {
             _mapper = mapper;
             _tradeViewRepository = tradeViewRepository;
@@ -40,6 +44,9 @@ namespace TraderBlotter.Api.Controllers
             _tradeViewNseCmRepo = tradeViewNseCmRepo;
             _tradeViewNseFoRepository = tradeViewNseFoRepository;
             _tradeViewBseCmRepository = tradeViewBseCmRepository;
+            _greekNseCmRepository = greekNseCmRepository;
+            _greekNseFoRepository = greekNseFoRepository;
+            _greekBseCmRepository = greekBseCmRepository;
         }
 
         [HttpGet]
@@ -175,6 +182,60 @@ namespace TraderBlotter.Api.Controllers
             catch (Exception ex)
             {
                 _log.Error("Error in SyncNseCmAllTrades ", ex);
+                return StatusCode(500);
+            }
+        }
+
+        [HttpGet]
+        [Route("SyncGreekNseCmAllTrades")]
+        public async Task<IActionResult> SyncGreekNseCmAllTrades()
+        {
+            try
+            {
+                _log.Info($"SyncGreekNseCmAllTrades started");
+                await _greekNseCmRepository.LoadTradeviewFulDataFromSource();
+                _log.Info($"SyncGreekNseCmAllTrades Finished");
+                return Ok(HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                _log.Error("Error in SyncGreekNseCmAllTrades ", ex);
+                return StatusCode(500);
+            }
+        }
+
+        [HttpGet]
+        [Route("SyncGreekNseFoAllTrades")]
+        public async Task<IActionResult> SyncGreekNseFoAllTrades()
+        {
+            try
+            {
+                _log.Info($"SyncGreekNseFoAllTrades started");
+                await _greekNseFoRepository.LoadTradeviewFulDataFromSource();
+                _log.Info($"SyncGreekNseFoAllTrades Finished");
+                return Ok(HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                _log.Error("Error in SyncGreekNseFoAllTrades ", ex);
+                return StatusCode(500);
+            }
+        }
+
+        [HttpGet]
+        [Route("SyncGreekBseCmAllTrades")]
+        public async Task<IActionResult> SyncGreekBseCmAllTrades()
+        {
+            try
+            {
+                _log.Info($"SyncGreekBseCmAllTrades started");
+                await _greekBseCmRepository.LoadTradeviewFulDataFromSource();
+                _log.Info($"SyncGreekBseCmAllTrades Finished");
+                return Ok(HttpStatusCode.OK);
+            }
+            catch (Exception ex)
+            {
+                _log.Error("Error in SyncGreekBseCmAllTrades ", ex);
                 return StatusCode(500);
             }
         }

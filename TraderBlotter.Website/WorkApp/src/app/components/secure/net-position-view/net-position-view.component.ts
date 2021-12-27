@@ -9,10 +9,12 @@ import { BlotterService } from 'src/app/shared/services/blotterService';
 })
 export class NetPositionViewComponent implements OnInit {
   rowHeight: number;
+  userLoginName: string;
   public gridOptions: GridOptions;
   columnDefs = [
     { field: 'exchangeName', headerName: 'Exchange Name' },
     { field: 'stockName', headerName: 'Stock Name' },
+    { field: 'optionType', headerName: 'Option Type' },
     {
       field: 'buyQuantity',
       headerName: 'Buy Qty',
@@ -86,9 +88,14 @@ export class NetPositionViewComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.blotterService.getNetPositionViewDetails().subscribe((data) => {
-      this.rowData = data;
-    });
+    this.userLoginName = JSON.parse(localStorage.getItem('currentUser'))[
+      'loginName'
+    ];
+    this.blotterService
+      .getNetPositionViewDetails(this.userLoginName)
+      .subscribe((data) => {
+        this.rowData = data;
+      });
   }
 
   onFilterTextBoxChanged() {

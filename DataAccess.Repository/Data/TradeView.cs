@@ -40,5 +40,6 @@ namespace DataAccess.Repository.Data
         public string TradeModifyFlag { get; set; }
         public string TradeDateTime { get; set; }
         public string TotalBuySellTotalValue { get; set; }
+        public string FutType { get; set; }
     }
 }

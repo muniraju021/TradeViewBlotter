@@ -16,10 +16,12 @@ namespace BatchManager.Services
         private readonly ITradeViewBseCmRepository _tradeViewBseCmRepository;
         private readonly ILog _logger = LogService.GetLogger(typeof(LoadTradeViewDataBseCm));
         public static bool isSyncDataStarted = false;
+        private readonly IGreekBseCmRepository _greekBseCmRepository;
 
-        public LoadTradeViewDataBseCm(ITradeViewBseCmRepository tradeViewBseCmRepository)
+        public LoadTradeViewDataBseCm(ITradeViewBseCmRepository tradeViewBseCmRepository, IGreekBseCmRepository greekBseCmRepository)
         {
             _tradeViewBseCmRepository = tradeViewBseCmRepository;
+            _greekBseCmRepository = greekBseCmRepository;
         }
 
         //public Task LoadBseCmDataFromSourceDb()
@@ -83,6 +85,20 @@ namespace BatchManager.Services
             catch (Exception ex)
             {
                 _logger.Error($"LoadTradeViewDataBseCm: Exception in LoadTradeviewFulDataFromSource", ex);
+            }
+        }
+
+        public async Task LoadBseCmDataFromGreek()
+        {
+            try
+            {
+                _logger.Info($"LoadBseCmDataFromGreek Started");
+                await _greekBseCmRepository.LoadTradeviewFromSource(isDeltaLoadRequested: true);
+            }
+            catch (Exception ex)
+            {
+
+                _logger.Error($"LoadBseCmDataFromGreek: Exception in LoadBseCmDataFromGreek", ex);
             }
         }
     }

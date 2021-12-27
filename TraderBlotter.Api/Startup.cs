@@ -12,6 +12,7 @@ using DataAccess.Repository.Infrastructure;
 using DataAccess.Repository.Repositories;
 using DataAccess.Repository.RepositoryEF;
 using DataAccess.Repository.RepositoryEF.IRepositoryEF;
+using DataAccess.Repository.Utilities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Diagnostics;
@@ -77,7 +78,12 @@ namespace TraderBlotter.Api
 
             services.AddScoped<IDealerClientMappingRepository, DealerClientMappingRepository>();
             services.AddScoped<IGroupDealerMappingRepository, GroupDealerMappingRepository>();
+            services.AddScoped<ICurrentExprityDateRefRepository, CurrentExprityDateRefRepository>();
 
+            services.AddScoped<IFileHelper, FileHelper>();
+            services.AddScoped<IGreekNseCmRepository, GreekNseCmRepository>();
+            services.AddScoped<IGreekNseFoRepository, GreekNseFoRepository>();
+            services.AddScoped<IGreekBseCmRepository, GreekBseCmRepository>();
 
             services.AddAutoMapper(typeof(TraderBlotterMappings));
 
@@ -134,9 +140,11 @@ namespace TraderBlotter.Api
                 };
             });
 
+
+
             services.AddMvc(config =>
             {
-                config.Filters.Add(typeof(CustomExceptionFilter));
+                //config.Filters.Add(typeof(CustomExceptionFilter));
                 config.Filters.Add(typeof(CustomAuthorizationFilter));
             });
 
@@ -146,6 +154,9 @@ namespace TraderBlotter.Api
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, ILoggerFactory loggerFactory, Microsoft.Extensions.Hosting.IHostApplicationLifetime applicationLifetime)
         {
             loggerFactory.AddLog4Net();
+
+            app.UseMiddleware<ErrorHandlerMiddleware>();
+            app.UseMiddleware<LoggingMiddleware>();
 
             if (env.IsDevelopment())
             {
@@ -166,28 +177,29 @@ namespace TraderBlotter.Api
                 options.RoutePrefix = string.Empty;
             });
 
-            app.UseExceptionHandler(errorApp =>
-            {
-                errorApp.Run(async context =>
-                {
-                    context.Response.StatusCode = 500; // or another Status accordingly to Exception Type
-                    context.Response.ContentType = "application/json";
+            //app.UseExceptionHandler(errorApp =>
+            //{
+            //    errorApp.Run(async context =>
+            //    {
+            //        context.Response.StatusCode = 500; // or another Status accordingly to Exception Type
+            //        context.Response.ContentType = "application/json";
 
-                    var error = context.Features.Get<IExceptionHandlerFeature>();
-                    if (error != null)
-                    {
-                        var ex = error.Error;
-                        
-                        await context.Response.WriteAsync(new ErrorModel()
-                        {
-                            HttpStatusCode = 500,
-                            Message = ex.Message
-                        }.ToString(), Encoding.UTF8);
-                    }
-                });
-            });
+            //        var error = context.Features.Get<IExceptionHandlerFeature>();
+            //        if (error != null)
+            //        {
+            //            var ex = error.Error;
+
+            //            await context.Response.WriteAsync(new ErrorModel()
+            //            {
+            //                HttpStatusCode = 500,
+            //                Message = ex.Message
+            //            }.ToString(), Encoding.UTF8);
+            //        }
+            //    });
+            //});
 
             
+
             app.UseRouting();
 
             app.UseAuthentication();
